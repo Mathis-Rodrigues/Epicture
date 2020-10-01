@@ -1,14 +1,23 @@
 import React from 'react'
-import {StyleSheet, View, TextInput, Button } from 'react-native'
+import {StyleSheet, View, TextInput, Button, Text, FlatList} from 'react-native'
+import  Icon from 'react-native-vector-icons/Ionicons';
+import * as Animatable from 'react-native-animatable'
+
+const dataList = [{key: '1'}, {key: '2'}, {key: '3'}, {key: '4'}, {key: '5'}, {key: '6'}]
 
 class Search extends React.Component {
   render() {
     return (
       <View style={styles.main_container}>
-        <TextInput
-        style={styles.textinput}
-        placeholder='Rechercherr'/>
-        <Button title='Rechercher' onPress={() => {}}/>
+        <View style={{height:110, backgroundColor: '#c45653', justifyContent: "center", paddingHorizontal: 10}}>
+          <Animatable.View animation="slideInRight" style={{ height:50,backgroundColor: 'white', marginTop: 20, flexDirection: 'row', padding: 5, alignItems: 'center'}}>
+            <Icon name="md-search" style={{ fontSize: 24}}/>
+            <TextInput placeholder= "Search" style={{fontSize: 14, marginLeft: 15, width: 500}}/>
+          </Animatable.View>
+        </View>
+        <FlatList>
+          
+        </FlatList>
       </View>
     )
   }

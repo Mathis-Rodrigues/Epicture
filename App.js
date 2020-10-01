@@ -25,10 +25,13 @@ export default function App() {
 
             if (route.name === 'Home') {
               iconName = focused
-                ? 'ios-information-circle'
-                : 'ios-information-circle-outline';
+                ? 'md-home'
+                : 'md-home';
             } else if (route.name === 'Settings') {
               iconName = focused ? 'ios-list-box' : 'ios-list';
+            }
+              else if (route.name === 'Search') {
+              iconName = focused ? 'md-search' : 'md-search';
             }
             return <Ionicons name={iconName} size={size} color={color} />;
           },
@@ -39,6 +42,7 @@ export default function App() {
         }}
       >
         <Tab.Screen name="Home" component={Search} />
+        <Tab.Screen name="Search" component={Search} />
         <Tab.Screen name="Settings" component={SettingsScreen} />
       </Tab.Navigator>
     </NavigationContainer>
