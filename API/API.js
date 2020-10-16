@@ -18,9 +18,25 @@ export function test() {
 
   return (
     fetch("https://api.imgur.com/3/gallery/hot", requestOptions)
-    .then((res) => res.json())
-    .catch((err) => console.error(err))
-    )
+      .then((res) => res.json())
+      .catch((err) => console.error(err))
+  )
 
 }
 
+export function searchGallery(string) {
+  var myHeaders = new Headers();
+  myHeaders.append("Authorization", "Client-ID 72512453ac30480");
+
+  var requestOptions = {
+    method: 'GET',
+    headers: myHeaders,
+    redirect: 'follow'
+  };
+
+  return (
+  fetch("https://api.imgur.com/3/gallery/search/?q=" + string, requestOptions)
+  .then((res) => res.json())
+  .catch((err) => console.error(err))
+  )
+}

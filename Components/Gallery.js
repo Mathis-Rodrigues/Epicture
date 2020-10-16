@@ -13,7 +13,7 @@ class CheckType extends Component {
       else
       return (<Image source={{ uri: info.link }} style={{ height: 200, width: null, flex: 1 }} />);
     } else {
-      console.log(info.images[0].type)
+      // console.log(info.images[0].type)
       if (info.images[0].type == "video/mp4") {
         return (<Video source={{ uri: info.images[0].link }} style={{ height: 200, width: null, flex: 1 }} shouldPlay isLooping isMuted={true} />);
       }
