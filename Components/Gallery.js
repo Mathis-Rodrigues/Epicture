@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image } from 'react-native';
+import { Image , StyleSheet, View, Dimensions} from 'react-native';
 import { Container, Header, Content, Card, CardItem, Thumbnail, Text, Button, Icon, Left, Body, Right } from 'native-base';
 import { Video } from 'expo-av';
 
@@ -8,17 +8,17 @@ class CheckType extends Component {
     const { info } = this.props
     if (!info.images) {
       if (info.type == "video/mp4") {
-        return (<Video source={{ uri: info.link }} style={{ height: 200, width: null, flex: 1 }} shouldPlay isLooping isMuted={true} />);
+        return (<Video source={{ uri: info.link }} style={styles.video} shouldPlay isLooping isMuted={true} />);
       }
       else
-      return (<Image source={{ uri: info.link }} style={{ height: 200, width: null, flex: 1 }} />);
+      return (<Image source={{ uri: info.link }} style={styles.image} />);
     } else {
       // console.log(info.images[0].type)
       if (info.images[0].type == "video/mp4") {
-        return (<Video source={{ uri: info.images[0].link }} style={{ height: 200, width: null, flex: 1 }} shouldPlay isLooping isMuted={true} />);
+        return (<Video source={{ uri: info.images[0].link }} style={styles.video} shouldPlay isLooping isMuted={true} />);
       }
       else
-      return (<Image source={{ uri: info.images[0].link }} style={{ height: 200, width: null, flex: 1 }} />);
+      return (<Image source={{ uri: info.images[0].link }} style={styles.image} />);
     }
   }
 }
@@ -42,7 +42,7 @@ export default class Gallery extends Component {
     //   console.log(info.link)
     // }
     return (
-      <Card>
+      <Card style={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center',}}>
         <CardItem>
           <Left>
             <Thumbnail source={{ uri: 'Image URL' }} />
@@ -76,3 +76,17 @@ export default class Gallery extends Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  image: {
+    height: 300,
+    width: null,
+    flex: 1
+  },
+  video: {
+    flex: 1,
+    height: 300,
+    width: 300,
+    resizeMode: 'contain'
+  }
+})
