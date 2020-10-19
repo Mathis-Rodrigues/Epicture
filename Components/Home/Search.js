@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Container, Header, Item, Input, Icon, InputGroup, Button, Text, Content, Picker, Form, Card, CardItem, Thumbnail, Left, Body, Right } from 'native-base';
 import { View, Image, FlatList, StyleSheet } from 'react-native'
-import { start, searchGallery, sortGallery } from '../API/API'
-import Gallery from './Gallery'
+import { start, searchGallery, sortGallery } from '../../API/API'
+import Gallery from './Gallery' 
 
 
 export default class Search extends Component {
@@ -55,7 +55,7 @@ export default class Search extends Component {
     const { data } = this.state
     return (
       <View style={{ flex: 1, flexDirection: 'column' }}>
-        <Header searchBar rounded>
+        <Header searchBar rounded style={{ backgroundColor: '#b22a0d'}}androidStatusBarColor="#b22a0d" >
           <Item>
             <Icon name="ios-search" />
             <Input
@@ -72,7 +72,7 @@ export default class Search extends Component {
           <Picker
             note
             mode="dropdown"
-            style={{ width: 120 }}
+            style={{ width: 120,  color: 'black' }}
             selectedValue={this.state.section}
             onValueChange={this.onValueChange.bind(this)}
           >
@@ -82,7 +82,7 @@ export default class Search extends Component {
           <Picker
             note
             mode="dropdown"
-            style={{ width: 120 }}
+            style={{ width: 120, color: 'black' }}
             selectedValue={this.state.sort}
             onValueChange={this.onValueChange2.bind(this)}
           >
@@ -97,9 +97,9 @@ export default class Search extends Component {
             keyExtractor={(item) => item.id.toString()}
             renderItem={({item}) => <Gallery info={item} />}
           />
-        <Button onPress={() => { console.log(data)}}>
+        {/* <Button onPress={() => { console.log(data)}}>
           <Text>hey</Text>
-        </Button>
+        </Button> */}
       </View>
     );
   }

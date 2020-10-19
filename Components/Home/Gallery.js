@@ -28,7 +28,7 @@ export default class Gallery extends Component {
 
   render() {
     const { info } = this.props
-    // console.log(info.type)
+    console.log(info)
     // if (info.type == "image/gif" || info.type == "image/png") {
     //   console.log("c pas une video " + info.link)
     // } else {
@@ -42,37 +42,35 @@ export default class Gallery extends Component {
     //   console.log(info.link)
     // }
     return (
-      <Card style={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center',}}>
-        <CardItem>
+      <View style={{flex: 1, flexDirection: 'column', backgroundColor: '#524947'}}>
+      <Card>
+        <CardItem  style={{backgroundColor: 'black'}}>
           <Left>
-            <Thumbnail source={{ uri: 'Image URL' }} />
-            <Body>
-              <Text>{info.title}</Text>
-              <Text note>GeekyAnts</Text>
-            </Body>
+              <Text numberOfLines={1} style={{color: 'white', backgroundColor: 'black'}}>{info.title}</Text>
           </Left>
         </CardItem>
-        <CardItem cardBody>
-          <CheckType info={info} />
+        <CardItem cardBody style={{backgroundColor: 'black'}}>
+          <CheckType info={info} style={{backgroundColor: 'black'}}/>
         </CardItem>
-        <CardItem>
+        <CardItem style={{height: 40, backgroundColor: 'black'}}>
           <Left>
             <Button transparent>
-              <Icon active name="thumbs-up" />
-              <Text>12 Likes</Text>
+              <Icon active name="ios-arrow-dropup" />
+              <Text>{info.ups} points</Text>
             </Button>
           </Left>
-          <Body>
+          <Right>
             <Button transparent>
               <Icon active name="chatbubbles" />
-              <Text>4 Comments</Text>
+              <Text>{info.comment_count} comments</Text>
             </Button>
-          </Body>
-          <Right>
-            <Text>11h ago</Text>
           </Right>
+          {/* <Right>
+            <Text>11h ago</Text>
+          </Right> */}
         </CardItem>
       </Card>
+      </View>
     );
   }
 }
@@ -81,12 +79,13 @@ const styles = StyleSheet.create({
   image: {
     height: 300,
     width: null,
-    flex: 1
+    flex: 1,
+    resizeMode: 'contain'
   },
   video: {
-    flex: 1,
-    height: 300,
-    width: 300,
-    resizeMode: 'contain'
+    height: 280,
+    width: 350,
+    resizeMode: 'center',
+    flex: 1
   }
 })
