@@ -1,9 +1,10 @@
 import React from 'react'
+import AsyncStorage from '@react-native-community/async-storage'
 import { WebView } from 'react-native-webview';
 
 import Config from '../../config/config'
 
-function AuthPage() {
+function AuthPage({ setAccountParams }) {
   const onNavigationStateChange = (navigationState) => {
     const paramString = navigationState.url.split("#");
     const params = {}
@@ -13,11 +14,10 @@ function AuthPage() {
         const param = e.split('=')
         params[param[0]] = param[1]
       })
-      console.log(params)
-      const now = new Date().getTime()
-      console.log("expires at: ", new Date(parseInt(params.expires_in) * 1000 + now))
+      params["expiration_date"] = parseInt(params.expires_in) * 1000 + new Date().getTime()
+      AsyncStorage.setItem('account_params', JSON.stringify(params))
+      setAccountParams({ ...params })
     }
-    console.log("\n")
   };
 
   return (

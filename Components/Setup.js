@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import * as Font from 'expo-font'
-import { Container, Header, Content, Spinner } from 'native-base';
+import { Container, Spinner } from 'native-base';
 import Navigation from './Navigation'
 
 export default class Setup extends Component {
