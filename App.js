@@ -1,13 +1,14 @@
-import React from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Navigation from './Components/Navigation'
+import React, { Fragment } from 'react'
+
 import Setup from './Components/Setup'
+import AuthPage from './Components/Oauth/AuthPage'
 
-
-// const Tab = createBottomTabNavigator();
 
 export default function App() {
     return(
-      <Setup/>
+      <Fragment>
+        <AuthPage />
+        {/* <Setup /> */}
+      </Fragment>
     );
 }

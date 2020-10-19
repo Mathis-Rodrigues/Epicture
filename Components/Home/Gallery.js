@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image , StyleSheet, View, Dimensions} from 'react-native';
+import { Image , StyleSheet, View } from 'react-native';
 import { Container, Header, Content, Card, CardItem, Thumbnail, Text, Button, Icon, Left, Body, Right } from 'native-base';
 import { Video } from 'expo-av';
 
