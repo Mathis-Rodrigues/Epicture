@@ -11,11 +11,16 @@ export default function App() {
 
   useEffect(() => {
     ( async () => {
-      const jsonValue = await AsyncStorage.getItem('account_params')
+      const jsonValue = await AsyncStorage.getItem("account_params")
 
       setAccountParams(jsonValue !== null ? JSON.parse(jsonValue) : null)
     })()
   }, [])
+
+  const disconnectAccount = async () => {
+    setAccountParams(null)
+    await AsyncStorage.removeItem("account_params")
+  }
 
   return (
     <Fragment>
@@ -23,7 +28,7 @@ export default function App() {
         <AuthPage setAccountParams={setAccountParams} />
       }
       { accountParams !== null &&
-        <Setup />
+        <Setup disconnectAccount={ async () => { await disconnectAccount() }} />
       }
     </Fragment>
   );

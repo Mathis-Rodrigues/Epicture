@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Container, Header, Item, Input, Icon, InputGroup, Button, Text, Content, Picker, Form, Card, CardItem, Thumbnail, Left, Body, Right } from 'native-base';
-import { View, Image, FlatList, StyleSheet } from 'react-native'
+import { Header, Item, Input, Icon, Button, Text, Picker } from 'native-base';
+import { View, FlatList } from 'react-native'
 import { start, searchGallery, sortGallery } from '../../API/API'
-import Gallery from './Gallery' 
+import Gallery from './Gallery'
 
 
 export default class Search extends Component {

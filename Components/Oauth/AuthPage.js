@@ -26,7 +26,6 @@ function AuthPage({ setAccountParams }) {
         uri: `https://api.imgur.com/oauth2/authorize?client_id=${Config.clientID}&response_type=token`,
         method: "GET"
       }}
-      style={{ marginTop: 25 }}
       onNavigationStateChange={onNavigationStateChange}
       incognito
     />

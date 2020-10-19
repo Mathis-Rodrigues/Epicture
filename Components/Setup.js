@@ -26,7 +26,7 @@ export default class Setup extends Component {
       );
     }
     return (
-      <Navigation />
+      <Navigation disconnectAccount={this.props.disconnectAccount} />
     );
   }
 }
