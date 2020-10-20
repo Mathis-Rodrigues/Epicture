@@ -5,8 +5,32 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import Search from './Home/Search'
 import Profile from './Profile/Profile'
+import Upload from './Upload/Upload'
 
 const Tab = createBottomTabNavigator();
+
+const iconList = [
+  {
+    tab: "Home",
+    icon: "md-home",
+    iconFocused: "md-home"
+  },
+  {
+    tab: "Settings",
+    icon: "ios-list",
+    iconFocused: "ios-list-box"
+  },
+  {
+    tab: "Search",
+    icon: "md-search",
+    iconFocused: "md-search"
+  },
+  {
+    tab: "Posts",
+    icon: "ios-camera",
+    iconFocused: "ios-camera"
+  },
+]
 
 export default function Navigation({ disconnectAccount }) {
   return (
@@ -14,19 +38,8 @@ export default function Navigation({ disconnectAccount }) {
       <Tab.Navigator
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
-            let iconName;
-
-            if (route.name === 'Home') {
-              iconName = focused
-                ? 'md-home'
-                : 'md-home';
-            } else if (route.name === 'Settings') {
-              iconName = focused ? 'ios-list-box' : 'ios-list';
-            }
-            else if (route.name === 'Search') {
-              iconName = focused ? 'md-search' : 'md-search';
-            }
-            return <Ionicons name={iconName} size={size} color={color} />;
+            const { icon, iconFocused } = iconList.find(e => e.tab == route.name)
+            return <Ionicons name={focused ? iconFocused : icon} size={size} color={color} />;
           },
         })}
         tabBarOptions={{
@@ -36,6 +49,7 @@ export default function Navigation({ disconnectAccount }) {
       >
         <Tab.Screen name="Home" component={Search} />
         <Tab.Screen name="Search" component={Search} />
+        <Tab.Screen name="Posts" component={Upload} />
         <Tab.Screen name="Settings">
           { () => <Profile disconnectAccount={disconnectAccount} /> }
         </Tab.Screen>
