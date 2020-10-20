@@ -1,8 +1,10 @@
 import React from 'react'
 import AsyncStorage from '@react-native-community/async-storage'
 import { WebView } from 'react-native-webview';
+import { Container, Header, Left, Body, Right, Title } from 'native-base';
 
 import Config from '../../config/config'
+import { headerBackgroundColor } from '../../config/theme'
 
 function AuthPage({ setAccountParams }) {
   const onNavigationStateChange = (navigationState) => {
@@ -21,14 +23,23 @@ function AuthPage({ setAccountParams }) {
   };
 
   return (
-    <WebView
-      source={{
-        uri: `https://api.imgur.com/oauth2/authorize?client_id=${Config.clientID}&response_type=token`,
-        method: "GET"
-      }}
-      onNavigationStateChange={onNavigationStateChange}
-      incognito
-    />
+    <Container>
+      <Header rounded style={{ backgroundColor: headerBackgroundColor}} androidStatusBarColor={headerBackgroundColor}>
+        <Left />
+        <Body>
+          <Title>Sigin to Imgur</Title>
+        </Body>
+        <Right />
+      </Header>
+      <WebView
+        source={{
+          uri: `https://api.imgur.com/oauth2/authorize?client_id=${Config.clientID}&response_type=token`,
+          method: "GET"
+        }}
+        onNavigationStateChange={onNavigationStateChange}
+        incognito
+      />
+    </Container>
   )
 }
 

@@ -4,6 +4,7 @@ import { View, FlatList } from 'react-native'
 import { start, searchGallery, sortGallery } from '../../API/API'
 import Gallery from './Gallery'
 
+import { headerBackgroundColor } from '../../config/theme'
 
 export default class Search extends Component {
   constructor(props) {
@@ -15,53 +16,56 @@ export default class Search extends Component {
       data: null
     };
   }
+
   onValueChange(value) {
-    console.log(value)
-    this.setState({
-      section: value
-    });
-    console.log(this.state.section)
-    sortGallery(value, this.state.sort).then(rep => this.setState({data: rep.data}))
+    this.setState({ section: value });
+    sortGallery(value, this.state.sort).then(rep => this.setState({ data: rep.data }))
     if (this.searchedText.length > 0) {
-      searchGallery(this.searchedText, value).then(rep => this.setState({ data: rep.data}))
+      searchGallery(this.searchedText, value).then(rep => this.setState({ data: rep.data }))
     }
   }
+
   onValueChange2(value) {
     this.setState({
       sort: value
     });
-    sortGallery(this.state.section, value).then(rep => this.setState({data: rep.data}))
+    sortGallery(this.state.section, value).then(rep => this.setState({ data: rep.data }))
     if (this.searchedText.length > 0) {
-      searchGallery(this.searchedText, value).then(rep => this.setState({ data: rep.data}))
+      searchGallery(this.searchedText, value).then(rep => this.setState({ data: rep.data }))
     }
   }
+
   searchTextInputChanged(text) {
     // console.log(text)
     this.searchedText = text
     console.log(this.searchedText)
   }
+
   loadSearch() {
     if (this.searchedText.length > 0) {
       console.log(this.searchedText)
-      searchGallery(this.searchedText, this.state.sort).then(rep => this.setState({ data: rep.data}))
+      searchGallery(this.searchedText, this.state.sort).then(rep => this.setState({ data: rep.data }))
     } else {
-      sortGallery(this.state.section, this.state.sort).then(rep => this.setState({data: rep.data}))
+      sortGallery(this.state.section, this.state.sort).then(rep => this.setState({ data: rep.data }))
     }
   }
+
   componentDidMount() {
     start().then(rep => this.setState({ data: rep.data }))
   }
+
   render() {
     const { data } = this.state
+
     return (
       <View style={{ flex: 1, flexDirection: 'column' }}>
-        <Header searchBar rounded style={{ backgroundColor: '#b22a0d'}}androidStatusBarColor="#b22a0d" >
+        <Header searchBar rounded style={{ backgroundColor: headerBackgroundColor }} androidStatusBarColor={headerBackgroundColor} >
           <Item>
             <Icon name="ios-search" />
             <Input
-            placeholder="Search"
-            onChangeText={(text) => this.searchTextInputChanged(text)}
-            onSubmitEditing={() => this.loadSearch()}
+              placeholder="Search"
+              onChangeText={(text) => this.searchTextInputChanged(text)}
+              onSubmitEditing={() => this.loadSearch()}
             />
           </Item>
           <Button transparent>
@@ -72,12 +76,12 @@ export default class Search extends Component {
           <Picker
             note
             mode="dropdown"
-            style={{ width: 120,  color: 'black' }}
+            style={{ width: 120, color: 'black' }}
             selectedValue={this.state.section}
             onValueChange={this.onValueChange.bind(this)}
           >
             <Picker.Item label="Most viral" value="hot" />
-            <Picker.Item label="User submitted" value="user"/>
+            <Picker.Item label="User submitted" value="user" />
           </Picker>
           <Picker
             note
@@ -92,11 +96,11 @@ export default class Search extends Component {
           </Picker>
         </View>
         {/* <Gallery></Gallery> */}
-          <FlatList
-            data={data}
-            keyExtractor={(item) => item.id.toString()}
-            renderItem={({item}) => <Gallery info={item} />}
-          />
+        <FlatList
+          data={data}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => <Gallery info={item} />}
+        />
         {/* <Button onPress={() => { console.log(data)}}>
           <Text>hey</Text>
         </Button> */}

@@ -9,17 +9,9 @@ export function start() {
     redirect: 'follow'
   };
 
-  // const rep = await fetch("https://api.imgur.com/3/gallery/hot", requestOptions)
-  // // console.log("lol");
-  // const data = await rep.json();
-  // console.log(JSON.stringify(data));
-  // // return rep;
-  // return (data);
-
   return (
     fetch("https://api.imgur.com/3/gallery/hot/viral", requestOptions)
       .then((res) => res.json())
-      .catch((err) => console.error(err))
   )
 
 }
@@ -35,9 +27,8 @@ export function searchGallery(string, sort) {
   };
 
   return (
-  fetch("https://api.imgur.com/3/gallery/search/"+ sort + "?q=" + string, requestOptions)
-  .then((res) => res.json())
-  .catch((err) => console.error(err))
+    fetch("https://api.imgur.com/3/gallery/search/" + sort + "?q=" + string, requestOptions)
+      .then((res) => res.json())
   )
 }
 
@@ -52,9 +43,8 @@ export function sortGallery(section, sort) {
   };
 
   return (
-    fetch("https://api.imgur.com/3/gallery/"+ section+ "/" + sort, requestOptions)
+    fetch("https://api.imgur.com/3/gallery/" + section + "/" + sort, requestOptions)
       .then((res) => res.json())
-      .catch((err) => console.error(err))
   )
 
 }

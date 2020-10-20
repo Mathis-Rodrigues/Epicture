@@ -28,7 +28,6 @@ export default class Gallery extends Component {
 
   render() {
     const { info } = this.props
-    console.log(info)
     // if (info.type == "image/gif" || info.type == "image/png") {
     //   console.log("c pas une video " + info.link)
     // } else {
