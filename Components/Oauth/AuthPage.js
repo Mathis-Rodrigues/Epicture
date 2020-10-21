@@ -27,7 +27,7 @@ function AuthPage({ setAccountParams }) {
       <Header rounded style={{ backgroundColor: headerBackgroundColor}} androidStatusBarColor={headerBackgroundColor}>
         <Left />
         <Body>
-          <Title>Sigin to Imgur</Title>
+          <Title>Signin to Imgur</Title>
         </Body>
         <Right />
       </Header>

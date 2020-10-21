@@ -33,7 +33,7 @@ class App extends Component {
   }
 
   disconnectAccount = async () => {
-    setAccountParams(null)
+    this.setAccountParams(null)
     await AsyncStorage.removeItem("account_params")
   }
 
