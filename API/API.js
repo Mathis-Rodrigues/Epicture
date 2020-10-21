@@ -1,11 +1,13 @@
+const buildHeader = token => {
+  const h = new Headers()
+  h.append("Authorization", `Bearer ${token}`)
+  return h
+}
 
-export function start() {
-  var myHeaders = new Headers();
-  myHeaders.append("Authorization", "Client-ID 72512453ac30480");
-
-  var requestOptions = {
+export function start(token) {
+  const requestOptions = {
     method: 'GET',
-    headers: myHeaders,
+    headers: buildHeader(token),
     redirect: 'follow'
   };
 
@@ -13,16 +15,12 @@ export function start() {
     fetch("https://api.imgur.com/3/gallery/top/viral", requestOptions)
       .then((res) => res.json())
   )
-
 }
 
-export function searchGallery(string, sort) {
-  var myHeaders = new Headers();
-  myHeaders.append("Authorization", "Client-ID 72512453ac30480");
-
-  var requestOptions = {
+export function searchGallery(token, string, sort) {
+  const requestOptions = {
     method: 'GET',
-    headers: myHeaders,
+    headers: buildHeader(token),
     redirect: 'follow'
   };
 
@@ -32,13 +30,10 @@ export function searchGallery(string, sort) {
   )
 }
 
-export function sortGallery(section, sort) {
-  var myHeaders = new Headers();
-  myHeaders.append("Authorization", "Client-ID 72512453ac30480");
-
-  var requestOptions = {
+export function sortGallery(token, section, sort) {
+  const requestOptions = {
     method: 'GET',
-    headers: myHeaders,
+    headers: buildHeader(token),
     redirect: 'follow'
   };
 
@@ -46,5 +41,20 @@ export function sortGallery(section, sort) {
     fetch("https://api.imgur.com/3/gallery/" + section + "/" + sort, requestOptions)
       .then((res) => res.json())
   )
+}
 
+export function uploadImage(token, param) {
+  const formdata = new FormData();
+  formdata.append("image", param.image);
+  formdata.append("type", param.type);
+
+  const requestOptions = {
+    method: 'POST',
+    headers: buildHeader(token),
+    body: formdata,
+    redirect: 'follow'
+  };
+
+  return fetch("https://api.imgur.com/3/upload", requestOptions)
+    .then(res => res.text())
 }

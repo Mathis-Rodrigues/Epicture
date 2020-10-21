@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { Header, Item, Input, Icon, Button, Text, Picker } from 'native-base';
 import { View, FlatList, Modal } from 'react-native'
-import { start, searchGallery, sortGallery } from '../../API/API'
+import AsyncStorage from '@react-native-community/async-storage'
+
 import Gallery from './Gallery'
 
+import { start, searchGallery, sortGallery } from '../../API/API'
 import { headerBackgroundColor } from '../../config/theme'
 
 export default class Search extends Component {
@@ -13,26 +15,29 @@ export default class Search extends Component {
     this.state = {
       section: "top",
       sort: "viral",
-      data: null
+      data: null,
+      accountParams: null
     };
   }
 
   onValueChange(value) {
-    this.setState({ section: value });
-    sortGallery(value, this.state.sort).then(rep => this.setState({ data: rep.data }))
+    const { sort, accountParams } = this.state
+
+    sortGallery(accountParams.access_token, value, sort).then(rep => this.setState({ data: rep.data }))
     if (this.searchedText.length > 0) {
-      searchGallery(this.searchedText, value).then(rep => this.setState({ data: rep.data }))
+      searchGallery(accountParams.access_token, this.searchedText, value).then(rep => this.setState({ data: rep.data }))
     }
+    this.setState({ section: value });
   }
 
   onValueChange2(value) {
-    this.setState({
-      sort: value
-    });
-    sortGallery(this.state.section, value).then(rep => this.setState({ data: rep.data }))
+    const { section, accountParams } = this.state
+
+    sortGallery(accountParams.access_token, section, value).then(rep => this.setState({ data: rep.data }))
     if (this.searchedText.length > 0) {
-      searchGallery(this.searchedText, value).then(rep => this.setState({ data: rep.data }))
+      searchGallery(accountParams.access_token, this.searchedText, value).then(rep => this.setState({ data: rep.data }))
     }
+    this.setState({ sort: value });
   }
 
   searchTextInputChanged(text) {
@@ -42,16 +47,22 @@ export default class Search extends Component {
   }
 
   loadSearch() {
+    const { sort, section, accountParams } = this.state
+
     if (this.searchedText.length > 0) {
       console.log(this.searchedText)
-      searchGallery(this.searchedText, this.state.sort).then(rep => this.setState({ data: rep.data }))
+      searchGallery(accountParams.access_token, this.searchedText, sort).then(rep => this.setState({ data: rep.data }))
     } else {
-      sortGallery(this.state.section, this.state.sort).then(rep => this.setState({ data: rep.data }))
+      sortGallery(accountParams.access_token, section, sort).then(rep => this.setState({ data: rep.data }))
     }
   }
 
   componentDidMount() {
-    start().then(rep => this.setState({ data: rep.data }))
+    ( async () => {
+      const acc = JSON.parse(await AsyncStorage.getItem("account_params"))
+      start(acc.access_token).then(rep => this.setState({ data: rep.data }))
+      this.setState({ accountParams: acc })
+    })()
   }
 
   render() {
