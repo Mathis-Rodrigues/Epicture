@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Image, StyleSheet, View, Modal, TouchableOpacity } from 'react-native';
+import { Image, StyleSheet, View, Modal, TouchableOpacity, ScrollView } from 'react-native';
 import { Container, Header, Content, Card, CardItem, Thumbnail, Text, Button, Icon, Left, Body, Right } from 'native-base';
 import { Video } from 'expo-av';
+import { headerBackgroundColor } from '../../config/theme'
 
 class CheckType extends Component {
   render() {
@@ -23,37 +24,60 @@ class CheckType extends Component {
   }
 }
 
-export default class Gallery extends Component {
+class GetDescription extends Component {
+  render() {
+    const { info } = this.props
+    if (!info.images)
+      return (<Text style={{ color: 'white'}}>No description</Text>)
+    else
+      return (<Text style={{ color: 'white'}}>{info.images[0].description}</Text>)
+  }
+}
 
+export default class InfoModal extends Component {
   render() {
     const { setModalState, info } = this.props
+    console.log(info)
     return (
-      <View style={{ backgroundColor: "#524947", flex: 1, flexDirection: 'column' }}>
-        <Button onPress={() => setModalState(false)}>
-          <Text>quit</Text>
-        </Button>
+      <Container style={{ backgroundColor: "#222", flex: 1, flexDirection: 'column' }}>
+        <View style={{ height: 75, backgroundColor: '#222', flexDirection: 'row' }} >
+          <Button transparent onPress={() => setModalState(false)}>
+            <Icon active name="ios-close" style={{ fontSize: 60, color: 'white' }} />
+          </Button>
+          <Text style={{ color: 'white', marginRight: 80, marginTop: 2 }} numberOfLines={2}>{info.title}</Text>
+
+        </View>
         {/* <Button onPress={() => console.log(info)}>
           <Text>quit</Text>
         </Button> */}
-        <CheckType info={info} style={{ backgroundColor: 'black' }} />
-        <Button transparent>
-          <Icon active name="ios-arrow-dropup" />
-          <Text>{info.ups} points</Text>
-        </Button>
-      </View>
+        {/* <ScrollView> */}
+        {/* <CheckType info={info} style={{ backgroundColor: 'black' }} /> */}
+        <ScrollView>
+          <View>
+            <CheckType info={info} />
+            <Text style={{ color: 'white' }}>{info.description}</Text>
+            {/* <Image source={{ uri: "https://i.imgur.com/9U9C3Cy.jpg"}} style={styles.image} /> */}
+            <Button transparent>
+              <Icon active name="md-heart-empty" style={{ color: 'red' }} />
+            </Button>
+              <GetDescription info={info}/>
+          </View>
+        </ScrollView>
+        {/* </ScrollView> */}
+      </Container>
     );
   }
 }
 
 const styles = StyleSheet.create({
   image: {
-    height: 300,
+    height: 400,
     width: null,
-    resizeMode: 'contain'
+    resizeMode: 'cover'
   },
   video: {
     height: 280,
     width: 350,
-    resizeMode: 'center',
+    resizeMode: 'contain',
   }
 })
