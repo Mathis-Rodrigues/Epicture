@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Image , StyleSheet, View } from 'react-native';
+import { Image, StyleSheet, View, Modal, TouchableOpacity } from 'react-native';
 import { Container, Header, Content, Card, CardItem, Thumbnail, Text, Button, Icon, Left, Body, Right } from 'native-base';
 import { Video } from 'expo-av';
+import InfoModal from './InfoModal'
 
 class CheckType extends Component {
   render() {
@@ -11,14 +12,14 @@ class CheckType extends Component {
         return (<Video source={{ uri: info.link }} style={styles.video} shouldPlay isLooping isMuted={true} />);
       }
       else
-      return (<Image source={{ uri: info.link }} style={styles.image} />);
+        return (<Image source={{ uri: info.link }} style={styles.image} />);
     } else {
       // console.log(info.images[0].type)
       if (info.images[0].type == "video/mp4") {
         return (<Video source={{ uri: info.images[0].link }} style={styles.video} shouldPlay isLooping isMuted={true} />);
       }
       else
-      return (<Image source={{ uri: info.images[0].link }} style={styles.image} />);
+        return (<Image source={{ uri: info.images[0].link }} style={styles.image} />);
     }
   }
 }
@@ -26,50 +27,50 @@ class CheckType extends Component {
 
 export default class Gallery extends Component {
 
+  constructor(props) {
+    super(props);
+    this.state = { modal: false }
+  }
+
+  setModalState = (state) => {
+    this.setState({ modal: state })
+  }
   render() {
     const { info } = this.props
-    // if (info.type == "image/gif" || info.type == "image/png") {
-    //   console.log("c pas une video " + info.link)
-    // } else {
-    //   console.log("c une video " + info.images[0].link)
-    // }
-    //   console.log("c est une image")
-    //   console.log(info.link)
-    // }
-    // else {
-    //   console.log("video !!!")
-    //   console.log(info.link)
-    // }
+    console.log(info)
     return (
-      <View style={{flex: 1, flexDirection: 'column', backgroundColor: '#524947'}}>
-      <Card>
-        <CardItem  style={{backgroundColor: 'black'}}>
-          <Left>
-              <Text numberOfLines={1} style={{color: 'white', backgroundColor: 'black'}}>{info.title}</Text>
-          </Left>
-        </CardItem>
-        <CardItem cardBody style={{backgroundColor: 'black'}}>
-          <CheckType info={info} style={{backgroundColor: 'black'}}/>
-        </CardItem>
-        <CardItem style={{height: 40, backgroundColor: 'black'}}>
-          <Left>
-            <Button transparent>
-              <Icon active name="ios-arrow-dropup" />
-              <Text>{info.ups} points</Text>
-            </Button>
-          </Left>
-          <Right>
-            <Button transparent>
-              <Icon active name="chatbubbles" />
-              <Text>{info.comment_count} comments</Text>
-            </Button>
-          </Right>
-          {/* <Right>
+      <TouchableOpacity style={{ flex: 1, flexDirection: 'column', backgroundColor: '#524947' }} onPress={() => this.setModalState(true)}>
+        <Modal transparent={true} visible={this.state.modal}>
+          <InfoModal setModalState={this.setModalState} info={info}/>
+        </Modal>
+        <Card>
+          <CardItem style={{ backgroundColor: 'black' }}>
+            <Left>
+              <Text numberOfLines={1} style={{ color: 'white', backgroundColor: 'black' }}>{info.title}</Text>
+            </Left>
+          </CardItem>
+          <CardItem cardBody style={{ backgroundColor: 'black' }}>
+            <CheckType info={info} style={{ backgroundColor: 'black' }} />
+          </CardItem>
+          <CardItem style={{ height: 40, backgroundColor: 'black' }}>
+            <Left>
+              <Button transparent>
+                <Icon active name="ios-arrow-dropup" />
+                <Text>{info.ups} points</Text>
+              </Button>
+            </Left>
+            <Right>
+              <Button transparent>
+                <Icon active name="chatbubbles" />
+                <Text>{info.comment_count} comments</Text>
+              </Button>
+            </Right>
+            {/* <Right>
             <Text>11h ago</Text>
           </Right> */}
-        </CardItem>
-      </Card>
-      </View>
+          </CardItem>
+        </Card>
+      </TouchableOpacity>
     );
   }
 }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Header, Item, Input, Icon, Button, Text, Picker } from 'native-base';
-import { View, FlatList } from 'react-native'
+import { View, FlatList, Modal } from 'react-native'
 import { start, searchGallery, sortGallery } from '../../API/API'
 import Gallery from './Gallery'
 
@@ -11,7 +11,7 @@ export default class Search extends Component {
     super(props);
     this.searchedText = ""
     this.state = {
-      section: "hot",
+      section: "top",
       sort: "viral",
       data: null
     };
@@ -80,7 +80,7 @@ export default class Search extends Component {
             selectedValue={this.state.section}
             onValueChange={this.onValueChange.bind(this)}
           >
-            <Picker.Item label="Most viral" value="hot" />
+            <Picker.Item label="Most viral" value="top" />
             <Picker.Item label="User submitted" value="user" />
           </Picker>
           <Picker

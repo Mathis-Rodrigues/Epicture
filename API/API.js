@@ -10,7 +10,7 @@ export function start() {
   };
 
   return (
-    fetch("https://api.imgur.com/3/gallery/hot/viral", requestOptions)
+    fetch("https://api.imgur.com/3/gallery/top/viral", requestOptions)
       .then((res) => res.json())
   )
 
