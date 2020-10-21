@@ -1,24 +1,24 @@
 import React from 'react'
-import { usePermissions, CAMERA, CAMERA_ROLL } from 'expo-permissions'
-import { View, Camera, Text, Button } from 'react-native'
+import { View, StyleSheet, Text } from 'react-native'
+
+import ImagePicker from './ImagePicker'
+import { headerBackgroundColor, postsBackgroundColor } from '../../config/theme'
 
 function Upload() {
-  const [permission, askForPermission] = usePermissions([CAMERA, CAMERA_ROLL], { ask: true });
-
-  if (!permission || permission.status !== 'granted') {
-    return (
-      <View>
-        <Text>Permission is not granted</Text>
-        <Button title="Grant permission" onPress={askForPermission} />
-      </View>
-    );
-  }
-
   return (
-    <View>
-      <Text>Permission is granted</Text>
-  </View>
-)
+    <View style={styles.main}>
+      <ImagePicker />
+    </View>
+  )
 }
+
+const styles = StyleSheet.create({
+  main: {
+    height: '100%',
+    width: '100%',
+    backgroundColor: postsBackgroundColor,
+    justifyContent: 'center'
+  }
+})
 
 export default Upload

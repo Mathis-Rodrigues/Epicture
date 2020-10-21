@@ -1,11 +1,12 @@
-import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import React from 'react'
+import { NavigationContainer } from '@react-navigation/native'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import Ionicons from 'react-native-vector-icons/Ionicons'
 
 import Search from './Home/Search'
 import Profile from './Profile/Profile'
 import Upload from './Upload/Upload'
+import PermissionManager from './Upload/PermissionManager'
 
 const Tab = createBottomTabNavigator();
 
@@ -32,6 +33,12 @@ const iconList = [
   },
 ]
 
+const UploadWrapper = ({ navigation }) => (
+  <PermissionManager navigation={navigation}>
+    <Upload />
+  </PermissionManager>
+)
+
 export default function Navigation({ disconnectAccount }) {
   return (
     <NavigationContainer>
@@ -49,9 +56,10 @@ export default function Navigation({ disconnectAccount }) {
       >
         <Tab.Screen name="Home" component={Search} />
         <Tab.Screen name="Search" component={Search} />
-        <Tab.Screen name="Posts" component={Upload} />
+        <Tab.Screen name="Posts" component={UploadWrapper}>
+        </Tab.Screen>
         <Tab.Screen name="Settings">
-          { () => <Profile disconnectAccount={disconnectAccount} /> }
+          {() => <Profile disconnectAccount={disconnectAccount} />}
         </Tab.Screen>
       </Tab.Navigator>
     </NavigationContainer>

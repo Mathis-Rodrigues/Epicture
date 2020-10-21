@@ -37,7 +37,7 @@ export default class Gallery extends Component {
   }
   render() {
     const { info } = this.props
-    console.log(info)
+
     return (
       <TouchableOpacity style={{ flex: 1, flexDirection: 'column', backgroundColor: '#524947' }} onPress={() => this.setModalState(true)}>
         <Modal transparent={true} visible={this.state.modal}>
