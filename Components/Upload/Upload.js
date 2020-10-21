@@ -1,8 +1,8 @@
 import React from 'react'
-import { View, StyleSheet, Text } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 
 import ImagePicker from './ImagePicker'
-import { headerBackgroundColor, postsBackgroundColor } from '../../config/theme'
+import { postsBackgroundColor } from '../../config/theme'
 
 function Upload() {
   return (
@@ -14,10 +14,10 @@ function Upload() {
 
 const styles = StyleSheet.create({
   main: {
+    justifyContent: 'center',
     height: '100%',
     width: '100%',
     backgroundColor: postsBackgroundColor,
-    justifyContent: 'center'
   }
 })
 

@@ -47,6 +47,8 @@ export function uploadImage(token, param) {
   const formdata = new FormData();
   formdata.append("image", param.image);
   formdata.append("type", param.type);
+  formdata.append("title", param.title);
+  formdata.append("description", param.description);
 
   const requestOptions = {
     method: 'POST',
