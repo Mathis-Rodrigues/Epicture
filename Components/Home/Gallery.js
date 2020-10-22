@@ -36,12 +36,12 @@ export default class Gallery extends Component {
     this.setState({ modal: state })
   }
   render() {
-    const { info } = this.props
+    const { info, setFavoriteById } = this.props
 
     return (
       <TouchableOpacity style={{ flex: 1, flexDirection: 'column', backgroundColor: '#524947' }} onPress={() => this.setModalState(true)}>
         <Modal transparent={true} visible={this.state.modal}>
-          <InfoModal setModalState={this.setModalState} info={info}/>
+          <InfoModal setModalState={this.setModalState} info={info} setFavoriteById={setFavoriteById}/>
         </Modal>
         <Card>
           <CardItem style={{ backgroundColor: 'black' }}>

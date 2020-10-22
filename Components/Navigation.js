@@ -22,9 +22,9 @@ const iconList = [
     iconFocused: "ios-list-box"
   },
   {
-    tab: "Search",
-    icon: "md-search",
-    iconFocused: "md-search"
+    tab: "Profil",
+    icon: "ios-person",
+    iconFocused: "ios-person"
   },
   {
     tab: "Posts",
@@ -55,7 +55,7 @@ export default function Navigation({ disconnectAccount }) {
         }}
       >
         <Tab.Screen name="Home" component={Search} />
-        <Tab.Screen name="Search" component={Search} />
+        <Tab.Screen name="Profil" component={Search} />
         <Tab.Screen name="Posts" component={UploadWrapper}>
         </Tab.Screen>
         <Tab.Screen name="Settings">

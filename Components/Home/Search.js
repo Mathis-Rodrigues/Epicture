@@ -57,6 +57,13 @@ export default class Search extends Component {
     }
   }
 
+  setFavoriteById = (id, value) => {
+    const { data } = this.state
+
+    data.find(e => e.id === id).favorite = value
+    this.setState({ data })
+  }
+
   componentDidMount() {
     ( async () => {
       const acc = JSON.parse(await AsyncStorage.getItem("account_params"))
@@ -110,7 +117,7 @@ export default class Search extends Component {
         <FlatList
           data={data}
           keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => <Gallery info={item} />}
+          renderItem={({ item }) => <Gallery info={item} setFavoriteById={this.setFavoriteById}/>}
         />
         {/* <Button onPress={() => { console.log(data)}}>
           <Text>hey</Text>
