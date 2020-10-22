@@ -108,7 +108,7 @@ function ImagePicker() {
             source={{ uri: video.uri }}
             resizeMode={Video.RESIZE_MODE_COVER}
             style={{ width: video.width, height: video.height, ...styles.image }}
-            shouldPlay isLooping isMuted={false}
+            shouldPlay isLooping isMuted
           />
           <View style={{ ...styles.container, marginTop: 20 }}>
             <TouchableOpacity onPress={pickImage} style={styles.button}>
