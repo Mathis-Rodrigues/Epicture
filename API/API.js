@@ -107,11 +107,16 @@ export function getAvatar(token, username) {
   )
 }
 export function getMyAccountParams(token) {
+  const requestOptions = {
+    method: 'GET',
+    headers: buildHeader(token),
+    redirect: 'follow'
+  };
 
-return (
-  fetch(`https://api.imgur.com/3/account/me`, requestOptions)
-    .then(response => response.json())
-)
+  return (
+    fetch(`https://api.imgur.com/3/account/me`, requestOptions)
+      .then(response => response.json())
+  )
 }
 
 export function getMySettings(token) {

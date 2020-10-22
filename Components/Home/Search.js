@@ -1,6 +1,6 @@
-import React, { Component, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Header, Item, Input, Icon, Button, Text, Picker } from 'native-base';
-import { View, FlatList, Modal } from 'react-native'
+import { View, FlatList } from 'react-native'
 import AsyncStorage from '@react-native-community/async-storage'
 
 import Gallery from './Gallery'
