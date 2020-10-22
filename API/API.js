@@ -93,3 +93,16 @@ export function addToFavorite(token, id) {
       .catch(error => console.log('error', error))
   )
 }
+
+export function getAvatar(token, username) {
+  const requestOptions = {
+    method: 'GET',
+    headers: buildHeader(token),
+    redirect: 'follow'
+  };
+
+  return (
+    fetch("https://api.imgur.com/3/account/"+ username +"/avatar", requestOptions)
+      .then((res) => res.json())
+  )
+}
