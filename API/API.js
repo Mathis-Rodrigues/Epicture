@@ -87,7 +87,7 @@ export function addToFavorite(token, id) {
   }
 
   return (
-    fetch(`https://api.imgur.com/3/image/${id}/favorite`, requestOptions)
+    fetch(`https://api.imgur.com/3/album/${id}/favorite`, requestOptions)
       .then(response => response.text())
       .then(result => console.log(result))
       .catch(error => console.log('error', error))

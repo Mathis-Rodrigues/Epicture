@@ -33,7 +33,7 @@ function AuthPage({ setAccountParams }) {
       </Header>
       <WebView
         source={{
-          uri: `https://api.imgur.com/oauth2/authorize?client_id=${Config.clientID}&response_type=token`,
+          uri: `https://api.imgur.com/oauth2/authorize?nt_id=${Config.clientID}&response_type=token`,
           method: "GET"
         }}
         onNavigationStateChange={onNavigationStateChange}

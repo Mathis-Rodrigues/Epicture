@@ -13,14 +13,14 @@ class CheckType extends Component {
     const { info } = this.props
     if (!info.images) {
       if (info.type == "video/mp4") {
-        return (<Video source={{ uri: info.link }} style={styles.video} shouldPlay isLooping isMuted={true} />);
+        return (<Video source={{ uri: info.link }} style={styles.video} shouldPlay isLooping isMuted={true} resizeMode={Video.RESIZE_MODE_CONTAIN} />);
       }
       else
         return (<Image source={{ uri: info.link }} style={styles.image} />);
     } else {
       // console.log(info.images[0].type)
       if (info.images[0].type == "video/mp4") {
-        return (<Video source={{ uri: info.images[0].link }} style={styles.video} shouldPlay isLooping isMuted={true} />);
+        return (<Video source={{ uri: info.images[0].link }} style={styles.video} shouldPlay isLooping isMuted={true} resizeMode={Video.RESIZE_MODE_CONTAIN}/>);
       }
       else
         return (<Image source={{ uri: info.images[0].link }} style={styles.image} />);
@@ -50,34 +50,30 @@ class GetDescription extends Component {
 
 export default class InfoModal extends Component {
   state = {
-    isLike: "md-heart-empty",
+    isLike: false,
     accountParams: null,
-    ID: null
   }
+
   componentDidMount() {
     (async () => {
       const acc = JSON.parse(await AsyncStorage.getItem("account_params"))
       this.setState({ accountParams: acc })
     })()
-    if (!this.props.info.images)
-      this.setState({ ID: this.props.info.id })
-    else
-      this.setState({ ID: this.props.info.images[0].id })
-    console.log(this.state.ID)
+    // if (this.props.favorite == true)
+    //   this.setState({ isLike: true})
+    // else
+    //   this 
+    this.props.info.favorite ? this.setState({ isLike: true }) : this.setState({ isLike : false})
   }
+
   isFavorite() {
-    if (this.state.isLike == "md-heart-empty") {
-      this.setState({ isLike: "md-heart" })
-      // console.log(this.props.info.id)
-      // console.log(this.state.accountParams.access_token)
-      console.log(this.state.ID)
-      addToFavorite(this.state.accountParams.access_token, this.state.ID)
-    }
-    else
-      this.setState({ isLike: "md-heart-empty" })
+    const { isLike } = this.state
+    addToFavorite(this.state.accountParams.access_token, this.props.info.id )
+    this.props.setFavoriteById(this.props.info.id, !isLike)
+    isLike ? this.setState({ isLike: false}) : this.setState({ isLike: true})
   }
   render() {
-    const { setModalState, info } = this.props
+    const { setModalState, info} = this.props
     // console.log(info)
     return (
       <Container style={{ backgroundColor: "#222", flex: 1, flexDirection: 'column' }}>
@@ -99,7 +95,7 @@ export default class InfoModal extends Component {
             {/* <Image source={{ uri: "https://i.imgur.com/9U9C3Cy.jpg"}} style={styles.image} /> */}
             <View style={{ flex: 1, flexDirection: 'row', height: 30, marginTop: 15 }}>
               <TouchableOpacity style={{ marginLeft: 10 }} onPress={() => this.isFavorite()}>
-                <Icon active name={this.state.isLike} style={{ color: 'red', fontSize: 30 }} />
+                <Icon active name={(this.state.isLike ? "md-heart" : "md-heart-empty")} style={{ color: 'red', fontSize: 30 }} />
               </TouchableOpacity >
               <Text style={{ color: 'white', marginLeft: 10, marginTop: 3 }}>{info.favorite_count}</Text>
             </View>
@@ -119,9 +115,10 @@ const styles = StyleSheet.create({
     resizeMode: 'cover'
   },
   video: {
-    height: 280,
-    width: 350,
-    resizeMode: 'contain',
+    height: 400,
+    width: '100%',
+    resizeMode: 'center',
+    flex: 1
   },
   description: {
     color: 'white',
