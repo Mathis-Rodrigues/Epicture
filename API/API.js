@@ -44,19 +44,50 @@ export function sortGallery(token, section, sort) {
 }
 
 export function uploadImage(token, param) {
+  // const formdata = new FormData();
+  // formdata.append("image", param.image);
+  // formdata.append("type", param.type);
+  // formdata.append("title", param.title);
+  // formdata.append("description", param.description);
+
+  // const requestOptions = {
+  //   method: 'POST',
+  //   headers: buildHeader(token),
+  //   body: formdata,
+  //   redirect: 'follow'
+  // };
+
+  // return fetch("https://api.imgur.com/3/upload", requestOptions)
+  //   .then(res => res.text())
+}
+
+export function addToFavorite(token, ID) {
+
   const formdata = new FormData();
-  formdata.append("image", param.image);
-  formdata.append("type", param.type);
-  formdata.append("title", param.title);
-  formdata.append("description", param.description);
 
   const requestOptions = {
     method: 'POST',
     headers: buildHeader(token),
-    body: formdata,
     redirect: 'follow'
   };
 
-  return fetch("https://api.imgur.com/3/upload", requestOptions)
-    .then(res => res.text())
+  return (
+    fetch("https://api.imgur.com/3/image/"+ID+"/favorite", requestOptions)
+      .then(response => response.text())
+      .then(result => console.log(result))
+      .catch(error => console.log('error', error))
+  )
 }
+
+// export function IdImage(token) {
+//   const requestOptions = {
+//     method: 'GET',
+//     headers: buildHeader(token),
+//     redirect: 'follow'
+//   };
+
+//   return (
+//     fetch("https://api.imgur.com/https://api.imgur.com/3/account/Rushplaying/images/ids/1/gallery/top/viral", requestOptions)
+//       .then((res) => res.json())
+//   )
+// }
