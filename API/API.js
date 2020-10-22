@@ -44,19 +44,37 @@ export function sortGallery(token, section, sort) {
 }
 
 export function uploadImage(token, param) {
-  const formdata = new FormData();
-  formdata.append("image", param.image);
-  formdata.append("type", param.type);
-  formdata.append("title", param.title);
-  formdata.append("description", param.description);
+  const formdata = new FormData()
+  formdata.append("image", param.image)
+  formdata.append("type", param.type)
+  formdata.append("title", param.title)
+  formdata.append("description", param.description)
 
   const requestOptions = {
     method: 'POST',
     headers: buildHeader(token),
     body: formdata,
     redirect: 'follow'
-  };
+  }
 
   return fetch("https://api.imgur.com/3/upload", requestOptions)
-    .then(res => res.text())
+    .then(res => res.json())
+}
+
+export function uploadVideo(token, param) {
+  const formdata = new FormData()
+  formdata.append("video", param.video)
+  formdata.append("type", param.type)
+  formdata.append("title", param.title)
+  formdata.append("description", param.description)
+
+  const requestOptions = {
+    method: 'POST',
+    headers: buildHeader(token),
+    body: formdata,
+    redirect: 'follow'
+  }
+
+  return fetch("https://api.imgur.com/3/upload", requestOptions)
+    .then(res => res.json())
 }

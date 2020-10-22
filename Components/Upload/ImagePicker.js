@@ -2,7 +2,9 @@ import React, { Fragment, useEffect, useState } from 'react'
 import { View, Image, StyleSheet, TouchableOpacity, Text, ActivityIndicator } from 'react-native'
 import * as ExpoImagePicker from 'expo-image-picker'
 import * as ImageManipulator from 'expo-image-manipulator'
+import { useNavigation } from '@react-navigation/native'
 import AsyncStorage from '@react-native-community/async-storage'
+import { Video } from 'expo-av'
 
 import FormUpload from './FormUpload'
 
@@ -16,6 +18,15 @@ function ImagePicker() {
   const [errOccured, setErrOccured] = useState(false)
   const [isUploading, setIsUploading] = useState(false)
   const [formData, setFormData] = useState({ title: "", description: "" })
+
+  const navigation = useNavigation()
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      !setImage(null) && !setVideo(null) && !setIsUploading(false) && !setErrOccured(false) && !setFormData({ title: "", description: "" })
+    })
+    return unsubscribe
+  }, [navigation])
 
   useEffect(() => {
     (async () => {
@@ -32,9 +43,9 @@ function ImagePicker() {
     });
 
     if (!result.cancelled && result.type === "image")
-      setImage(result) && setVideo(null);
+      !setImage(result) && setVideo(null);
     else if (!result.cancelled && result.type === "video")
-      setVideo(result) && setImage(null);
+      !setVideo(result) && setImage(null);
   }
 
   const uploadImage = async () => {
@@ -59,6 +70,12 @@ function ImagePicker() {
     setIsUploading(false)
   }
 
+  const uploadVideo = async () => {
+    // setIsUploading(true)
+    // const file = new Blob([video.uri], { type: "video\/mp4" })
+
+  }
+
   return (
     <View style={{ alignItems: 'center', justifyContent: 'center' }}>
       { !image && !video &&
@@ -74,10 +91,10 @@ function ImagePicker() {
               <Text style={styles.buttonText}>CHANGE</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={uploadImage} style={styles.button} disabled={isUploading}>
-              { isUploading &&
+              {isUploading &&
                 <ActivityIndicator size="small" color="#fff" />
               }
-              { !isUploading &&
+              {!isUploading &&
                 <Text style={styles.buttonText}>UPLOAD</Text>
               }
             </TouchableOpacity>
@@ -87,6 +104,26 @@ function ImagePicker() {
       }
       { video &&
         <Fragment>
+          <Video
+            source={{ uri: video.uri }}
+            resizeMode={Video.RESIZE_MODE_COVER}
+            style={{ width: video.width, height: video.height, ...styles.image }}
+            shouldPlay isLooping isMuted={false}
+          />
+          <View style={{ ...styles.container, marginTop: 20 }}>
+            <TouchableOpacity onPress={pickImage} style={styles.button}>
+              <Text style={styles.buttonText}>CHANGE</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={uploadVideo} style={styles.button} disabled={isUploading}>
+              {isUploading &&
+                <ActivityIndicator size="small" color="#fff" />
+              }
+              {!isUploading &&
+                <Text style={styles.buttonText}>UPLOAD</Text>
+              }
+            </TouchableOpacity>
+          </View>
+          <FormUpload setFormData={setFormData} isUploading={isUploading} />
         </Fragment>
       }
     </View>

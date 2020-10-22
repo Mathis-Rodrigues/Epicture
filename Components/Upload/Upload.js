@@ -5,6 +5,7 @@ import ImagePicker from './ImagePicker'
 import { postsBackgroundColor } from '../../config/theme'
 
 function Upload() {
+
   return (
     <View style={styles.main}>
       <ImagePicker />
