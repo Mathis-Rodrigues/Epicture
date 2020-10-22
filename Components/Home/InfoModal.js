@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Image, StyleSheet, View, Modal, TouchableOpacity, ScrollView } from 'react-native';
 import { Container, Header, Content, Card, CardItem, Thumbnail, Text, Button, Icon, Left, Body, Right } from 'native-base';
 import { Video } from 'expo-av';
@@ -8,24 +8,13 @@ import AsyncStorage from '@react-native-community/async-storage'
 import { addToFavorite, getAvatar } from '../../API/API'
 import { createPortal } from 'react-dom';
 
-class CheckType extends Component {
-  render() {
-    const { info } = this.props
-    if (!info.images) {
-      if (info.type == "video/mp4") {
-        return (<Video source={{ uri: info.link }} style={styles.video} shouldPlay isLooping isMuted={true} resizeMode={Video.RESIZE_MODE_CONTAIN} />);
-      }
-      else
-        return (<Image source={{ uri: info.link }} style={styles.image} />);
-    } else {
-      // console.log(info.images[0].type)
-      if (info.images[0].type == "video/mp4") {
-        return (<Video source={{ uri: info.images[0].link }} style={styles.video} shouldPlay isLooping isMuted={true} resizeMode={Video.RESIZE_MODE_CONTAIN} />);
-      }
-      else
-        return (<Image source={{ uri: info.images[0].link }} style={styles.image} />);
-    }
-  }
+function CustomImage({ info }) {
+  const uri = !info.images ? info.link : info.images[0].link
+  const type = !info.images ? info.type : info.images[0].type
+
+  if (type === "video/mp4")
+    return (<Video source={{ uri }} style={styles.video} shouldPlay isLooping isMuted={true} resizeMode={Video.RESIZE_MODE_CONTAIN} />);
+  return (<Image source={{ uri }} style={styles.image} />);
 }
 
 class GetDescription extends Component {
@@ -69,55 +58,59 @@ export default class InfoModal extends Component {
     // getAvatar(this.state.accountParams.access_token, this.props.info.account_url).then(rep => this.setState({ userData: rep.data }))
   }
 
-  isFavorite() {
+  isFavorite = () => {
     const { isLike } = this.state
     addToFavorite(this.state.accountParams.access_token, this.props.info.id)
     this.props.setFavoriteById(this.props.info.id, !isLike)
     isLike ? this.setState({ isLike: false }) : this.setState({ isLike: true })
   }
+
   render() {
     const { setModalState, info } = this.props
     const { userData } = this.state
-    // console.log(info)
+
     return (
       <View style={{ backgroundColor: "#222", flex: 1, flexDirection: 'column' }}>
-        <View style={{ height: 80, backgroundColor: '#222', justifyContent: "center", alignItems: "center", borderColor: 'white' }} >
-          <View style={{ flex: 1, flexDirection: "row" }}>
+        <View style={{ alignItems: "center" }} >
+          <View style={{ flexDirection: "row", alignItems: 'center' }}>
             <TouchableOpacity onPress={() => setModalState(false)}>
               <Icon active name="ios-close" style={{ fontSize: 60, color: 'white', marginLeft: 20 }} />
             </TouchableOpacity>
             {userData &&
-              <Image style={{ height: 40, width: 40, resizeMode: "contain", borderRadius: 1000, marginLeft: 20, marginTop: 7 }} source={{ uri: userData.avatar }} />
+              <Image style={{ height: 40, width: 40, resizeMode: "contain", borderRadius: 1000, marginLeft: 20 }} source={{ uri: userData.avatar }} />
             }
-            <Text style={{ flex: 1, color: 'white', margin: 10 }} numberOfLines={2}>{info.title}</Text>
+            <Text style={{ flex: 1, color: 'white', marginLeft: 10 }} numberOfLines={2}>{info.title}</Text>
           </View>
-          <Text style={{ color: "grey", fontWeight: "bold" }}>from: {info.account_url}</Text>
+          <Text style={{ marginBottom: 10, color: "grey", fontWeight: "bold" }}>from: {info.account_url}</Text>
         </View>
-        {/* <Button onPress={() => console.log(info)}>
-          <Text>quit</Text> 
-        </Button> */}
-        {/* <ScrollView> */}
-        {/* <CheckType info={info} style={{ backgroundColor: 'black' }} /> */}
-        <ScrollView>
-          <View>
-            <CheckType info={info} />
-            <Text style={{ color: "grey", padding: 10 }}>{info.views} views</Text>
-            {/* <Image source={{ uri: "https://i.imgur.com/9U9C3Cy.jpg"}} style={styles.image} /> */}
-            <View style={{ flex: 1, flexDirection: 'row', height: 30, marginTop: 15, justifyContent: 'flex-start' }}>
-
-              <TouchableOpacity style={{ marginLeft: 10 }} onPress={() => this.isFavorite()}>
-                <Icon active name={(this.state.isLike ? "md-heart" : "md-heart-empty")} style={{ color: 'red', fontSize: 30 }} />
-              </TouchableOpacity >
-              <Text style={{ color: 'white', marginLeft: 10, marginTop: 3, justifyContent: 'center', alignItems: 'center' }}>{info.favorite_count}</Text>
-            </View>
-            <Text style={{ color: 'white' }}>Vote</Text>
-            <TouchableOpacity style={{ marginLeft: 10 }} onPress={() => console.log("xd")}>
-              <Icon active name="ios-arrow-up" style={{ color: 'cyan', fontSize: 30 }} />
-            </TouchableOpacity >
-            <GetDescription info={info} />
+        <CustomImage info={info} />
+        <Text style={{ color: "grey", padding: 10 }}>{info.views} views</Text>
+        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginLeft: 10, marginRight: 10 }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <TouchableOpacity onPress={this.isFavorite}>
+              <Icon active name={(this.state.isLike ? "md-heart" : "md-heart-empty")} style={{ color: 'red', fontSize: 30 }} />
+            </TouchableOpacity>
+            <Text style={{ color: 'white', marginLeft: 10 }}>{info.favorite_count}</Text>
           </View>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <TouchableOpacity style={{ marginLeft: 20 }} onPress={() => console.log("xd")}>
+              <Icon active name="ios-arrow-up" style={{ color: 'cyan', fontSize: 30 }} />
+            </TouchableOpacity>
+            <Text style={{ color: 'white', marginLeft: 10, marginRight: 10 }}>Vote</Text>
+            <TouchableOpacity onPress={() => console.log("xd")}>
+              <Icon active name="ios-arrow-down" style={{ color: 'cyan', fontSize: 30 }} />
+            </TouchableOpacity>
+          </View>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Text style={{ color: 'white', marginRight: 10 }}>{info.comment_count}</Text>
+            <TouchableOpacity onPress={() => console.log("xd")}>
+              <Icon active name="chatbubbles" style={{ color: 'cyan', fontSize: 30 }} />
+            </TouchableOpacity>
+          </View>
+        </View>
+        <GetDescription info={info} />
+        <ScrollView>
         </ScrollView>
-        {/* </ScrollView> */}
       </View>
     );
   }

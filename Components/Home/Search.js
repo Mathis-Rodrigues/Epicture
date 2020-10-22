@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Header, Item, Input, Icon, Button, Text, Picker } from 'native-base';
+import { Header, Button, Text, Item, Input, Icon, Picker } from 'native-base';
 import { View, FlatList } from 'react-native'
 import AsyncStorage from '@react-native-community/async-storage'
 
@@ -25,7 +25,7 @@ export default function Search() {
 
   const onValueChange = (value) => {
     sortGallery(accountParams.access_token, value, sort).then(rep => setData(rep.data))
-    if (this.searchedText.length > 0) {
+    if (searchedText.length > 0) {
       searchGallery(accountParams.access_token, searchedText, value).then(rep => setData(rep.data))
     }
     setSection(value)
@@ -33,7 +33,7 @@ export default function Search() {
 
   const onValueChange2 = (value) => {
     sortGallery(accountParams.access_token, section, value).then(rep => setData(rep.data))
-    if (this.searchedText.length > 0) {
+    if (searchedText.length > 0) {
       searchGallery(accountParams.access_token, searchedText, value).then(rep => setData(rep.data))
     }
     setSort(value)
@@ -44,7 +44,7 @@ export default function Search() {
   }
 
   const loadSearch = () => {
-    if (this.searchedText.length > 0) {
+    if (searchedText.length > 0) {
       searchGallery(accountParams.access_token, searchedText, sort).then(rep => setData(rep.data))
     } else {
       sortGallery(accountParams.access_token, section, sort).then(rep => setData(rep.data))
@@ -53,6 +53,7 @@ export default function Search() {
 
   const setFavoriteById = (id, value) => {
     data.find(e => e.id === id).favorite = value
+    data.find(e => e.id === id).favorite_count += value ? 1 : -1
     setData(data)
   }
 
@@ -67,9 +68,6 @@ export default function Search() {
             onSubmitEditing={loadSearch}
           />
         </Item>
-        <Button transparent>
-          <Text>Search</Text>
-        </Button>
       </Header>
       <View style={{ flexDirection: 'row' }}>
         <Picker
