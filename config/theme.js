@@ -6,7 +6,7 @@ const theme = {
     uploadFormTextColor: '#ddd',
     uploadFormPlaceholderColor: '#777',
     drawerBackgroundColor: '#eee',
-    drawerTextColor: '#121212',
+    drawerTextColor: '#232323',
     drawerReverseTextColor: '#eee'
 }
 

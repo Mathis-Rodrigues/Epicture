@@ -19,6 +19,14 @@ export default class Search extends Component {
       accountParams: null
     };
   }
+  // const navigation = useNavigation()
+
+  // useEffect(() => {
+  //   const unsubscribe = navigation.addListener('focus', () => {
+  //     !setImage(null) && !setVideo(null) && !setIsUploading(false) && !setErrOccured(false) && !setFormData({ title: "", description: "" })
+  //   })
+  //   return unsubscribe
+  // }, [navigation])
 
   onValueChange(value) {
     const { sort, accountParams } = this.state
@@ -76,8 +84,8 @@ export default class Search extends Component {
     const { data } = this.state
 
     return (
-      <View style={{ flex: 1, flexDirection: 'column' }}>
-        <Header searchBar rounded style={{ backgroundColor: headerBackgroundColor }} androidStatusBarColor={headerBackgroundColor} >
+      <View>
+        <Header searchBar style={{ backgroundColor: headerBackgroundColor }} androidStatusBarColor={headerBackgroundColor} >
           <Item>
             <Icon name="ios-search" />
             <Input

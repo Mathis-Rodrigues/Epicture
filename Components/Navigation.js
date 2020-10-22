@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import Ionicons from 'react-native-vector-icons/Ionicons'
@@ -15,11 +15,6 @@ const iconList = [
     tab: "Home",
     icon: "md-home",
     iconFocused: "md-home"
-  },
-  {
-    tab: "Settings",
-    icon: "ios-list",
-    iconFocused: "ios-list-box"
   },
   {
     tab: "Profil",
@@ -55,10 +50,8 @@ export default function Navigation({ disconnectAccount }) {
         }}
       >
         <Tab.Screen name="Home" component={Search} />
-        <Tab.Screen name="Profil" component={Search} />
-        <Tab.Screen name="Posts" component={UploadWrapper}>
-        </Tab.Screen>
-        <Tab.Screen name="Settings">
+        <Tab.Screen name="Posts" component={UploadWrapper} />
+        <Tab.Screen name="Profil">
           {() => <Profile disconnectAccount={disconnectAccount} />}
         </Tab.Screen>
       </Tab.Navigator>
