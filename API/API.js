@@ -55,10 +55,10 @@ export function uploadImage(token, param) {
     headers: buildHeader(token),
     body: formdata,
     redirect: 'follow'
-  }
+  };
 
   return fetch("https://api.imgur.com/3/upload", requestOptions)
-    .then(res => res.json())
+    .then(res => res.text())
 }
 
 export function uploadVideo(token, param) {
@@ -77,4 +77,19 @@ export function uploadVideo(token, param) {
 
   return fetch("https://api.imgur.com/3/upload", requestOptions)
     .then(res => res.json())
+}
+
+export function addToFavorite(token, id) {
+  const requestOptions = {
+    method: 'POST',
+    headers: buildHeader(token),
+    redirect: 'follow'
+  }
+
+  return (
+    fetch(`https://api.imgur.com/3/image/${id}/favorite`, requestOptions)
+      .then(response => response.text())
+      .then(result => console.log(result))
+      .catch(error => console.log('error', error))
+  )
 }

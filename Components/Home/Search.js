@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-community/async-storage'
 
 import Gallery from './Gallery'
 
-import { start, searchGallery, sortGallery } from '../../API/API'
+import { start, searchGallery, sortGallery} from '../../API/API'
 import { headerBackgroundColor } from '../../config/theme'
 
 export default class Search extends Component {
