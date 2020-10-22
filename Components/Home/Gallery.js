@@ -40,7 +40,7 @@ export default class Gallery extends Component {
 
     return (
       <TouchableOpacity style={{ flex: 1, flexDirection: 'column', backgroundColor: '#524947' }} onPress={() => this.setModalState(true)}>
-        <Modal transparent={true} visible={this.state.modal}>
+        <Modal transparent={true} visible={this.state.modal} animationType={"slide"}>
           <InfoModal setModalState={this.setModalState} info={info} setFavoriteById={setFavoriteById}/>
         </Modal>
         <Card>
