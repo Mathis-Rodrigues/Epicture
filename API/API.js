@@ -102,7 +102,27 @@ export function getAvatar(token, username) {
   };
 
   return (
-    fetch("https://api.imgur.com/3/account/"+ username +"/avatar", requestOptions)
+    fetch("https://api.imgur.com/3/account/" + username + "/avatar", requestOptions)
       .then((res) => res.json())
+  )
+}
+export function getMyAccountParams(token) {
+
+return (
+  fetch(`https://api.imgur.com/3/account/me`, requestOptions)
+    .then(response => response.json())
+)
+}
+
+export function getMySettings(token) {
+  const requestOptions = {
+    method: 'GET',
+    headers: buildHeader(token),
+    redirect: 'follow'
+  }
+
+  return (
+    fetch(`https://api.imgur.com/3/account/me/settings`, requestOptions)
+      .then(response => response.json())
   )
 }
