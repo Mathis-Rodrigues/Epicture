@@ -93,3 +93,29 @@ export function addToFavorite(token, id) {
       .catch(error => console.log('error', error))
   )
 }
+
+export function getMyAccountParams(token) {
+  const requestOptions = {
+    method: 'GET',
+    headers: buildHeader(token),
+    redirect: 'follow'
+  }
+
+  return (
+    fetch(`https://api.imgur.com/3/account/me`, requestOptions)
+      .then(response => response.json())
+  )
+}
+
+export function getMySettings(token) {
+  const requestOptions = {
+    method: 'GET',
+    headers: buildHeader(token),
+    redirect: 'follow'
+  }
+
+  return (
+    fetch(`https://api.imgur.com/3/account/me/settings`, requestOptions)
+      .then(response => response.json())
+  )
+}
