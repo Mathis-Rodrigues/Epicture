@@ -56,7 +56,7 @@ export default class Gallery extends Component {
             <Left>
               <Button transparent>
                 <Icon active name="ios-arrow-dropup" />
-                <Text>{info.ups} points</Text>
+                <Text>{info.ups - info.down} points</Text>
               </Button>
             </Left>
             <Right>

@@ -66,12 +66,7 @@ export default class InfoModal extends Component {
       getComment(acc.access_token, this.props.info.id).then(rep => this.setState({ commentData: rep.data }))
       this.setState({ accountParams: acc })
     })()
-    // if (this.props.favorite == true)
-    //   this.setState({ isLike: true})
-    // else
-    //   this 
     this.props.info.favorite ? this.setState({ isLike: true }) : this.setState({ isLike: false })
-    // getAvatar(this.state.accountParams.access_token, this.props.info.account_url).then(rep => this.setState({ userData: rep.data }))
   }
 
   isFavorite = () => {
