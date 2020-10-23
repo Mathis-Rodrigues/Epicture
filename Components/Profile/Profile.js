@@ -15,6 +15,21 @@ import {
 } from '../../config/theme'
 import { getMyAccountParams, getMySettings } from '../../API/API'
 
+const Categories = [
+  {
+    name: 'Posts',
+    label: 'POSTS',
+  },
+  {
+    name: 'Favorites',
+    label: 'FAVORITES',
+  },
+  {
+    name: 'About',
+    label: 'ABOUT',
+  },
+]
+
 function CustomDrawerContent(props) {
   const { data, disconnectAccount } = props
   return (
@@ -40,6 +55,7 @@ function Profile({ disconnectAccount }) {
   const [accountParams, setAccountParams] = useState(null)
   const [myData, setMyData] = useState(null)
   const [mySettings, setMySettings] = useState(null)
+  const [category, setCategory] = useState(Categories[0].name)
   const Drawer = createDrawerNavigator();
 
   useEffect(() => {
@@ -66,7 +82,12 @@ function Profile({ disconnectAccount }) {
       }}
     >
       <Drawer.Screen name="Profile">
-        {() => <InfoProfile data={myData.data} />}
+        {() => <InfoProfile
+          data={myData.data}
+          categories={Categories}
+          selectedCategory={category}
+          setCategory={setCategory}
+        />}
       </Drawer.Screen>
       <Drawer.Screen name="Settings" component={View} />
     </Drawer.Navigator>

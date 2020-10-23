@@ -1,20 +1,18 @@
-import React, { useEffect, useState } from 'react'
-import { ImageBackground, View, Image, StyleSheet } from 'react-native'
+import React, { Fragment } from 'react'
+import { ImageBackground, View, Image, StyleSheet, Text } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 
-import { Icon, Body, Header, Left, Right, Subtitle, Title, Button } from 'native-base'
+import { Icon, Subtitle, Title, Button } from 'native-base'
 
-function InfoProfile({ data }) {
+function InfoProfile({ data, categories, selectedCategory, setCategory }) {
   const navigation = useNavigation()
 
   return (
     <View style={styles.container}>
       <ImageBackground source={{ uri: data.cover }} style={styles.imageBackground}>
-        <Header transparent androidStatusBarColor="transparent">
-          <Left style={{ marginTop: 100, marginLeft: 20 }}>
-            <Image source={{ uri: data.avatar }} style={styles.pp} />
-          </Left>
-          <Body style={{ marginTop: 100, marginLeft: 70 }}>
+        <View style={{ flexDirection: 'row', marginLeft: 30, marginTop: 50, alignItems: 'center' }}>
+          <Image source={{ uri: data.avatar }} style={styles.pp} />
+          <View style={{ marginLeft: 25 }}>
             <Title style={{ fontWeight: 'bold', fontSize: 24, width: '200%' }}>
               {data.url}
             </Title>
@@ -23,13 +21,21 @@ function InfoProfile({ data }) {
               {"   •   "}
               {data.reputation_name}
             </Subtitle>
-          </Body>
-          <Right>
-            <Button transparent onPress={navigation.openDrawer}>
-              <Icon name='menu' style={{ fontSize: 33 }} />
+          </View>
+        </View>
+        <Button transparent onPress={navigation.openDrawer} style={styles.drawerButton}>
+          <Icon name='menu' style={{ fontSize: 33, color: 'white' }} />
+        </Button>
+        <View style={styles.categoryContainer}>
+          {categories.map((e, i) =>
+            <Button transparent key={i} style={{ flexDirection: 'column' }} onPress={() => setCategory(e.name)}>
+              <Text style={{ color: 'white', fontWeight: e.name === selectedCategory ? '700' : '500' }}>{e.label}</Text>
+              {e.name === selectedCategory &&
+                <View style={styles.selectedCategory} />
+              }
             </Button>
-          </Right>
-        </Header>
+          )}
+        </View>
       </ImageBackground>
     </View>
   )
@@ -41,6 +47,11 @@ const styles = StyleSheet.create({
     height: '30%',
     position: 'relative',
   },
+  drawerButton: {
+    position: 'absolute',
+    top: 10,
+    right: 10
+  },
   imageBackground: {
     width: '100%',
     height: '100%',
@@ -51,8 +62,19 @@ const styles = StyleSheet.create({
     height: 80,
     resizeMode: 'contain',
     borderRadius: 1000,
-    // marginTop: 100,
-    // marginLeft: 20,
+  },
+  categoryContainer: {
+    position: 'absolute',
+    width: '100%',
+    bottom: 0,
+    flexDirection: 'row',
+    justifyContent: 'space-evenly'
+  },
+  selectedCategory: {
+    width: '100%',
+    height: 5,
+    borderRadius: 4,
+    backgroundColor: 'white'
   }
 })
 
