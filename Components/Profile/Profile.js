@@ -6,6 +6,7 @@ import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawe
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
 import InfoProfile from './InfoProfile'
+import MyImagesTab from './MyImagesTab'
 
 import {
   drawerBackgroundColor,
@@ -17,17 +18,20 @@ import { getMyAccountParams, getMySettings } from '../../API/API'
 
 const Categories = [
   {
-    name: 'Posts',
-    label: 'POSTS',
+    name: 'Images',
+    label: 'IMAGES',
+    component: MyImagesTab
+  },
+  {
+    name: 'Albums',
+    label: 'ALBUMS',
+    component: () => <Text>LOLOL</Text>
   },
   {
     name: 'Favorites',
     label: 'FAVORITES',
-  },
-  {
-    name: 'About',
-    label: 'ABOUT',
-  },
+    component: () => <Text>LOLOL</Text>
+  }
 ]
 
 function CustomDrawerContent(props) {
@@ -49,6 +53,22 @@ function CustomDrawerContent(props) {
       />
     </DrawerContentScrollView>
   );
+}
+
+const ProfileWrapper = ({ data, selectedCategory, setCategory, token }) => {
+  const Component = Categories.find(e => e.name === selectedCategory).component
+
+  return (
+    <View style={{ height: '100%', width: '100%' }}>
+      <InfoProfile
+        data={data}
+        categories={Categories}
+        selectedCategory={selectedCategory}
+        setCategory={setCategory}
+      />
+      <Component token={token} />
+    </View>
+  )
 }
 
 function Profile({ disconnectAccount }) {
@@ -82,11 +102,11 @@ function Profile({ disconnectAccount }) {
       }}
     >
       <Drawer.Screen name="Profile">
-        {() => <InfoProfile
+        {() => <ProfileWrapper
           data={myData.data}
-          categories={Categories}
           selectedCategory={category}
           setCategory={setCategory}
+          token={accountParams.access_token}
         />}
       </Drawer.Screen>
       <Drawer.Screen name="Settings" component={View} />

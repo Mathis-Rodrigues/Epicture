@@ -142,3 +142,29 @@ export function getComment(token, id) {
       .then(response => response.json())
   )
 }
+
+export function getMyImages(token) {
+  const requestOptions = {
+    method: 'GET',
+    headers: buildHeader(token),
+    redirect: 'follow'
+  }
+
+  return (
+    fetch(`https://api.imgur.com/3/account/me/images`, requestOptions)
+      .then(response => response.json())
+  )
+}
+
+export function getMyImageById(token, id) {
+  const requestOptions = {
+    method: 'GET',
+    headers: buildHeader(token),
+    redirect: 'follow'
+  }
+
+  return (
+    fetch(`https://api.imgur.com/3/account/me/image/${id}`, requestOptions)
+      .then(response => response.json())
+  )
+}
