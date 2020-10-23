@@ -14,11 +14,11 @@ import {
 const Sort = [
   {
     name: 'NEWEST',
-    value: false
+    value: true
   },
   {
     name: 'OLDEST',
-    value: true
+    value: false
   }
 ]
 
@@ -36,14 +36,12 @@ const ImageItem = ({ item, last }) => {
 
 function MyImagesTab({ token }) {
   const [images, setImages] = useState(null)
-  const [sortAscending, setSortAscending] = useState(false)
-  const flatList = useRef(null)
+  const [sortAscending, setSortAscending] = useState(true)
 
   useEffect(() => {
     (async () => {
       const rep = await getMyImages(token)
       setImages(rep.data.sort((a, b) => sortAscending ? a.datetime - b.datetime : b.datetime - a.datetime))
-      // flatList.current.scrollToEnd({ animated: false })
     })()
   }, [])
 
@@ -57,12 +55,11 @@ function MyImagesTab({ token }) {
       <SortArray array={Sort} setArray={(value) => { setSortAscending(value); sortImageByDate(value) }} isSorted={sortAscending} />
       { images &&
         <FlatList
-          ref={flatList}
-          data={images}
-          renderItem={({ item, index }) => <ImageItem item={item} last={index === images.length - 1} />}
+          data={images.slice(1)}
+          renderItem={({ item }) => <ImageItem item={item} />}
+          ListHeaderComponent={() => <ImageItem item={images[0]} last />}
           keyExtractor={image => image.id}
           numColumns={2}
-          inverted
           style={{ marginBottom: 200, marginTop: 10 }}
         />
       }
