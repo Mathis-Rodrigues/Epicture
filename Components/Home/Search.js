@@ -89,8 +89,8 @@ export default function Search() {
           selectedValue={sort}
           onValueChange={onValueChange2.bind(this)}
         >
-          <Picker.Item label="Popular" value="top" />
           <Picker.Item label="Best" value="viral" />
+          <Picker.Item label="Popular" value="top" />
           <Picker.Item label="Newest" value="time" />
         </Picker>
       </View>

@@ -138,7 +138,7 @@ export function getComment(token, id) {
     redirect: 'follow'
   }
   return (
-    fetch("https://api.imgur.com/3/gallery/"+ id +"/comments/best", requestOptions)
+    fetch("https://api.imgur.com/3/gallery/" + id + "/comments/best", requestOptions)
       .then(response => response.json())
   )
 }
@@ -165,6 +165,24 @@ export function getMyImageById(token, id) {
 
   return (
     fetch(`https://api.imgur.com/3/account/me/image/${id}`, requestOptions)
+      .then(response => response.json())
+  )
+}
+
+export function addComment(token, string, id) {
+  const formdata = new FormData();
+  formdata.append("image_id", id);
+  formdata.append("comment", string);
+
+  var requestOptions = {
+    method: 'POST',
+    headers: buildHeader(token),
+    body: formdata,
+    redirect: 'follow'
+  };
+
+  return (
+    fetch("https://api.imgur.com/3/comment", requestOptions)
       .then(response => response.json())
   )
 }
