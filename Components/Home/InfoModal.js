@@ -1,12 +1,12 @@
 import React, { Component, Fragment } from 'react';
-import { Image, StyleSheet, View, Modal, TouchableOpacity, ScrollView } from 'react-native';
+import { Image, StyleSheet, View, Modal, TouchableOpacity, ScrollView} from 'react-native';
 import { Container, Header, Content, Card, CardItem, Thumbnail, Text, Button, Icon, Left, Body, Right } from 'native-base';
 import { Video } from 'expo-av';
 import { headerBackgroundColor } from '../../config/theme'
 import AsyncStorage from '@react-native-community/async-storage'
 
-import { addToFavorite, getAvatar } from '../../API/API'
-import { createPortal } from 'react-dom';
+import { addToFavorite, getAvatar, getComment } from '../../API/API'
+import { FlatList } from 'react-native-gesture-handler';
 
 function CustomImage({ info }) {
   const uri = !info.images ? info.link : info.images[0].link
@@ -36,18 +36,29 @@ class GetDescription extends Component {
   }
 }
 
+class CommentInfo extends Component {
+  render() {
+    const { info } = this.props
+    return (
+      <Text>LOl</Text>
+    )
+  }
+}
+
 
 export default class InfoModal extends Component {
   state = {
     isLike: false,
     accountParams: null,
-    userData: null
+    userData: null,
+    commentData: null
   }
 
   componentDidMount() {
     (async () => {
       const acc = JSON.parse(await AsyncStorage.getItem("account_params"))
       getAvatar(acc.access_token, this.props.info.account_url).then(rep => this.setState({ userData: rep.data }))
+      getComment(acc.access_token, this.props.info.id).then(rep => this.setState({ commentData: rep.data}))
       this.setState({ accountParams: acc })
     })()
     // if (this.props.favorite == true)
@@ -59,6 +70,7 @@ export default class InfoModal extends Component {
   }
 
   isFavorite = () => {
+    // console.log(this.state.commentData)
     const { isLike } = this.state
     addToFavorite(this.state.accountParams.access_token, this.props.info.id)
     this.props.setFavoriteById(this.props.info.id, !isLike)
@@ -67,8 +79,7 @@ export default class InfoModal extends Component {
 
   render() {
     const { setModalState, info } = this.props
-    const { userData } = this.state
-    console.log(info)
+    const { userData, commentData } = this.state
 
     return (
       <View style={{ backgroundColor: "#222", flex: 1, flexDirection: 'column' }}>
@@ -84,6 +95,7 @@ export default class InfoModal extends Component {
           </View>
           <Text style={{ marginBottom: 10, color: "grey", fontWeight: "bold" }}>from: {info.account_url}</Text>
         </View>
+        <ScrollView>
         <CustomImage info={info} />
         <Text style={{ color: "grey", padding: 10 }}>{info.views} views</Text>
         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginLeft: 10, marginRight: 10 }}>
@@ -110,8 +122,16 @@ export default class InfoModal extends Component {
           </View>
         </View>
         <GetDescription info={info} />
-        <ScrollView>
+        <Text style={{padding: 10, color: "white"}}>COMMENTS:</Text>
+        {/* <CommentInfo/> */}
         </ScrollView>
+        {commentData &&
+        <FlatList
+          data={commentData}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => <CommentInfo info={item}/>}
+          />
+        }
       </View>
     );
   }

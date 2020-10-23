@@ -36,7 +36,6 @@ export function sortGallery(token, section, sort) {
     headers: buildHeader(token),
     redirect: 'follow'
   };
-  console.log(section + "   " + sort)
   return (
     fetch("https://api.imgur.com/3/gallery/" + section + "/" + sort, requestOptions)
       .then((res) => res.json())
@@ -128,6 +127,18 @@ export function getMySettings(token) {
 
   return (
     fetch(`https://api.imgur.com/3/account/me/settings`, requestOptions)
+      .then(response => response.json())
+  )
+}
+
+export function getComment(token, id) {
+  const requestOptions = {
+    method: 'GET',
+    headers: buildHeader(token),
+    redirect: 'follow'
+  }
+  return (
+    fetch("https://api.imgur.com/3/gallery/"+ id +"/comments/best", requestOptions)
       .then(response => response.json())
   )
 }
