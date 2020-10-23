@@ -32,11 +32,13 @@ export default function Search() {
   }
 
   const onValueChange2 = (value) => {
-    sortGallery(accountParams.access_token, section, value).then(rep => setData(rep.data))
     if (searchedText.length > 0) {
       searchGallery(accountParams.access_token, searchedText, value).then(rep => setData(rep.data))
     }
+    else
+      sortGallery(accountParams.access_token, section, value).then(rep => setData(rep.data))
     setSort(value)
+    console.log(sort)
   }
 
   const searchTextInputChanged = (text) => {
@@ -77,7 +79,7 @@ export default function Search() {
           selectedValue={section}
           onValueChange={onValueChange.bind(this)}
         >
-          <Picker.Item label="Most viral" value="top" />
+          <Picker.Item label="Most viral" value="hot" />
           <Picker.Item label="User submitted" value="user" />
         </Picker>
         <Picker
@@ -87,8 +89,8 @@ export default function Search() {
           selectedValue={sort}
           onValueChange={onValueChange2.bind(this)}
         >
-          <Picker.Item label="Popular" value="viral" />
-          <Picker.Item label="Best" value="top" />
+          <Picker.Item label="Popular" value="top" />
+          <Picker.Item label="Best" value="viral" />
           <Picker.Item label="Newest" value="time" />
         </Picker>
       </View>

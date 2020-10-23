@@ -12,7 +12,7 @@ export function start(token) {
   };
 
   return (
-    fetch("https://api.imgur.com/3/gallery/top/viral", requestOptions)
+    fetch("https://api.imgur.com/3/gallery/hot/top", requestOptions)
       .then((res) => res.json())
   )
 }
@@ -36,7 +36,7 @@ export function sortGallery(token, section, sort) {
     headers: buildHeader(token),
     redirect: 'follow'
   };
-
+  console.log(section + "   " + sort)
   return (
     fetch("https://api.imgur.com/3/gallery/" + section + "/" + sort, requestOptions)
       .then((res) => res.json())

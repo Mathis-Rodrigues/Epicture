@@ -68,6 +68,7 @@ export default class InfoModal extends Component {
   render() {
     const { setModalState, info } = this.props
     const { userData } = this.state
+    console.log(info)
 
     return (
       <View style={{ backgroundColor: "#222", flex: 1, flexDirection: 'column' }}>
@@ -96,7 +97,7 @@ export default class InfoModal extends Component {
             <TouchableOpacity style={{ marginLeft: 20 }} onPress={() => console.log("xd")}>
               <Icon active name="ios-arrow-up" style={{ color: 'cyan', fontSize: 30 }} />
             </TouchableOpacity>
-            <Text style={{ color: 'white', marginLeft: 10, marginRight: 10 }}>Vote</Text>
+            <Text style={{ color: 'white', marginLeft: 10, marginRight: 10 }}>{info.ups - info.downs}</Text>
             <TouchableOpacity onPress={() => console.log("xd")}>
               <Icon active name="ios-arrow-down" style={{ color: 'cyan', fontSize: 30 }} />
             </TouchableOpacity>
