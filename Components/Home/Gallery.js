@@ -37,7 +37,6 @@ export default class Gallery extends Component {
   }
   render() {
     const { info, setFavoriteById } = this.props
-
     return (
       <TouchableOpacity style={{ flex: 1, flexDirection: 'column', backgroundColor: '#524947' }} onPress={() => this.setModalState(true)}>
         <Modal transparent={true} visible={this.state.modal} animationType={"slide"}>
@@ -56,7 +55,7 @@ export default class Gallery extends Component {
             <Left>
               <Button transparent>
                 <Icon active name="ios-arrow-dropup" />
-                <Text>{info.ups} points</Text>
+                <Text>{info.ups - info.downs} points</Text>
               </Button>
             </Left>
             <Right>
