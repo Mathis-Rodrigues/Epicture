@@ -23,11 +23,11 @@ const Categories = [
     label: 'IMAGES',
     component: MyImagesTab
   },
-  {
-    name: 'Albums',
-    label: 'ALBUMS',
-    component: () => <Text>LOLOL</Text>
-  },
+  // {
+  //   name: 'Albums',
+  //   label: 'ALBUMS',
+  //   component: () => <Text>LOLOL</Text>
+  // },
   {
     name: 'Favorites',
     label: 'FAVORITES',

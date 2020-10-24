@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Header, Button, Text, Item, Input, Icon, Picker } from 'native-base';
+import { Header, Button, Text, Item, Input, Icon, Picker, Right, Spinner } from 'native-base';
 import { View, FlatList } from 'react-native'
 import AsyncStorage from '@react-native-community/async-storage'
 
 import Gallery from './Gallery'
 
 import { start, searchGallery, sortGallery } from '../../API/API'
-import { headerBackgroundColor } from '../../config/theme'
+import { headerBackgroundColor, androidHeaderColor, spinnerColor } from '../../config/theme'
 
 export default function Search() {
   const [searchedText, setSearchedText] = useState("")
@@ -14,6 +14,7 @@ export default function Search() {
   const [sort, setSort] = useState("viral")
   const [data, setData] = useState(null)
   const [accountParams, setAccoutParams] = useState(null)
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     (async () => {
@@ -23,61 +24,56 @@ export default function Search() {
     })()
   }, [])
 
-  const onValueChange = (value) => {
-    sortGallery(accountParams.access_token, value, sort).then(rep => setData(rep.data))
-    if (searchedText.length > 0) {
-      searchGallery(accountParams.access_token, searchedText, value).then(rep => setData(rep.data))
-    }
+  const onSectionChange = (value) => {
+    loadSearch()
     setSection(value)
   }
 
-  const onValueChange2 = (value) => {
-    if (searchedText.length > 0) {
-      searchGallery(accountParams.access_token, searchedText, value).then(rep => setData(rep.data))
-    }
-    else
-      sortGallery(accountParams.access_token, section, value).then(rep => setData(rep.data))
+  const onSortChange = (value) => {
+    loadSearch()
     setSort(value)
-    console.log(sort)
   }
 
-  const searchTextInputChanged = (text) => {
-    setSearchedText(text)
-  }
-
-  const loadSearch = () => {
+  const loadSearch = async () => {
+    setIsLoading(true)
     if (searchedText.length > 0) {
-      searchGallery(accountParams.access_token, searchedText, sort).then(rep => setData(rep.data))
+      searchGallery(accountParams.access_token, searchedText, sort).then(rep => { setData(rep.data); setIsLoading(false) })
     } else {
-      sortGallery(accountParams.access_token, section, sort).then(rep => setData(rep.data))
+      sortGallery(accountParams.access_token, section, sort).then(rep => { setData(rep.data); setIsLoading(false) })
     }
   }
 
   const setFavoriteById = (id, value) => {
-    data.find(e => e.id === id).favorite = value
-    data.find(e => e.id === id).favorite_count += value ? 1 : -1
-    setData(data)
+    const _data = [...data]
+    _data.find(e => e.id === id).favorite = value
+    _data.find(e => e.id === id).favorite_count += value ? 1 : -1
+    setData(_data)
   }
 
   return (
     <View>
-      <Header searchBar style={{ backgroundColor: headerBackgroundColor }} androidStatusBarColor={headerBackgroundColor} >
+      <Header searchBar iosBarStyle="light-content" style={{ backgroundColor: headerBackgroundColor }} androidStatusBarColor={androidHeaderColor}>
         <Item>
           <Icon name="ios-search" />
           <Input
             placeholder="Search"
-            onChangeText={searchTextInputChanged}
+            onChangeText={setSearchedText}
             onSubmitEditing={loadSearch}
           />
         </Item>
+        {isLoading &&
+          <Right style={{ position: 'absolute', right: 30 }} >
+            <Spinner style={{ width: 10 }} color={spinnerColor} size="small" />
+          </Right>
+        }
       </Header>
       <View style={{ flexDirection: 'row' }}>
         <Picker
           note
           mode="dropdown"
-          style={{ width: 120, color: 'black' }}
+          style={{ width: '50%', color: 'black' }}
           selectedValue={section}
-          onValueChange={onValueChange.bind(this)}
+          onValueChange={onSectionChange}
         >
           <Picker.Item label="Most viral" value="hot" />
           <Picker.Item label="User submitted" value="user" />
@@ -85,24 +81,20 @@ export default function Search() {
         <Picker
           note
           mode="dropdown"
-          style={{ width: 120, color: 'black' }}
+          style={{ width: '50%', color: 'black' }}
           selectedValue={sort}
-          onValueChange={onValueChange2.bind(this)}
+          onValueChange={onSortChange}
         >
           <Picker.Item label="Best" value="viral" />
           <Picker.Item label="Popular" value="top" />
           <Picker.Item label="Newest" value="time" />
         </Picker>
       </View>
-      {/* <Gallery></Gallery> */}
       <FlatList
         data={data}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => <Gallery info={item} setFavoriteById={setFavoriteById} />}
       />
-      {/* <Button onPress={() => { console.log(data)}}>
-          <Text>hey</Text>
-        </Button> */}
     </View>
   );
 }
