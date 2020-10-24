@@ -1,12 +1,12 @@
-import React, { Component, Fragment } from 'react';
-import { Image, StyleSheet, View, Modal, TouchableOpacity, ScrollView, TextInput } from 'react-native';
-import { Container, Header, Content, Card, CardItem, Thumbnail, Text, Button, Icon, Input } from 'native-base';
-import { Video } from 'expo-av';
-import { headerBackgroundColor } from '../../config/theme'
+import React, { Component } from 'react'
+import { Image, StyleSheet, View, TouchableOpacity, ScrollView } from 'react-native'
+import { Text, Icon, Input } from 'native-base'
+import { Video } from 'expo-av'
 import AsyncStorage from '@react-native-community/async-storage'
 
+import CommentInfo from './CommentInfo'
+
 import { addAlbumToFavorite, getAvatar, getComment, addComment } from '../../API/API'
-import { FlatList } from 'react-native-gesture-handler';
 
 function CustomImage({ info }) {
   const uri = !info.images ? info.link : info.images[0].link
@@ -36,67 +36,43 @@ class GetDescription extends Component {
   }
 }
 
-class CommentInfo extends Component {
-  render() {
-    const { info } = this.props
-    // console.log(info)
-    return (
-      <View style={{ padding: 10 }}>
-        <Text style={{ color: "white" }}>{info.author + ": " + info.comment}</Text>
-      </View>
-    )
-  }
-}
-
-
 export default class InfoModal extends Component {
-
   state = {
     isLike: false,
     accountParams: null,
     userData: null,
-    commentData: null,
-    userComment: ""
+    commentData: null
   }
 
   componentDidMount() {
+    const { info } = this.props;
     (async () => {
       const acc = JSON.parse(await AsyncStorage.getItem("account_params"))
-      getAvatar(acc.access_token, this.props.info.account_url).then(rep => this.setState({ userData: rep.data }))
-      getComment(acc.access_token, this.props.info.id).then(rep => this.setState({ commentData: rep.data }))
+      getAvatar(acc.access_token, info.account_url === "" ? "me" : info.account_url).then(rep => this.setState({ userData: rep.data }))
+      getComment(acc.access_token, info.id).then(rep => this.setState({
+        commentData: rep.status === 400 ? {} : rep.data
+      }))
       this.setState({ accountParams: acc })
     })()
-    // if (this.props.favorite == true)
-    //   this.setState({ isLike: true})
-    // else
-    //   this 
-    this.props.info.favorite ? this.setState({ isLike: true }) : this.setState({ isLike: false })
-    // getAvatar(this.state.accountParams.access_token, this.props.info.account_url).then(rep => this.setState({ userData: rep.data }))
+    this.setState({ isLike: info.favorite })
   }
 
   isFavorite = () => {
-    const { isLike } = this.state
-    addAlbumToFavorite(this.state.accountParams.access_token, this.props.info.id)
-    this.props.setFavoriteById(this.props.info.id, !isLike)
-    isLike ? this.setState({ isLike: false }) : this.setState({ isLike: true })
+    const { info, setFavoriteById } = this.props
+    const { accountParams, isLike } = this.state
+
+    addAlbumToFavorite(accountParams.access_token, info.id)
+    setFavoriteById(info.id, !isLike)
+    this.setState({ isLike: !isLike })
   }
 
-  commentTextInputChanged(text) {
+  commentTextInputChanged = (text) => {
     this.setState({ userComment: text })
-  }
-
-  postComment() {
-    if (this.state.userComment.length > 0) {
-      addComment(this.state.accountParams.access_token, this.state.userComment, this.props.info.id).then(rep => console.log(rep))
-      console.log("message envoyé !")
-      this.setState({ userComment: ""})
-    }
   }
 
   render() {
     const { setModalState, info } = this.props
-    const { userData, commentData } = this.state
-    // console.log(info.account_url)
+    const { accountParams, commentData, userData } = this.state
 
     return (
       <View style={{ backgroundColor: "#222", flex: 1, flexDirection: 'column' }}>
@@ -139,20 +115,7 @@ export default class InfoModal extends Component {
             </View>
           </View>
           <GetDescription info={info} />
-          <Text style={{ padding: 10, color: "white" }}>BEST COMMENTS:</Text>
-          {commentData && commentData.map((e, i) => (
-            <CommentInfo info={e} key={i} />
-          ))
-          }
-          <Text style={{ color: 'white', alignSelf: 'center' }}>COMMENT HERE:</Text>
-          {commentData &&
-            <Input style={{ backgroundColor: "white", margin: 40 }}
-              placeholder="Write a comment"
-              onChangeText={(text) => this.commentTextInputChanged(text)}
-              onSubmitEditing={() => this.postComment()}
-              value={this.state.userComment}
-            />
-          }
+          <CommentInfo token={accountParams ? accountParams.access_token : ""} commentData={commentData} id={info.id} />
         </ScrollView>
       </View>
     );

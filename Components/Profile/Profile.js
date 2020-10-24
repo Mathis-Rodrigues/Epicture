@@ -7,6 +7,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 
 import InfoProfile from './InfoProfile'
 import MyImagesTab from './MyImagesTab'
+import MyFavoritesTab from './MyFavoritesTab'
 
 import {
   drawerBackgroundColor,
@@ -30,7 +31,7 @@ const Categories = [
   {
     name: 'Favorites',
     label: 'FAVORITES',
-    component: () => <Text>LOLOL</Text>
+    component: MyFavoritesTab
   }
 ]
 

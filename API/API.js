@@ -185,7 +185,7 @@ export function addComment(token, string, id) {
   formdata.append("image_id", id);
   formdata.append("comment", string);
 
-  var requestOptions = {
+  const requestOptions = {
     method: 'POST',
     headers: buildHeader(token),
     body: formdata,
@@ -194,6 +194,32 @@ export function addComment(token, string, id) {
 
   return (
     fetch("https://api.imgur.com/3/comment", requestOptions)
+      .then(response => response.json())
+  )
+}
+
+export function getFavorites(token) {
+  const requestOptions = {
+    method: 'GET',
+    headers: buildHeader(token),
+    redirect: 'follow'
+  }
+
+  return (
+    fetch(`https://api.imgur.com/3/account/me/favorites`, requestOptions)
+      .then(response => response.json())
+  )
+}
+
+export function getGalleryById(token, id) {
+  const requestOptions = {
+    method: 'GET',
+    headers: buildHeader(token),
+    redirect: 'follow'
+  }
+
+  return (
+    fetch(`https://api.imgur.com/3/gallery/album/${id}`, requestOptions)
       .then(response => response.json())
   )
 }

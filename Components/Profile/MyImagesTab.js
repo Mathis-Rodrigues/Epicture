@@ -1,16 +1,11 @@
-import React, { Fragment, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { TouchableOpacity, StyleSheet, FlatList, View, Text, ImageBackground } from 'react-native'
-import { Icon, Spinner } from 'native-base'
+import { Icon } from 'native-base'
 
 import SortArray from './SortArray'
 
 import { getMyImages, getMyImageById, addImageToFavorite } from '../../API/API'
-import {
-  drawerBackgroundColor,
-  globalBlueColor,
-  drawerReverseTextColor,
-  drawerTextColor
-} from '../../config/theme'
+import { drawerBackgroundColor } from '../../config/theme'
 
 const Sort = [
   {
@@ -49,7 +44,7 @@ const ImageItem = ({ token, item, last }) => {
       <View style={{ ...styles.itemInfo, height: last ? 40 : 30 }}>
         <View style={styles.infoCat}>
           <TouchableOpacity style={{ height: '100%', width: 25 }} onPress={() => setFavorite(!img.favorite)}>
-            <Icon name={img && img.favorite ? "heart" : "heart-empty"} style={styles.icon} />
+            <Icon name={img && img.favorite ? "heart" : "heart-empty"} style={{ fontSize: 17, color: img && img.favorite ? '#d11' : 'white' }} />
           </TouchableOpacity>
         </View>
         <View style={styles.infoCat}>
@@ -87,7 +82,7 @@ function MyImagesTab({ token }) {
           ListHeaderComponent={() => <ImageItem token={token} item={images[0]} last />}
           keyExtractor={image => image.id}
           numColumns={2}
-          style={{ marginBottom: 200, marginTop: 10 }}
+          style={{ marginTop: 10 }}
         />
       }
     </View>
@@ -97,7 +92,7 @@ function MyImagesTab({ token }) {
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    height: '100%',
+    height: '70%',
     padding: 20,
   },
   itemContainer: {
