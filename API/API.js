@@ -227,6 +227,7 @@ export function getGalleryById(token, id) {
 export function changeAccountSetting(token, username, bio){
   const formdata = new FormData();
   formdata.append("bio", bio);
+  formdata.append("username", username);
 
   const requestOptions = {
     method: 'POST',

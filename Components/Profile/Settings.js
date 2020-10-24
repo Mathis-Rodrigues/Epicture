@@ -16,8 +16,8 @@ function Settings({ data, settings, token }) {
   const [bioText, setBioText] = useState(data.bio)
 
   const updateSettings = () => {
-    console.log("wowowowowo")
-    changeAccountSetting(token, data.url, bioText).then(rep => console.log(rep))
+    // console.log(usernameText)
+    changeAccountSetting(token, usernameText, bioText).then(rep => console.log(rep))
   }
   return (
     <View style={{ flex: 1, flexDirection: 'column' }}>
