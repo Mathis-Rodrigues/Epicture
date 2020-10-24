@@ -1,80 +1,67 @@
-import React, { Component } from 'react';
-import { Image, StyleSheet, View, Modal, TouchableOpacity } from 'react-native';
-import { Container, Header, Content, Card, CardItem, Thumbnail, Text, Button, Icon, Left, Body, Right } from 'native-base';
-import { Video } from 'expo-av';
+import React, { Fragment, useState } from 'react';
+import { Image, StyleSheet, Modal, TouchableOpacity } from 'react-native';
+import { Card, CardItem, Text, Button, Icon, Left, Right } from 'native-base'
+import { Video } from 'expo-av'
 import InfoModal from './InfoModal'
 
-class CheckType extends Component {
-  render() {
-    const { info } = this.props
-    if (!info.images) {
-      if (info.type == "video/mp4") {
-        return (<Video source={{ uri: info.link }} style={styles.video} shouldPlay isLooping isMuted={true} resizeMode={Video.RESIZE_MODE_CONTAIN} />);
-      }
-      else
-        return (<Image source={{ uri: info.link }} style={styles.image} />);
-    } else {
-      // console.log(info.images[0].type)
-      if (info.images[0].type == "video/mp4") {
-        return (<Video source={{ uri: info.images[0].link }} style={styles.video} shouldPlay isLooping isMuted={true} resizeMode={Video.RESIZE_MODE_CONTAIN} />);
-      }
-      else
-        return (<Image source={{ uri: info.images[0].link }} style={styles.image} />);
-    }
-  }
+import { globalBlueColor, titleTextColor } from '../../config/theme'
+
+function CustomImage({ info }) {
+  const uri = !info.images ? info.link : info.images[0].link
+  const type = !info.images ? info.type : info.images[0].type
+
+  if (type === "video/mp4")
+    return <Video source={{ uri }} style={styles.video} shouldPlay isLooping isMuted resizeMode={Video.RESIZE_MODE_CONTAIN} />
+  return <Image source={{ uri }} style={styles.image} />
 }
 
 
-export default class Gallery extends Component {
+export default function Gallery({ info, setFavoriteById }) {
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
-  constructor(props) {
-    super(props);
-    this.state = { modal: false }
-  }
-
-  setModalState = (state) => {
-    this.setState({ modal: state })
-  }
-  render() {
-    const { info, setFavoriteById } = this.props
-    return (
-      <TouchableOpacity style={{ flex: 1, flexDirection: 'column', backgroundColor: '#524947' }} onPress={() => this.setModalState(true)}>
-        <Modal transparent={true} visible={this.state.modal} animationType={"slide"}>
-          <InfoModal setModalState={this.setModalState} info={info} setFavoriteById={setFavoriteById}/>
-        </Modal>
+  return (
+    <Fragment>
+      <Modal transparent visible={isModalOpen} animationType={"slide"}>
+        <InfoModal setModalState={setIsModalOpen} info={info} setFavoriteById={setFavoriteById} />
+      </Modal>
+      <TouchableOpacity style={styles.item} onPress={() => setIsModalOpen(true)}>
         <Card>
-          <CardItem style={{ backgroundColor: 'black' }}>
+          <CardItem>
             <Left>
-              <Text numberOfLines={1} style={{ color: 'white', backgroundColor: 'black' }}>{info.title}</Text>
+              <Text numberOfLines={1} style={styles.titleText}>{info.title}</Text>
             </Left>
           </CardItem>
-          <CardItem cardBody style={{ backgroundColor: 'black' }}>
-            <CheckType info={info} style={{ backgroundColor: 'black' }} />
+          <CardItem cardBody>
+            <CustomImage info={info} />
           </CardItem>
-          <CardItem style={{ height: 40, backgroundColor: 'black' }}>
+          <CardItem>
             <Left>
               <Button transparent>
-                <Icon active name="ios-arrow-dropup" />
-                <Text>{info.ups - info.downs} points</Text>
+                <Icon name="heart" style={{ color: globalBlueColor }} />
+                <Text style={{ color: globalBlueColor }}>{info.favorite_count} Favorite{info.favorite_count ? 's' : ''}</Text>
               </Button>
             </Left>
             <Right>
               <Button transparent>
-                <Icon active name="chatbubbles" />
-                <Text>{info.comment_count} comments</Text>
+                <Icon name="chatbubbles" style={{ color: globalBlueColor }} />
+                <Text style={{ color: globalBlueColor }}>{info.comment_count} comment{info.comment_count ? 's' : ''}</Text>
               </Button>
             </Right>
-            {/* <Right>
-            <Text>11h ago</Text>
-          </Right> */}
           </CardItem>
         </Card>
       </TouchableOpacity>
-    );
-  }
+    </Fragment>
+  );
 }
 
 const styles = StyleSheet.create({
+  item: {
+    padding: 10,
+  },
+  titleText: {
+    color: titleTextColor,
+    fontWeight: '700',
+  },
   image: {
     height: 300,
     width: null,

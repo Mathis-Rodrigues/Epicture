@@ -12,19 +12,16 @@ class App extends Component {
     isLoading: true,
   }
 
-  async UNSAFE_componentWillMount() {
-    await Font.loadAsync({
-      Roboto: require("native-base/Fonts/Roboto.ttf"),
-      Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf")
-    });
-    this.setState({ isLoading: false });
-  }
-
   componentDidMount() {
     (async () => {
+      await Font.loadAsync({
+        Roboto: require("native-base/Fonts/Roboto.ttf"),
+        Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf")
+      })
       const jsonValue = await AsyncStorage.getItem("account_params")
 
       this.setAccountParams(jsonValue !== null ? JSON.parse(jsonValue) : null)
+      this.setState({ isLoading: false })
     })()
   }
 

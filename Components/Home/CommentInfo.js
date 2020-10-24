@@ -1,15 +1,41 @@
-import React, { Component, Fragment } from 'react';
-import { Image, StyleSheet, View, Modal, TouchableOpacity, ScrollView} from 'react-native';
-import { Container, Header, Content, Card, CardItem, Thumbnail, Text, Button, Icon, Left, Body, Right } from 'native-base';
-import { Video } from 'expo-av';
-import { headerBackgroundColor } from '../../config/theme'
-import AsyncStorage from '@react-native-community/async-storage'
+import React, { Fragment, useState } from 'react';
+import { View, Text } from 'react-native'
+import { Input } from 'native-base'
 
+function CommentInfo({ token, commentData, id }) {
+  const [commentText, setCommentText] = useState("")
 
-export default class CommentInfo extends Component {
-    render() {
-        return (
-            <Text>lol</Text>
-        )
+  const postComment = () => {
+    if (userComment.length > 0) {
+      addComment(token, commentText, id)
+      setCommentText("")
     }
+  }
+
+  if (!commentData)
+    return (<Fragment />)
+
+  if (!commentData.length)
+    return <Text style={{ padding: 10, color: "white" }}>NO COMMENT AVAILABLE</Text>
+
+  return (
+    <Fragment>
+      <Text style={{ padding: 10, color: "white" }}>BEST COMMENTS:</Text>
+      {commentData.map((e, i) => (
+        <View style={{ padding: 10 }} key={i}>
+          <Text style={{ color: "white" }}>{e.author + ": " + e.comment}</Text>
+        </View>
+      ))
+      }
+      <Text style={{ color: 'white', alignSelf: 'center' }}>COMMENT HERE:</Text>
+      <Input style={{ backgroundColor: "white", margin: 40 }}
+        placeholder="Write a comment"
+        onChangeText={setCommentText}
+        onSubmitEditing={postComment}
+        value={commentText}
+      />
+    </Fragment>
+  )
 }
+
+export default CommentInfo
