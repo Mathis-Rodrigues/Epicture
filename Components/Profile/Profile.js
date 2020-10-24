@@ -7,6 +7,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 
 import InfoProfile from './InfoProfile'
 import MyImagesTab from './MyImagesTab'
+import Settings from './Settings'
 
 import {
   drawerBackgroundColor,
@@ -109,7 +110,12 @@ function Profile({ disconnectAccount }) {
           token={accountParams.access_token}
         />}
       </Drawer.Screen>
-      <Drawer.Screen name="Settings" component={View} />
+      <Drawer.Screen name="Settings">
+        {() => <Settings
+          data={myData.data}
+          settings={mySettings.data}
+        />}
+      </Drawer.Screen>
     </Drawer.Navigator>
   )
 }

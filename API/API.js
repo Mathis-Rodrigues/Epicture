@@ -197,3 +197,5 @@ export function addComment(token, string, id) {
       .then(response => response.json())
   )
 }
+
+export function
