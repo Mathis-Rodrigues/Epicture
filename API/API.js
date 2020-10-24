@@ -78,7 +78,7 @@ export function uploadVideo(token, param) {
     .then(res => res.json())
 }
 
-export function addToFavorite(token, id) {
+export function addAlbumToFavorite(token, id) {
   const requestOptions = {
     method: 'POST',
     headers: buildHeader(token),
@@ -87,9 +87,20 @@ export function addToFavorite(token, id) {
 
   return (
     fetch(`https://api.imgur.com/3/album/${id}/favorite`, requestOptions)
-      .then(response => response.text())
-      .then(result => console.log(result))
-      .catch(error => console.log('error', error))
+      .then(response => response.json())
+  )
+}
+
+export function addImageToFavorite(token, id) {
+  const requestOptions = {
+    method: 'POST',
+    headers: buildHeader(token),
+    redirect: 'follow'
+  }
+
+  return (
+    fetch(`https://api.imgur.com/3/image/${id}/favorite`, requestOptions)
+      .then(response => response.json())
   )
 }
 

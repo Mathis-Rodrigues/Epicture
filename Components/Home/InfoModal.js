@@ -5,7 +5,7 @@ import { Video } from 'expo-av';
 import { headerBackgroundColor } from '../../config/theme'
 import AsyncStorage from '@react-native-community/async-storage'
 
-import { addToFavorite, getAvatar, getComment } from '../../API/API'
+import { addAlbumToFavorite, getAvatar, getComment } from '../../API/API'
 import { FlatList } from 'react-native-gesture-handler';
 
 function CustomImage({ info }) {
@@ -72,7 +72,7 @@ export default class InfoModal extends Component {
   isFavorite = () => {
     // console.log(this.state.commentData)
     const { isLike } = this.state
-    addToFavorite(this.state.accountParams.access_token, this.props.info.id)
+    addAlbumToFavorite(this.state.accountParams.access_token, this.props.info.id)
     this.props.setFavoriteById(this.props.info.id, !isLike)
     isLike ? this.setState({ isLike: false }) : this.setState({ isLike: true })
   }
