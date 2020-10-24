@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Image, StyleSheet, View, TouchableOpacity, ScrollView } from 'react-native'
-import { Text, Icon, Input } from 'native-base'
+import { Text, Icon } from 'native-base'
 import { Video } from 'expo-av'
 import AsyncStorage from '@react-native-community/async-storage'
 

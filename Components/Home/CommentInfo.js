@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from 'react';
 import { View, Text } from 'react-native'
-import {  Input } from 'native-base'
+import { Input } from 'native-base'
 
 function CommentInfo({ token, commentData, id }) {
   const [commentText, setCommentText] = useState("")
@@ -14,6 +14,9 @@ function CommentInfo({ token, commentData, id }) {
 
   if (!commentData)
     return (<Fragment />)
+
+  if (!commentData.length)
+    return <Text style={{ padding: 10, color: "white" }}>NO COMMENT AVAILABLE</Text>
 
   return (
     <Fragment>

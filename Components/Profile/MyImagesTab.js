@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { TouchableOpacity, StyleSheet, FlatList, View, Text, ImageBackground } from 'react-native'
+import { TouchableOpacity, StyleSheet, FlatList, View, Text, Modal } from 'react-native'
 import { Icon } from 'native-base'
 
 import SortArray from './SortArray'
+import { BackgroundImage, BackgroundVideo } from './BackgroundItem'
+import InfoModal from '../Home/InfoModal'
 
 import { getMyImages, getMyImageById, addImageToFavorite } from '../../API/API'
 import { drawerBackgroundColor } from '../../config/theme'
@@ -20,6 +22,8 @@ const Sort = [
 
 const ImageItem = ({ token, item, last }) => {
   const [img, setImg] = useState(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
   useEffect(() => {
     (async () => {
       const rep = await getMyImageById(token, item.id)
@@ -36,11 +40,16 @@ const ImageItem = ({ token, item, last }) => {
 
   return (
     <View style={{ ...styles.itemContainer, height: last ? 200 : 120 }}>
-      <ImageBackground
-        source={{ uri: item.link }}
-        style={{ width: '100%', height: '100%' }}
-        imageStyle={{ borderRadius: 15 }}
-      />
+      { item.type !== 'video/mp4' &&
+        < BackgroundImage uri={item.link}>
+          <TouchableOpacity transparent style={{ width: '100%', height: '100%' }} onPress={() => setIsModalOpen(prev => !prev)} />
+        </BackgroundImage>
+      }
+      { item.type === 'video/mp4' &&
+        < BackgroundVideo uri={item.link}>
+          <TouchableOpacity transparent style={{ width: '100%', height: '100%' }} onPress={() => setIsModalOpen(prev => !prev)} />
+        </ BackgroundVideo>
+      }
       <View style={{ ...styles.itemInfo, height: last ? 40 : 30 }}>
         <View style={styles.infoCat}>
           <TouchableOpacity style={{ height: '100%', width: 25 }} onPress={() => setFavorite(!img.favorite)}>
@@ -52,6 +61,9 @@ const ImageItem = ({ token, item, last }) => {
           <Text style={styles.text}>{item.views.toString()}</Text>
         </View>
       </View>
+      <Modal transparent visible={isModalOpen} animationType={"slide"}>
+        <InfoModal setModalState={setIsModalOpen} info={item} setFavoriteById={() => { console.log("Fav") }} />
+      </Modal>
     </View>
   )
 }

@@ -3,6 +3,7 @@ import { Modal, TouchableOpacity, StyleSheet, FlatList, View, Text, ImageBackgro
 import { Icon } from 'native-base'
 
 import InfoModal from '../Home/InfoModal'
+import { BackgroundImage, BackgroundVideo } from './BackgroundItem'
 
 import { getFavorites, getGalleryById } from '../../API/API'
 import { drawerBackgroundColor } from '../../config/theme'
@@ -17,19 +18,22 @@ const FavoriteGalleryItem = ({ token, item, isModalOpen, setIsModalOpen }) => {
     })()
   }, [])
 
-  return (gallery &&
+  return (gallery && !console.log(gallery) &&
     <Fragment>
-      <ImageBackground
-        source={{ uri: gallery.images.find(e => e.id === gallery.cover).link }}
-        style={{ width: '100%', height: '100%' }}
-        imageStyle={{ borderRadius: 15 }}
-      >
-        <TouchableOpacity transparent style={{ width: '100%', height: '100%' }} onPress={() => setIsModalOpen(prev => !prev)} />
-      </ImageBackground>
+      {gallery.images.find(e => e.id === gallery.cover).type !== 'video/mp4' &&
+        < BackgroundImage uri={gallery.images.find(e => e.id === gallery.cover).link}>
+          <TouchableOpacity transparent style={{ width: '100%', height: '100%' }} onPress={() => setIsModalOpen(prev => !prev)} />
+        </BackgroundImage>
+      }
+      {gallery.images.find(e => e.id === gallery.cover).type === 'video/mp4' &&
+        < BackgroundVideo uri={gallery.images.find(e => e.id === gallery.cover).link}>
+          <TouchableOpacity transparent style={{ width: '100%', height: '100%' }} onPress={() => setIsModalOpen(prev => !prev)} />
+        </ BackgroundVideo>
+      }
       <Modal transparent visible={isModalOpen} animationType={"slide"}>
         <InfoModal setModalState={setIsModalOpen} info={gallery} setFavoriteById={() => { console.log("Fav") }} />
       </Modal>
-    </Fragment>
+    </Fragment >
   )
 }
 
@@ -41,27 +45,37 @@ const FavoriteItem = ({ token, item, last }) => {
       { item.is_album &&
         <FavoriteGalleryItem token={token} item={item} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
       }
-      { !item.is_album &&
-        <ImageBackground
-          source={{ uri: item.link }}
-          style={{ width: '100%', height: '100%' }}
-          imageStyle={{ borderRadius: 15 }}
-        >
+      { !item.is_album && item.type !== 'video/mp4' &&
+        < BackgroundImage uri={item.link}>
           <TouchableOpacity transparent style={{ width: '100%', height: '100%' }} onPress={() => setIsModalOpen(prev => !prev)} />
-        </ImageBackground>
+        </BackgroundImage>
+      }
+      { !item.is_album && item.type === 'video/mp4' &&
+        < BackgroundVideo uri={item.link}>
+          <TouchableOpacity transparent style={{ width: '100%', height: '100%' }} onPress={() => setIsModalOpen(prev => !prev)} />
+        </ BackgroundVideo>
       }
       <View style={{ ...styles.itemInfo, height: last ? 40 : 30 }}>
         <View style={styles.infoCat}>
           <Icon name="eye" style={styles.icon} />
-          <Text style={styles.text}>{item.views.toString()}</Text>
+          <Text style={styles.text}>{item.views}</Text>
+        </View>
+        <View style={styles.infoCat}>
+          <Icon name="ios-arrow-up" style={styles.icon} />
+          <Text style={styles.text}>{item.ups}</Text>
+        </View>
+        <View style={styles.infoCat}>
+          <Icon name="ios-arrow-down" style={styles.icon} />
+          <Text style={styles.text}>{item.downs}</Text>
         </View>
       </View>
-      { !item.is_album &&
+      {
+        !item.is_album &&
         <Modal transparent visible={isModalOpen} animationType={"slide"}>
           <InfoModal setModalState={setIsModalOpen} info={item} setFavoriteById={() => { console.log("Fav") }} />
         </Modal>
       }
-    </View>
+    </View >
   )
 }
 
@@ -102,7 +116,6 @@ const styles = StyleSheet.create({
     backgroundColor: drawerBackgroundColor,
     margin: 10,
     borderRadius: 15,
-    borderColor: 'black',
   },
   itemInfo: {
     position: 'absolute',

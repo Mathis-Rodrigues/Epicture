@@ -8,15 +8,15 @@ class CheckType extends Component {
   render() {
     const { info } = this.props
     if (!info.images) {
-      if (info.type == "video/mp4") {
-        return (<Video source={{ uri: info.link }} style={styles.video} shouldPlay isLooping isMuted={true} resizeMode={Video.RESIZE_MODE_CONTAIN} />);
+      if (info.type === "video/mp4") {
+        return (<Video source={{ uri: info.link }} style={styles.video} shouldPlay isLooping isMuted resizeMode={Video.RESIZE_MODE_CONTAIN} />);
       }
       else
         return (<Image source={{ uri: info.link }} style={styles.image} />);
     } else {
       // console.log(info.images[0].type)
-      if (info.images[0].type == "video/mp4") {
-        return (<Video source={{ uri: info.images[0].link }} style={styles.video} shouldPlay isLooping isMuted={true} resizeMode={Video.RESIZE_MODE_CONTAIN} />);
+      if (info.images[0].type === "video/mp4") {
+        return (<Video source={{ uri: info.images[0].link }} style={styles.video} shouldPlay isLooping isMuted resizeMode={Video.RESIZE_MODE_CONTAIN} />);
       }
       else
         return (<Image source={{ uri: info.images[0].link }} style={styles.image} />);
