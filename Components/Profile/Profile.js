@@ -115,6 +115,7 @@ function Profile({ disconnectAccount }) {
         {() => <Settings
           data={myData.data}
           settings={mySettings.data}
+          token={accountParams.access_token}
         />}
       </Drawer.Screen>
     </Drawer.Navigator>

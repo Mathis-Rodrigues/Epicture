@@ -223,3 +223,20 @@ export function getGalleryById(token, id) {
       .then(response => response.json())
   )
 }
+
+export function changeAccountSetting(token, username, bio){
+  const formdata = new FormData();
+  formdata.append("bio", bio);
+
+  const requestOptions = {
+    method: 'POST',
+    headers: buildHeader(token),
+    body: formdata,
+    redirect: 'follow'
+  }
+
+  return (
+    fetch(`https://api.imgur.com/3/account/me/settings`, requestOptions)
+      .then(response => response.json())
+  )
+}
