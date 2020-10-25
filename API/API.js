@@ -274,7 +274,7 @@ export function uploadAlbum(token, param) {
   formdata.append("ids[]", param.image)
   formdata.append("title", param.title)
   formdata.append("description", param.description)
-  // formdata.append("privacy", "public")
+  formdata.append("privacy", "public")
   formdata.append("cover", param.image)
 
   const requestOptions = {
