@@ -67,6 +67,7 @@ export default function InfoModal({ item, setFavoriteById, setModalState, setVot
       setUserData(rep.data)
       const rep2 = await getComment(acc.access_token, item.id)
       setCommentData(rep2.status === 400 ? [] : rep2.data)
+      setPreviousVote(item.vote === null ? "veto" : item.vote)
     })()
   }, [])
 
