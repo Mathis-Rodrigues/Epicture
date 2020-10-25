@@ -57,6 +57,7 @@ export default function InfoModal({ item, setFavoriteById, setModalState }) {
   const [accountParams, setAccountParams] = useState(null)
   const [userData, setUserData] = useState(null)
   const [commentData, setCommentData] = useState(null)
+  const [isVote, setIsVote] = useState(item.vote)
 
   useEffect(() => {
     console.log(item);
@@ -68,6 +69,7 @@ export default function InfoModal({ item, setFavoriteById, setModalState }) {
       const rep2 = await getComment(acc.access_token, item.id)
       setCommentData(rep2.status === 400 ? [] : rep2.data)
     })()
+    console.log(item)
   }, [])
 
   const isFavorite = () => {
@@ -102,6 +104,32 @@ export default function InfoModal({ item, setFavoriteById, setModalState }) {
       <Text style={styles.subtitle}>from: {item.account_url}</Text>
       <ScrollView>
         <ImageCarousel itemArray={item.is_album ? item.images : [item]} />
+        <Text style={{ color: lightTitleTextColor, padding: 10 }}>{item.views} views</Text>
+        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginLeft: 10, marginRight: 10 }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <TouchableOpacity onPress={isFavorite}>
+              <Icon name={isLike ? "md-heart" : "md-heart-empty"} style={{ color: '#e33', fontSize: 30 }} />
+            </TouchableOpacity>
+            <Text style={{ color: titleTextColor, fontWeight: 'bold', marginLeft: 10 }}>{item.favorite_count}</Text>
+          </View>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <TouchableOpacity style={{ marginLeft: 20 }} onPress={() => console.log("xd")}>
+              <Icon name="ios-arrow-dropup" style={item.vote === "up" ? styles.upvote : styles.vote} />
+            </TouchableOpacity>
+            <Text style={{ color: titleTextColor, fontWeight: 'bold', marginLeft: 10, marginRight: 10 }}>{item.ups - item.downs}</Text>
+            <TouchableOpacity onPress={() => console.log("xd")}>
+              <Icon name="ios-arrow-dropdown" style={item.vote === "down" ? styles.downvote : styles.vote} />
+            </TouchableOpacity>
+          </View>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Text style={{ color: titleTextColor, fontWeight: 'bold', marginRight: 10 }}>{item.comment_count}</Text>
+            <TouchableOpacity onPress={() => console.log("xd")}>
+              <Icon name="chatbubbles" style={{ color: globalBlueColor, fontSize: 30 }} />
+            </TouchableOpacity>
+          </View>
+        </View>
+        <Text style={styles.description}>{item.description}</Text>
+        <CommentInfo token={accountParams ? accountParams.access_token : ""} commentData={commentData} id={item.id} addMyComment={addComment} />
         { item.in_gallery &&
           <PublicContent item={item} accountParams={accountParams} isFavorite={isFavorite} isLike={isLike} commentData={commentData} addComment={addComment} />
         }
@@ -126,5 +154,17 @@ const styles = StyleSheet.create({
   description: {
     color: 'black',
     padding: 10
+  },
+  vote: {
+    color: globalBlueColor,
+    fontSize: 30
+  },
+  upvote: {
+    color: 'green',
+    fontSize: 30
+  },
+  downvote: {
+    color: 'red',
+    fontSize: 30
   }
 })

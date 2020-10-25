@@ -30,7 +30,7 @@ function Settings({ data, settings, token }) {
       const rep = await getAvatarList(token, data.url)
       setAvatarList(rep.data.available_avatars)
       setUserAvatar(rep.data.available_avatars.find(e => e.name === data.avatar_name).location)
-      console.log(rep.data.available_avatars.find(e => e.name === data.avatar_name).location)
+      // console.log(rep.data.available_avatars.find(e => e.name === data.avatar_name).location)
     })()
 
   }, [])
