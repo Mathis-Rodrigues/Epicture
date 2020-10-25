@@ -27,6 +27,7 @@ export default function InfoModal({ item, setFavoriteById, setModalState }) {
   const [accountParams, setAccountParams] = useState(null)
   const [userData, setUserData] = useState(null)
   const [commentData, setCommentData] = useState(null)
+  const [isVote, setIsVote] = useState(item.vote)
 
   useEffect(() => {
     (async () => {
@@ -38,6 +39,7 @@ export default function InfoModal({ item, setFavoriteById, setModalState }) {
       setCommentData(rep2.status === 400 ? [] : rep2.data)
       console.log(acc)
     })()
+    console.log(item)
   }, [])
 
   const isFavorite = () => {
@@ -82,11 +84,11 @@ export default function InfoModal({ item, setFavoriteById, setModalState }) {
           </View>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <TouchableOpacity style={{ marginLeft: 20 }} onPress={() => console.log("xd")}>
-              <Icon name="ios-arrow-dropup" style={{ color: globalBlueColor, fontSize: 30 }} />
+              <Icon name="ios-arrow-dropup" style={item.vote === "up" ? styles.upvote : styles.vote} />
             </TouchableOpacity>
             <Text style={{ color: titleTextColor, fontWeight: 'bold', marginLeft: 10, marginRight: 10 }}>{item.ups - item.downs}</Text>
             <TouchableOpacity onPress={() => console.log("xd")}>
-              <Icon name="ios-arrow-dropdown" style={{ color: globalBlueColor, fontSize: 30 }} />
+              <Icon name="ios-arrow-dropdown" style={item.vote === "down" ? styles.downvote : styles.vote} />
             </TouchableOpacity>
           </View>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -119,5 +121,17 @@ const styles = StyleSheet.create({
   description: {
     color: 'black',
     padding: 10
+  },
+  vote: {
+    color: globalBlueColor,
+    fontSize: 30
+  },
+  upvote: {
+    color: 'green',
+    fontSize: 30
+  },
+  downvote: {
+    color: 'red',
+    fontSize: 30
   }
 })
