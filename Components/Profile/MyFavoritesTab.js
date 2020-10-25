@@ -5,33 +5,40 @@ import { Icon } from 'native-base'
 import InfoModal from '../Home/InfoModal'
 import { BackgroundImage, BackgroundVideo } from './BackgroundItem'
 
-import { getFavorites, getGalleryById } from '../../API/API'
+import { getFavorites, getGalleryAlbumById, getGalleryImageById } from '../../API/API'
 import { drawerBackgroundColor } from '../../config/theme'
 
 const FavoriteGalleryItem = ({ token, item, isModalOpen, setIsModalOpen }) => {
   const [gallery, setGallery] = useState(null)
+  const type = gallery && (item.is_album ? gallery.images.find(e => e.id === gallery.cover).type : gallery.type)
+  const uri = gallery && (item.is_album ? gallery.images.find(e => e.id === gallery.cover).link : gallery.link)
 
   useEffect(() => {
     (async () => {
-      const rep = await getGalleryById(token, item.id)
-      setGallery(rep.data)
+      if (item.is_album) {
+        const rep = await getGalleryAlbumById(token, item.id)
+        setGallery(rep.data)
+      } else {
+        const rep = await getGalleryImageById(token, item.id)
+        setGallery(rep.data)
+      }
     })()
   }, [])
 
   return (gallery &&
     <Fragment>
-      {gallery.images.find(e => e.id === gallery.cover).type !== 'video/mp4' &&
-        < BackgroundImage uri={gallery.images.find(e => e.id === gallery.cover).link}>
+      {type !== 'video/mp4' &&
+        < BackgroundImage uri={uri}>
           <TouchableOpacity transparent style={{ width: '100%', height: '100%' }} onPress={() => setIsModalOpen(prev => !prev)} />
         </BackgroundImage>
       }
-      {gallery.images.find(e => e.id === gallery.cover).type === 'video/mp4' &&
-        < BackgroundVideo uri={gallery.images.find(e => e.id === gallery.cover).link}>
+      {type === 'video/mp4' &&
+        < BackgroundVideo uri={uri}>
           <TouchableOpacity transparent style={{ width: '100%', height: '100%' }} onPress={() => setIsModalOpen(prev => !prev)} />
         </ BackgroundVideo>
       }
       <Modal transparent visible={isModalOpen} animationType={"slide"}>
-        <InfoModal setModalState={setIsModalOpen} info={gallery} setFavoriteById={() => { console.log("Fav") }} />
+        <InfoModal setModalState={setIsModalOpen} item={gallery} setFavoriteById={() => { console.log("Fav") }} />
       </Modal>
     </Fragment >
   )
@@ -42,15 +49,15 @@ const FavoriteItem = ({ token, item, last }) => {
 
   return (
     <View style={{ ...styles.itemContainer, height: last ? 200 : 120 }}>
-      { item.is_album &&
+      { item.in_gallery &&
         <FavoriteGalleryItem token={token} item={item} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
       }
-      { !item.is_album && item.type !== 'video/mp4' &&
+      { !item.in_gallery && item.type !== 'video/mp4' &&
         < BackgroundImage uri={item.link}>
           <TouchableOpacity transparent style={{ width: '100%', height: '100%' }} onPress={() => setIsModalOpen(prev => !prev)} />
         </BackgroundImage>
       }
-      { !item.is_album && item.type === 'video/mp4' &&
+      { !item.in_gallery && item.type === 'video/mp4' &&
         < BackgroundVideo uri={item.link}>
           <TouchableOpacity transparent style={{ width: '100%', height: '100%' }} onPress={() => setIsModalOpen(prev => !prev)} />
         </ BackgroundVideo>
@@ -62,17 +69,13 @@ const FavoriteItem = ({ token, item, last }) => {
         </View>
         <View style={styles.infoCat}>
           <Icon name="ios-arrow-up" style={styles.icon} />
-          <Text style={styles.text}>{item.ups}</Text>
-        </View>
-        <View style={styles.infoCat}>
+          <Text style={styles.text}>{item.ups - item.downs}</Text>
           <Icon name="ios-arrow-down" style={styles.icon} />
-          <Text style={styles.text}>{item.downs}</Text>
         </View>
       </View>
-      {
-        !item.is_album &&
+      { !item.in_gallery &&
         <Modal transparent visible={isModalOpen} animationType={"slide"}>
-          <InfoModal setModalState={setIsModalOpen} info={item} setFavoriteById={() => { console.log("Fav") }} />
+          <InfoModal setModalState={setIsModalOpen} item={item} setFavoriteById={() => { console.log("Fav") }} />
         </Modal>
       }
     </View >
@@ -139,7 +142,8 @@ const styles = StyleSheet.create({
   text: {
     color: 'white',
     fontSize: 13,
-    marginLeft: 5
+    marginLeft: 5,
+    marginRight: 5
   }
 })
 

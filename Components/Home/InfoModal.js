@@ -1,138 +1,136 @@
-import React, { Component } from 'react'
+import React, { Component, useEffect, useState } from 'react'
 import { Image, StyleSheet, View, TouchableOpacity, ScrollView } from 'react-native'
 import { Text, Icon } from 'native-base'
-import { Video } from 'expo-av'
 import AsyncStorage from '@react-native-community/async-storage'
 
 import CommentInfo from './CommentInfo'
+import ImageCarousel from './ImageCarousel'
+import CustomImage from './CustomImage'
 
-import { addAlbumToFavorite, getAvatar, getComment, addComment } from '../../API/API'
-
-function CustomImage({ info }) {
-  const uri = !info.images ? info.link : info.images[0].link
-  const type = !info.images ? info.type : info.images[0].type
-
-  if (type === "video/mp4")
-    return (<Video source={{ uri }} style={styles.video} shouldPlay isLooping isMuted={true} resizeMode={Video.RESIZE_MODE_CONTAIN} />);
-  return (<Image source={{ uri }} style={styles.image} />);
-}
+import {
+  addAlbumToFavorite,
+  addImageToFavorite,
+  getAvatar,
+  getComment
+} from '../../API/API'
+import {
+  globalBlueColor,
+  homeBackgroundColor,
+  lightTitleTextColor,
+  spinnerColor,
+  titleTextColor
+} from '../../config/theme'
+import Carousel from 'react-native-snap-carousel'
 
 class GetDescription extends Component {
   render() {
-    const { info } = this.props
-    if (!info.images) {
-      if (info.description == null)
+    const { item } = this.props
+    if (!item.images) {
+      if (item.description == null)
         return (<Text style={styles.description}>No description</Text>)
       else
-        return (<Text style={styles.description}>{info.description}</Text>)
+        return (<Text style={styles.description}>{item.description}</Text>)
     }
     else {
-      if (info.images[0].description == null)
+      if (item.images[0].description == null)
         return (<Text style={styles.description}>No description</Text>)
       else
-        return (<Text style={styles.description}>{info.images[0].description}</Text>)
+        return (<Text style={styles.description}>{item.images[0].description}</Text>)
 
     }
   }
 }
 
-export default class InfoModal extends Component {
-  state = {
-    isLike: false,
-    accountParams: null,
-    userData: null,
-    commentData: null
-  }
+export default function InfoModal({ item, setFavoriteById, setModalState }) {
+  const [isLike, setIsLike] = useState(item.favorite)
+  const [accountParams, setAccountParams] = useState(null)
+  const [userData, setUserData] = useState(null)
+  const [commentData, setCommentData] = useState(null)
 
-  componentDidMount() {
-    const { info } = this.props;
+  useEffect(() => {
+    console.log('------------------------------------------------------------------------------------------------------------------------------');
+    console.log(item);
     (async () => {
       const acc = JSON.parse(await AsyncStorage.getItem("account_params"))
-      getAvatar(acc.access_token, info.account_url === "" ? "me" : info.account_url).then(rep => this.setState({ userData: rep.data }))
-      getComment(acc.access_token, info.id).then(rep => this.setState({
-        commentData: rep.status === 400 ? {} : rep.data
-      }))
-      this.setState({ accountParams: acc })
+      const rep = await getAvatar(acc.access_token, item.account_url)
+      setUserData(rep.data)
+      const rep2 = await getComment(acc.access_token, item.id)
+      setCommentData(rep2.status === 400 ? {} : rep2.data)
+      setAccountParams(acc)
     })()
-    this.setState({ isLike: info.favorite })
+  }, [])
+
+  const isFavorite = () => {
+    if (item.is_album)
+      addAlbumToFavorite(accountParams.access_token, item.id)
+    else
+      addImageToFavorite(accountParams.access_token, item.id)
+    setFavoriteById(item.id, !isLike)
+    setIsLike(!isLike)
   }
 
-  isFavorite = () => {
-    const { info, setFavoriteById } = this.props
-    const { accountParams, isLike } = this.state
-
-    addAlbumToFavorite(accountParams.access_token, info.id)
-    setFavoriteById(info.id, !isLike)
-    this.setState({ isLike: !isLike })
-  }
-
-  commentTextInputChanged = (text) => {
-    this.setState({ userComment: text })
-  }
-
-  render() {
-    const { setModalState, info } = this.props
-    const { accountParams, commentData, userData } = this.state
-
-    return (
-      <View style={{ backgroundColor: "#222", flex: 1, flexDirection: 'column' }}>
-        <View style={{ alignItems: "center" }} >
-          <View style={{ flexDirection: "row", alignItems: 'center' }}>
-            <TouchableOpacity onPress={() => setModalState(false)}>
-              <Icon active name="ios-close" style={{ fontSize: 60, color: 'white', marginLeft: 20 }} />
-            </TouchableOpacity>
-            {userData &&
-              <Image style={{ height: 40, width: 40, resizeMode: "contain", borderRadius: 1000, marginLeft: 20 }} source={{ uri: userData.avatar }} />
-            }
-            <Text style={{ flex: 1, color: 'white', padding: 10 }} numberOfLines={2}>{info.title}</Text>
-          </View>
-          <Text style={{ marginBottom: 10, color: "grey", fontWeight: "bold" }}>from: {info.account_url}</Text>
-        </View>
-        <ScrollView>
-          <CustomImage info={info} />
-          <Text style={{ color: "grey", padding: 10 }}>{info.views} views</Text>
-          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginLeft: 10, marginRight: 10 }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <TouchableOpacity onPress={this.isFavorite}>
-                <Icon active name={(this.state.isLike ? "md-heart" : "md-heart-empty")} style={{ color: 'red', fontSize: 30 }} />
-              </TouchableOpacity>
-              <Text style={{ color: 'white', marginLeft: 10 }}>{info.favorite_count}</Text>
-            </View>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <TouchableOpacity style={{ marginLeft: 20 }} onPress={() => console.log("xd")}>
-                <Icon active name="ios-arrow-up" style={{ color: 'cyan', fontSize: 30 }} />
-              </TouchableOpacity>
-              <Text style={{ color: 'white', marginLeft: 10, marginRight: 10 }}>{info.ups - info.downs}</Text>
-              <TouchableOpacity onPress={() => console.log("xd")}>
-                <Icon active name="ios-arrow-down" style={{ color: 'cyan', fontSize: 30 }} />
-              </TouchableOpacity>
-            </View>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Text style={{ color: 'white', marginRight: 10 }}>{info.comment_count}</Text>
-              <TouchableOpacity onPress={() => console.log("xd")}>
-                <Icon active name="chatbubbles" style={{ color: 'cyan', fontSize: 30 }} />
-              </TouchableOpacity>
-            </View>
-          </View>
-          <GetDescription info={info} />
-          <CommentInfo token={accountParams ? accountParams.access_token : ""} commentData={commentData} id={info.id} />
-        </ScrollView>
+  return (
+    <View style={{ flex: 1, backgroundColor: homeBackgroundColor }}>
+      <View style={{ flexDirection: "row", alignItems: 'center' }}>
+        <TouchableOpacity onPress={() => setModalState(false)}>
+          <Icon active name="ios-close" style={{ fontSize: 60, color: spinnerColor, marginLeft: 20 }} />
+        </TouchableOpacity>
+        {userData &&
+          <Image style={{ height: 40, width: 40, resizeMode: "contain", borderRadius: 40, marginLeft: 20 }} source={{ uri: userData.avatar }} />
+        }
+        <Text style={styles.title} numberOfLines={2}>{item.title}</Text>
       </View>
-    );
-  }
+      <Text style={styles.subtitle}>from: {item.account_url}</Text>
+      <ScrollView>
+        {item.is_album &&
+          <ImageCarousel itemArray={item.images} />
+        }
+        {!item.is_album &&
+          <CustomImage item={item} />
+        }
+        <Text style={{ color: lightTitleTextColor, padding: 10 }}>{item.views} views</Text>
+        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginLeft: 10, marginRight: 10 }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <TouchableOpacity onPress={isFavorite}>
+              <Icon name={isLike ? "md-heart" : "md-heart-empty"} style={{ color: '#e33', fontSize: 30 }} />
+            </TouchableOpacity>
+            <Text style={{ color: titleTextColor, fontWeight: 'bold', marginLeft: 10 }}>{item.favorite_count}</Text>
+          </View>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <TouchableOpacity style={{ marginLeft: 20 }} onPress={() => console.log("xd")}>
+              <Icon name="ios-arrow-dropup" style={{ color: globalBlueColor, fontSize: 30 }} />
+            </TouchableOpacity>
+            <Text style={{ color: titleTextColor, fontWeight: 'bold', marginLeft: 10, marginRight: 10 }}>{item.ups - item.downs}</Text>
+            <TouchableOpacity onPress={() => console.log("xd")}>
+              <Icon name="ios-arrow-dropdown" style={{ color: globalBlueColor, fontSize: 30 }} />
+            </TouchableOpacity>
+          </View>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Text style={{ color: titleTextColor, fontWeight: 'bold', marginRight: 10 }}>{item.comment_count}</Text>
+            <TouchableOpacity onPress={() => console.log("xd")}>
+              <Icon name="chatbubbles" style={{ color: globalBlueColor, fontSize: 30 }} />
+            </TouchableOpacity>
+          </View>
+        </View>
+        <GetDescription item={item} />
+        <CommentInfo token={accountParams ? accountParams.access_token : ""} commentData={commentData} id={item.id} />
+      </ScrollView>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
-  image: {
-    height: 400,
-    width: null,
-    resizeMode: 'cover'
+  title: {
+    fontWeight: '700',
+    flex: 1,
+    color: titleTextColor,
+    padding: 10
   },
-  video: {
-    height: 400,
-    width: '100%',
-    resizeMode: 'center',
-    flex: 1
+  subtitle: {
+    alignSelf: 'center',
+    color: lightTitleTextColor,
+    fontWeight: "bold",
+    fontSize: 14
   },
   description: {
     color: 'white',

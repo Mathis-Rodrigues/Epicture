@@ -4,7 +4,7 @@ import { Card, CardItem, Text, Button, Icon, Left, Right } from 'native-base'
 import { Video } from 'expo-av'
 import InfoModal from './InfoModal'
 
-import { globalBlueColor, titleTextColor } from '../../config/theme'
+import { globalBlueColor, titleTextColor, homeBackgroundColor } from '../../config/theme'
 
 function CustomImage({ info }) {
   const uri = !info.images ? info.link : info.images[0].link
@@ -22,7 +22,7 @@ export default function Gallery({ info, setFavoriteById }) {
   return (
     <Fragment>
       <Modal transparent visible={isModalOpen} animationType={"slide"}>
-        <InfoModal setModalState={setIsModalOpen} info={info} setFavoriteById={setFavoriteById} />
+        <InfoModal setModalState={setIsModalOpen} item={info} setFavoriteById={setFavoriteById} />
       </Modal>
       <TouchableOpacity style={styles.item} onPress={() => setIsModalOpen(true)}>
         <Card>
@@ -57,6 +57,7 @@ export default function Gallery({ info, setFavoriteById }) {
 const styles = StyleSheet.create({
   item: {
     padding: 10,
+    backgroundColor: homeBackgroundColor,
   },
   titleText: {
     color: titleTextColor,

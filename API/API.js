@@ -211,7 +211,7 @@ export function getFavorites(token) {
   )
 }
 
-export function getGalleryById(token, id) {
+export function getGalleryAlbumById(token, id) {
   const requestOptions = {
     method: 'GET',
     headers: buildHeader(token),
@@ -220,6 +220,19 @@ export function getGalleryById(token, id) {
 
   return (
     fetch(`https://api.imgur.com/3/gallery/album/${id}`, requestOptions)
+      .then(response => response.json())
+  )
+}
+
+export function getGalleryImageById(token, id) {
+  const requestOptions = {
+    method: 'GET',
+    headers: buildHeader(token),
+    redirect: 'follow'
+  }
+
+  return (
+    fetch(`https://api.imgur.com/3/gallery/image/${id}`, requestOptions)
       .then(response => response.json())
   )
 }

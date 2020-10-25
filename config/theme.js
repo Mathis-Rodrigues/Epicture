@@ -3,10 +3,11 @@ const theme = {
 
     headerBackgroundColor: "#eee",
     androidHeaderColor: "#1b7ce2",
-    homeBackgroundColor: '#000',
+    homeBackgroundColor: '#eee',
     itemBackgroundColor: '#eee',
     spinnerColor: "#444",
     titleTextColor: "#444",
+    lightTitleTextColor: "#777",
 
     postsBackgroundColor: '#333',
     inputBorderColor: '#ddd',

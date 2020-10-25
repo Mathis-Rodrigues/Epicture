@@ -2,6 +2,8 @@ import React, { Fragment, useState } from 'react';
 import { View, Text } from 'react-native'
 import { Input } from 'native-base'
 
+import { addComment } from '../../API/API'
+
 function CommentInfo({ token, commentData, id }) {
   const [commentText, setCommentText] = useState("")
 

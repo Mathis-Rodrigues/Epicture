@@ -62,7 +62,7 @@ const ImageItem = ({ token, item, last }) => {
         </View>
       </View>
       <Modal transparent visible={isModalOpen} animationType={"slide"}>
-        <InfoModal setModalState={setIsModalOpen} info={item} setFavoriteById={() => { console.log("Fav") }} />
+        <InfoModal setModalState={setIsModalOpen} item={item} setFavoriteById={() => { console.log("Fav") }} />
       </Modal>
     </View>
   )
