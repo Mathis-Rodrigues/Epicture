@@ -25,7 +25,10 @@ const FavoriteGalleryItem = ({ token, item, isModalOpen, setIsModalOpen }) => {
     })()
   }, [])
 
-  return (gallery &&
+  if (!gallery)
+    return <Fragment />
+
+  return (
     <Fragment>
       {type !== 'video/mp4' &&
         < BackgroundImage uri={uri}>
