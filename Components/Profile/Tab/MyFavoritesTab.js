@@ -52,6 +52,13 @@ const FavoriteGalleryItem = ({ token, item, isModalOpen, setIsModalOpen }) => {
     setGallery(_data)
   }
 
+  const setFavoriteById = (id, value) => {
+    const _data = { ...gallery }
+    _data.favorite = value
+    _data.favorite_count += value ? 1 : -1
+    setGallery(_data)
+  }
+
   if (!gallery)
     return <Fragment />
 
@@ -68,13 +75,13 @@ const FavoriteGalleryItem = ({ token, item, isModalOpen, setIsModalOpen }) => {
         </ BackgroundVideo>
       }
       <Modal transparent visible={isModalOpen} animationType={"slide"}>
-        <InfoModal setModalState={setIsModalOpen} item={gallery} setFavoriteById={() => null} setVoteById={setVoteById} />
+        <InfoModal setModalState={setIsModalOpen} item={gallery} setFavoriteById={() => null} setVoteById={setVoteById} setFavoriteById={setFavoriteById} />
       </Modal>
     </Fragment >
   )
 }
 
-const FavoriteItem = ({ token, item, last, setVoteById }) => {
+const FavoriteItem = ({ token, item, last, setVoteById, setFavoriteById }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   return (
@@ -105,7 +112,7 @@ const FavoriteItem = ({ token, item, last, setVoteById }) => {
       </View>
       { !item.in_gallery &&
         <Modal transparent visible={isModalOpen} animationType={"slide"}>
-          <InfoModal setModalState={setIsModalOpen} item={item} setFavoriteById={() => null} setVoteById={setVoteById} />
+          <InfoModal setModalState={setIsModalOpen} item={item} setFavoriteById={() => null} setVoteById={setVoteById} setFavoriteById={setFavoriteById} />
         </Modal>
       }
     </View >
@@ -123,7 +130,7 @@ function MyFavoritesTab({ token }) {
   }, [])
 
   const setVoteById = (id, value, previousValue) => {
-    const _data = [ ...favorites ]
+    const _data = [...favorites]
     _data.find(e => e.id === id).vote = value
     if (value === "up" && previousValue === "up")
       _data.find(e => e.id === id).ups -= 1
@@ -148,13 +155,20 @@ function MyFavoritesTab({ token }) {
     setFavorites(_data)
   }
 
+  const setFavoriteById = (id, value) => {
+    const _data = [...favorites]
+    _data.find(e => e.id === id).favorite = value
+    _data.find(e => e.id === id).favorite_count += value ? 1 : -1
+    setFavorites(_data)
+  }
+
   return (
     <View style={styles.container}>
       { favorites &&
         <FlatList
           data={favorites.slice(1)}
-          renderItem={({ item, index }) => <FavoriteItem token={token} item={item} last={index === favorites.length - 2 && !(favorites.length % 2)} setVoteById={setVoteById} />}
-          ListHeaderComponent={() => <FavoriteItem token={token} item={favorites[0]} last setVoteById={setVoteById} />}
+          renderItem={({ item, index }) => <FavoriteItem token={token} item={item} last={index === favorites.length - 2 && !(favorites.length % 2)} setVoteById={setVoteById} setFavoriteById={setFavoriteById} />}
+          ListHeaderComponent={() => <FavoriteItem token={token} item={favorites[0]} last setVoteById={setVoteById} setFavoriteById={setFavoriteById} />}
           keyExtractor={favorite => favorite.id}
           numColumns={2}
         />
