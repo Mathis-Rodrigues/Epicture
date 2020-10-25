@@ -232,7 +232,7 @@ export function getGalleryImageById(token, id) {
   }
   return (
     fetch(`https://api.imgur.com/3/gallery/image/${id}`, requestOptions)
-      .then()
+      .then(res => res.json())
   )
 }
 
