@@ -65,7 +65,7 @@ export default function Search() {
     _data.find(e => e.id === id).vote = value
     if (value === "up" && previousValue === "up")
       _data.find(e => e.id === id).ups -= 1
-    if (value === "up" && previousValue === "veto")
+    else if (value === "up" && previousValue === "veto")
       _data.find(e => e.id === id).ups += 1
     else if (value === "up" && previousValue === "down") {
       _data.find(e => e.id === id).ups += 1
