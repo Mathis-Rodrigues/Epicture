@@ -240,6 +240,7 @@ export function changeAccountSetting(token, username, bio) {
   const formdata = new FormData();
   formdata.append("bio", bio);
   formdata.append("username", username);
+  formdata.append("avatar", "flavor/fox")
 
   const requestOptions = {
     method: 'POST',
@@ -250,6 +251,20 @@ export function changeAccountSetting(token, username, bio) {
 
   return (
     fetch(`https://api.imgur.com/3/account/me/settings`, requestOptions)
+      .then(response => response.json())
+  )
+}
+
+export function getAvatarList(token, username) {
+
+  const requestOptions = {
+    method: 'GET',
+    headers: buildHeader(token),
+    redirect: 'follow'
+  }
+
+  return (
+    fetch(`https://api.imgur.com/3/account/me/available_avatars`, requestOptions)
       .then(response => response.json())
   )
 }
