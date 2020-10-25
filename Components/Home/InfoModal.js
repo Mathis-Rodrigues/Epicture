@@ -20,25 +20,7 @@ import {
   spinnerColor,
   titleTextColor
 } from '../../config/theme'
-
-class GetDescription extends Component {
-  render() {
-    const { item } = this.props
-    if (!item.images) {
-      if (item.description == null)
-        return (<Text style={styles.description}>No description</Text>)
-      else
-        return (<Text style={styles.description}>{item.description}</Text>)
-    }
-    else {
-      if (item.images[0].description == null)
-        return (<Text style={styles.description}>No description</Text>)
-      else
-        return (<Text style={styles.description}>{item.images[0].description}</Text>)
-
-    }
-  }
-}
+import { acc } from 'react-native-reanimated'
 
 export default function InfoModal({ item, setFavoriteById, setModalState }) {
   const [isLike, setIsLike] = useState(item.favorite)
@@ -47,15 +29,14 @@ export default function InfoModal({ item, setFavoriteById, setModalState }) {
   const [commentData, setCommentData] = useState(null)
 
   useEffect(() => {
-    // console.log('------------------------------------------------------------------------------------------------------------------------------');
-    // console.log(item);
     (async () => {
       const acc = JSON.parse(await AsyncStorage.getItem("account_params"))
+      setAccountParams(acc)
       const rep = await getAvatar(acc.access_token, item.account_url)
       setUserData(rep.data)
       const rep2 = await getComment(acc.access_token, item.id)
-      setCommentData(rep2.status === 400 ? {} : rep2.data)
-      setAccountParams(acc)
+      setCommentData(rep2.status === 400 ? [] : rep2.data)
+      console.log(acc)
     })()
   }, [])
 
@@ -66,6 +47,15 @@ export default function InfoModal({ item, setFavoriteById, setModalState }) {
       addImageToFavorite(accountParams.access_token, item.id)
     setFavoriteById(item.id, !isLike)
     setIsLike(!isLike)
+  }
+
+  const addComment = (msg) => {
+    const _commentData = [ ...commentData ]
+    _commentData.push({
+      comment: msg,
+      author: accountParams.account_username,
+    })
+    setCommentData(_commentData)
   }
 
   return (
@@ -106,8 +96,8 @@ export default function InfoModal({ item, setFavoriteById, setModalState }) {
             </TouchableOpacity>
           </View>
         </View>
-        <GetDescription item={item} />
-        <CommentInfo token={accountParams ? accountParams.access_token : ""} commentData={commentData} id={item.id} />
+        <Text style={styles.description}>{item.description}</Text>
+        <CommentInfo token={accountParams ? accountParams.access_token : ""} commentData={commentData} id={item.id} addMyComment={addComment} />
       </ScrollView>
     </View>
   );
@@ -127,7 +117,7 @@ const styles = StyleSheet.create({
     fontSize: 14
   },
   description: {
-    color: 'white',
+    color: 'black',
     padding: 10
   }
 })

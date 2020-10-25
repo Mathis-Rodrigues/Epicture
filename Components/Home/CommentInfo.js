@@ -1,15 +1,17 @@
 import React, { Fragment, useState } from 'react';
 import { View, Text } from 'react-native'
-import { Input } from 'native-base'
+import { Input, Card, CardItem, Left, Body } from 'native-base'
 
 import { addComment } from '../../API/API'
 
-function CommentInfo({ token, commentData, id }) {
+function CommentInfo({ token, commentData, id, addMyComment }) {
   const [commentText, setCommentText] = useState("")
 
   const postComment = () => {
-    if (userComment.length > 0) {
-      addComment(token, commentText, id)
+    console.log(commentText)
+    if (commentText.length > 0) {
+      addComment(token, commentText, id).then(res => console.log("lol: ", res))
+      addMyComment(commentText)
       setCommentText("")
     }
   }
@@ -17,25 +19,34 @@ function CommentInfo({ token, commentData, id }) {
   if (!commentData)
     return (<Fragment />)
 
-  if (!commentData.length)
-    return <Text style={{ padding: 10, color: "white" }}>NO COMMENT AVAILABLE</Text>
-
   return (
     <Fragment>
-      <Text style={{ padding: 10, color: "white" }}>BEST COMMENTS:</Text>
-      {commentData.map((e, i) => (
-        <View style={{ padding: 10 }} key={i}>
-          <Text style={{ color: "white" }}>{e.author + ": " + e.comment}</Text>
-        </View>
-      ))
+      { commentData.length === 0 &&
+        <Text style={{ padding: 10, color: "#777", fontWeight: 'bold', alignSelf: 'center' }}>BE THE FIRST TO COMMENT</Text>
       }
-      <Text style={{ color: 'white', alignSelf: 'center' }}>COMMENT HERE:</Text>
-      <Input style={{ backgroundColor: "white", margin: 40 }}
+      <Input
+        style={{ backgroundColor: "white", marginLeft: 20, marginRight: 20 }}
         placeholder="Write a comment"
         onChangeText={setCommentText}
         onSubmitEditing={postComment}
         value={commentText}
       />
+      { commentData.length > 0 && commentData.map((e, i) => (
+        <View style={{ padding: 10 }} key={i}>
+          <Card>
+            <CardItem>
+              <Left>
+                <Text style={{ fontWeight: 'bold' }}>{e.author}</Text>
+              </Left>
+            </CardItem>
+            <CardItem cardBody>
+              <Body>
+                <Text style={{ padding: 15 }}>{e.comment}</Text>
+              </Body>
+            </CardItem>
+          </Card>
+        </View>
+      ))}
     </Fragment>
   )
 }

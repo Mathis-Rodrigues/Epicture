@@ -25,6 +25,7 @@ function CustomImage({ item, index, activeItem }) {
     <Image
       source={{ uri: item.link }}
       style={{
+        alignSelf: 'center',
         width: item.width > width ? width : item.width,
         height: item.width > width ? width * ratio : item.height
       }}
