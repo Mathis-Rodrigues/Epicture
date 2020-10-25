@@ -82,12 +82,12 @@ export default function InfoModal({ item, setFavoriteById, setModalState, setVot
   const voteAlbum = (value) => {
     if (previousVote === value) {
       albumVote(accountParams.access_token, item.id, "veto").then(rep => console.log(rep))
-      setVoteById(item.id, "veto")
+      setVoteById(item.id, "veto", previousVote)
       setPreviousVote("veto")
     }
     else {
       albumVote(accountParams.access_token, item.id, value).then(rep => console.log(rep))
-      setVoteById(item.id, value)
+      setVoteById(item.id, value, previousVote)
       setPreviousVote(value)
     }
   }

@@ -60,10 +60,29 @@ export default function Search() {
     setData(_data)
   }
 
-  const setVoteById = (id, value) => {
+  const setVoteById = (id, value, previousValue) => {
     const _data = [...data]
     _data.find(e => e.id === id).vote = value
-    _data.find(e => e.id === id).ups += 1
+    if (value === "up" && previousValue === "up")
+      _data.find(e => e.id === id).ups -= 1
+    if (value === "up" && previousValue === "veto")
+      _data.find(e => e.id === id).ups += 1
+    else if (value === "up" && previousValue === "down") {
+      _data.find(e => e.id === id).ups += 1
+      _data.find(e => e.id === id).downs -= 1
+    }
+    else if (value === "down" && previousValue === "down")
+      _data.find(e => e.id === id).downs -= 1
+    else if (value === "down" && previousValue === "veto")
+      _data.find(e => e.id === id).downs += 1
+    else if (value === "down" && previousValue === "up") {
+      _data.find(e => e.id === id).ups -= 1
+      _data.find(e => e.id === id).downs += 1
+    }
+    else if (value === "veto" && previousValue === "up")
+      _data.find(e => e.id === id).ups -= 1
+    else if (value === "veto" && previousValue === "down")
+      _data.find(e => e.id === id).downs -= 1
     setData(_data)
 
   }
