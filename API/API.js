@@ -287,3 +287,35 @@ export function uploadAlbum(token, param) {
   return fetch("https://api.imgur.com/3/album", requestOptions)
     .then(res => res.json())
 }
+
+export function shareImage(token, id, title) {
+  const formdata = new FormData()
+  formdata.append("title", title)
+  formdata.append("terms", "1")
+
+  const requestOptions = {
+    method: 'POST',
+    headers: buildHeader(token),
+    body: formdata,
+    redirect: 'follow'
+  };
+
+  return fetch(`https://api.imgur.com/3/gallery/image/${id}`, requestOptions)
+    .then(res => res.json())
+}
+
+export function shareAlbum(token, id, title) {
+  const formdata = new FormData()
+  formdata.append("title", title)
+  formdata.append("terms", "1")
+
+  const requestOptions = {
+    method: 'POST',
+    headers: buildHeader(token),
+    body: formdata,
+    redirect: 'follow'
+  };
+
+  return fetch(`https://api.imgur.com/3/gallery/album/${id}`, requestOptions)
+    .then(res => res.json())
+}

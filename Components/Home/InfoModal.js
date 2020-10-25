@@ -36,7 +36,7 @@ export default function InfoModal({ item, setFavoriteById, setModalState }) {
       setUserData(rep.data)
       const rep2 = await getComment(acc.access_token, item.id)
       setCommentData(rep2.status === 400 ? [] : rep2.data)
-      console.log(acc)
+      // console.log(acc)
     })()
   }, [])
 
@@ -65,7 +65,7 @@ export default function InfoModal({ item, setFavoriteById, setModalState }) {
           <Icon active name="ios-close" style={{ fontSize: 60, color: spinnerColor, marginLeft: 20 }} />
         </TouchableOpacity>
         {userData &&
-          <Image style={{ height: 40, width: 40, resizeMode: "contain", borderRadius: 40, marginLeft: 20 }} source={{ uri: userData.avatar }} />
+          <Image style={{ height: 40, width: 40, resizeMode: "contain", borderRadius: 40, marginLeft: 20 }} source={{ uri: userData.avatar + `&nocache=${userData.avatar_name}` }} />
         }
         <Text style={styles.title} numberOfLines={2}>{item.title}</Text>
       </View>
