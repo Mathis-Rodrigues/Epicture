@@ -17,7 +17,7 @@ function InfoProfile({ data, categories, selectedCategory, setCategory }) {
               {data.url}
             </Title>
             <Subtitle style={{ fontWeight: 'bold', fontSize: 14 }}>
-              {data.reputation}
+              {data.reputation} pts
               {"   •   "}
               {data.reputation_name}
             </Subtitle>

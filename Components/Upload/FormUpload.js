@@ -7,7 +7,8 @@ import { inputBorderColor, uploadFormTextColor, uploadFormPlaceholderColor } fro
 function FormUpload({ isUploading, setFormData }) {
   const [titleInputValue, setTitleInputValue] = useState("")
   const [descInputValue, setDescInputValue] = useState("")
-  const [toggleCheckBox, setToggleCheckBox] = useState(false)
+  const [toggleIsAlbum, setToggleIsAlbum] = useState(false)
+  const [toggleIsPublic, setToggleIsPublic] = useState(false)
 
   const setTitle = (value) => {
     setTitleInputValue(value)
@@ -20,18 +21,23 @@ function FormUpload({ isUploading, setFormData }) {
   }
 
   const setIsAlbum = (value) => {
-    setToggleCheckBox(value)
+    setToggleIsAlbum(value)
     setFormData(prev => ({ ...prev, isAlbum: value }))
+  }
+
+  const setIsPublic = (value) => {
+    setToggleIsPublic(value)
+    setFormData(prev => ({ ...prev, isPublic: value }))
   }
 
   return (
     <Fragment>
       <View style={{ ...styles.container, justifyContent: "flex-start", marginTop: 40 }}>
         <Text style={styles.formText}>
-          {toggleCheckBox ? "Album title:" : "Title:"}
+          {toggleIsAlbum ? "Album title:" : "Title:"}
         </Text>
         <TextInput
-          style={{ ...styles.titleInput, width: toggleCheckBox ? '70%' : '80%' }}
+          style={{ ...styles.titleInput, width: toggleIsAlbum ? '70%' : '80%' }}
           value={titleInputValue}
           onChangeText={setTitle}
           placeholder="A beautiful title for your pic"
@@ -41,7 +47,7 @@ function FormUpload({ isUploading, setFormData }) {
       </View>
       <View style={{ justifyContent: "flex-start", marginTop: 40, width: '80%' }}>
         <Text style={styles.formText}>
-          {toggleCheckBox ? "Album description:" : "Description:"}
+          {toggleIsAlbum ? "Album description:" : "Description:"}
         </Text>
         <TextInput
           style={styles.descInput}
@@ -51,14 +57,24 @@ function FormUpload({ isUploading, setFormData }) {
           editable={!isUploading}
         />
       </View>
-      <View style={{ marginTop: 40, width: '80%', justifyContent: 'flex-start', flexDirection: 'row', alignItems: 'center' }}>
+      <View style={{ marginTop: 20, width: '80%', justifyContent: 'flex-start', flexDirection: 'row', alignItems: 'center' }}>
         <CheckBox
           disabled={isUploading}
-          value={toggleCheckBox}
+          value={toggleIsAlbum}
           onValueChange={(newValue) => setIsAlbum(newValue)}
         />
         <Text style={styles.formText}>
-          Upload as an album (public post)
+          Upload as an album
+        </Text>
+      </View>
+      <View style={{ width: '80%', justifyContent: 'flex-start', flexDirection: 'row', alignItems: 'center' }}>
+        <CheckBox
+          disabled={isUploading}
+          value={toggleIsPublic}
+          onValueChange={(newValue) => setIsPublic(newValue)}
+        />
+        <Text style={styles.formText}>
+          Share with community !
         </Text>
       </View>
     </Fragment>

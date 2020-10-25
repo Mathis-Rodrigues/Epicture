@@ -16,13 +16,14 @@ function ImagePicker() {
   const [video, setVideo] = useState(null)
   const [accountParams, setAccountParams] = useState(null)
   const [isUploading, setIsUploading] = useState(false)
-  const [formData, setFormData] = useState({ title: "", description: "" })
+  const [formData, setFormData] = useState({ title: "", description: "", isAlbum: false, isPublic: false })
+  const [needTitle, setNeedTitle] = useState(false)
 
   const navigation = useNavigation()
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      !setImage(null) && !setVideo(null) && !setIsUploading(false) && !setFormData({ title: "", description: "" })
+      !setNeedTitle(false) && !setImage(null) && !setVideo(null) && !setIsUploading(false) && !setFormData({ title: "", description: "" })
     })
     return unsubscribe
   }, [navigation])
@@ -49,25 +50,29 @@ function ImagePicker() {
 
   const uploadImage = async () => {
     setIsUploading(true)
-    const { title, description, isAlbum } = formData
+    setNeedTitle(false)
+    const { title, description, isAlbum, isPublic } = formData
     const img = await ImageManipulator.manipulateAsync(
       image.uri, [],
       { compress: 1, format: ImageManipulator.SaveFormat.PNG, base64: true }
     )
+    const body = { image: img.base64, type: 'base64', title, description }
 
-    console.log(title, description, isAlbum)
-    const body = {
-      image: img.base64,
-      type: 'base64',
-      title,
-      description
-    }
+    if (isPublic && title === "")
+      return !setNeedTitle(true) && setIsUploading(false)
+
     if (isAlbum) {
       const res = await API.uploadImage(accountParams.access_token, { image: img.base64, type: 'base64' })
-      console.log("RES: ", res)
-      await API.uploadAlbum(accountParams.access_token, { image: res.data.id, title, description }).then(res => console.log(res))
-    } else
-      await API.uploadImage(accountParams.access_token, body)
+      const albumRes = await API.uploadAlbum(accountParams.access_token, { image: res.data.id, title, description })
+      console.log(albumRes)
+      if (isPublic)
+        await API.shareAlbum(accountParams.access_token, albumRes.data.id, title)
+    } else {
+      const res = await API.uploadImage(accountParams.access_token, body)
+      console.log(res)
+      if (isPublic)
+        await API.shareImage(accountParams.access_token, res.data.id, title)
+    }
     setIsUploading(false)
   }
 
@@ -99,6 +104,9 @@ function ImagePicker() {
               }
             </TouchableOpacity>
           </View>
+          { needTitle &&
+            <Text style={{ fontSize: 14, fontWeight: 'bold', color: '#a00', marginTop: 10 }}>Enter a title to make it Public</Text>
+          }
           <FormUpload setFormData={setFormData} isUploading={isUploading} />
         </Fragment>
       }
