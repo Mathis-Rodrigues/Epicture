@@ -21,15 +21,7 @@ const Sort = [
 ]
 
 const ImageItem = ({ token, item, last }) => {
-  const [img, setImg] = useState(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
-
-  useEffect(() => {
-    (async () => {
-      const rep = await getMyImageById(token, item.id)
-      setImg(rep.data)
-    })()
-  }, [])
 
   return (
     <View style={{ ...styles.itemContainer, height: last ? 200 : 120 }}>
@@ -44,7 +36,7 @@ const ImageItem = ({ token, item, last }) => {
         </ BackgroundVideo>
       }
       <Modal transparent visible={isModalOpen} animationType={"slide"}>
-        <InfoModal setModalState={setIsModalOpen} item={item} setFavoriteById={() => { console.log("Fav") }} />
+        <InfoModal setModalState={setIsModalOpen} item={item} setFavoriteById={() => null} />
       </Modal>
     </View>
   )

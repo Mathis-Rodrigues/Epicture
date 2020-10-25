@@ -89,7 +89,7 @@ function Profile({ disconnectAccount }) {
     })()
   }, [])
 
-  return (accountParams && myData && !console.log(myData) &&
+  return (accountParams && myData &&
     <Drawer.Navigator
       screenOptions={({ route }) => ({
         drawerIcon: ({ color, size }) => <Ionicons name={route.name === "Profile" ? "ios-person" : "md-settings"} size={size} color={color} />

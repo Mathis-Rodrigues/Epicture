@@ -58,7 +58,7 @@ const AlbumItem = ({ token, item, last }) => {
         }
       </View>
       <Modal transparent visible={isModalOpen} animationType={"slide"}>
-        <InfoModal setModalState={setIsModalOpen} item={gallery} setFavoriteById={() => { console.log("Fav") }} />
+        <InfoModal setModalState={setIsModalOpen} item={gallery} setFavoriteById={() => null} />
       </Modal>
     </View >
   )

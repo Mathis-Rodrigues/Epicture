@@ -42,7 +42,7 @@ const PublicContent = ({ item, accountParams, isFavorite, isLike, addComment, co
       </View>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <Text style={{ color: titleTextColor, fontWeight: 'bold', marginRight: 10 }}>{item.comment_count}</Text>
-        <TouchableOpacity onPress={() => console.log("xd")}>
+        <TouchableOpacity onPress={() => null}>
           <Icon name="chatbubbles" style={{ color: globalBlueColor, fontSize: 30 }} />
         </TouchableOpacity>
       </View>
@@ -81,12 +81,12 @@ export default function InfoModal({ item, setFavoriteById, setModalState, setVot
 
   const voteAlbum = (value) => {
     if (previousVote === value) {
-      albumVote(accountParams.access_token, item.id, "veto").then(rep => console.log(rep))
+      albumVote(accountParams.access_token, item.id, "veto")
       setVoteById(item.id, "veto", previousVote)
       setPreviousVote("veto")
     }
     else {
-      albumVote(accountParams.access_token, item.id, value).then(rep => console.log(rep))
+      albumVote(accountParams.access_token, item.id, value)
       setVoteById(item.id, value, previousVote)
       setPreviousVote(value)
     }
