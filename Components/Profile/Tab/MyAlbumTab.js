@@ -8,7 +8,7 @@ import InfoModal from '../../Home/InfoModal'
 import { getMyAlbums, getGalleryAlbumById, getMyAlbumById } from '../../../API/API'
 import { drawerBackgroundColor } from '../../../config/theme'
 
-const AlbumItem = ({ token, item, last }) => {
+const AlbumItem = ({ token, item, last, setVoteById }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [gallery, setGallery] = useState(null)
 
@@ -58,7 +58,7 @@ const AlbumItem = ({ token, item, last }) => {
         }
       </View>
       <Modal transparent visible={isModalOpen} animationType={"slide"}>
-        <InfoModal setModalState={setIsModalOpen} item={gallery} setFavoriteById={() => null} />
+        <InfoModal setModalState={setIsModalOpen} item={gallery} setFavoriteById={() => null} setVoteById={setVoteById} />
       </Modal>
     </View >
   )
@@ -74,13 +74,39 @@ function MyAlbumTab({ token }) {
     })()
   }, [])
 
+  const setVoteById = (id, value, previousValue) => {
+    const _data = [ ...albums ]
+    _data.find(e => e.id === id).vote = value
+    if (value === "up" && previousValue === "up")
+      _data.find(e => e.id === id).ups -= 1
+    if (value === "up" && previousValue === "veto")
+      _data.find(e => e.id === id).ups += 1
+    else if (value === "up" && previousValue === "down") {
+      _data.find(e => e.id === id).ups += 1
+      _data.find(e => e.id === id).downs -= 1
+    }
+    else if (value === "down" && previousValue === "down")
+      _data.find(e => e.id === id).downs -= 1
+    else if (value === "down" && previousValue === "veto")
+      _data.find(e => e.id === id).downs += 1
+    else if (value === "down" && previousValue === "up") {
+      _data.find(e => e.id === id).ups -= 1
+      _data.find(e => e.id === id).downs += 1
+    }
+    else if (value === "veto" && previousValue === "up")
+      _data.find(e => e.id === id).ups -= 1
+    else if (value === "veto" && previousValue === "down")
+      _data.find(e => e.id === id).downs -= 1
+    setAlbums(_data)
+  }
+
   return (
     <View style={styles.container}>
       { albums &&
         <FlatList
           data={albums.slice(1)}
-          renderItem={({ item, index }) => <AlbumItem token={token} item={item} last={index === albums.length - 2 && !(albums.length % 2)} />}
-          ListHeaderComponent={() => <AlbumItem token={token} item={albums[0]} last />}
+          renderItem={({ item, index }) => <AlbumItem token={token} item={item} last={index === albums.length - 2 && !(albums.length % 2)} setVoteById={setVoteById} />}
+          ListHeaderComponent={() => <AlbumItem token={token} item={albums[0]} last setVoteById={setVoteById} />}
           keyExtractor={album => album.id}
           numColumns={2}
           style={{ marginTop: 10 }}

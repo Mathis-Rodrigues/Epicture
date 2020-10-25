@@ -84,7 +84,6 @@ export default function Search() {
     else if (value === "veto" && previousValue === "down")
       _data.find(e => e.id === id).downs -= 1
     setData(_data)
-
   }
 
   return (

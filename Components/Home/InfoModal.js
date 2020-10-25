@@ -33,11 +33,11 @@ const PublicContent = ({ item, accountParams, isFavorite, isLike, addComment, co
       </View>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <TouchableOpacity style={{ marginLeft: 20 }} onPress={() => voteAlbum("up")}>
-          <Icon name="ios-arrow-dropup" style={item.vote === "up" ? styles.upvote : styles.vote} />
+          <Icon name={item.vote === "up" ? "ios-arrow-dropup-circle" : "ios-arrow-dropup"} style={styles.vote} />
         </TouchableOpacity>
         <Text style={{ color: titleTextColor, fontWeight: 'bold', marginLeft: 10, marginRight: 10 }}>{item.ups - item.downs}</Text>
         <TouchableOpacity onPress={() => voteAlbum("down")}>
-          <Icon name="ios-arrow-dropdown" style={item.vote === "down" ? styles.downvote : styles.vote} />
+          <Icon name={item.vote === "down" ? "ios-arrow-dropdown-circle" : "ios-arrow-dropdown"} style={styles.vote} />
         </TouchableOpacity>
       </View>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
