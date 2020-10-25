@@ -41,7 +41,7 @@ function CustomDrawerContent(props) {
   return (
     <DrawerContentScrollView {...props}>
       <View style={{ width: '100%', alignItems: 'center', marginTop: 25 }}>
-        <Image source={{ uri: data.avatar }} style={{ width: 80, height: 80, borderRadius: 100, }} />
+        <Image source={{ uri: data.avatar + `&nocache=${data.avatar_name}` }} style={{ width: 80, height: 80, borderRadius: 100 }} />
         <Text style={styles.drawerTitle}>{data.url}</Text>
         <Text style={styles.drawerSubtitle}>{data.reputation}{" • "}{data.reputation_name}</Text>
       </View>

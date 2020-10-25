@@ -11,7 +11,7 @@ function InfoProfile({ data, categories, selectedCategory, setCategory }) {
     <View style={styles.container}>
       <ImageBackground source={{ uri: data.cover }} style={styles.imageBackground}>
         <View style={{ flexDirection: 'row', marginLeft: 30, marginTop: 50, alignItems: 'center' }}>
-          <Image source={{ uri: data.avatar.slice(0, data.avatar.length - 3) + "190" }} style={styles.pp} />
+          <Image source={{ uri: data.avatar + `&nocache=${data.avatar_name}` }} style={styles.pp} />
           <View style={{ marginLeft: 25 }}>
             <Title style={{ fontWeight: 'bold', fontSize: 24, width: '200%' }}>
               {data.url}

@@ -9,9 +9,9 @@ const theme = {
     titleTextColor: "#444",
     lightTitleTextColor: "#777",
 
-    postsBackgroundColor: '#333',
-    inputBorderColor: '#ddd',
-    uploadFormTextColor: '#ddd',
+    postsBackgroundColor: '#f0f0f0',
+    inputBorderColor: '#000',
+    uploadFormTextColor: '#333',
     uploadFormPlaceholderColor: '#777',
 
     drawerBackgroundColor: '#eee',

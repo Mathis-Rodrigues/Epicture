@@ -17,14 +17,14 @@ const iconList = [
     iconFocused: "md-home"
   },
   {
-    tab: "Profil",
-    icon: "ios-person",
-    iconFocused: "ios-person"
-  },
-  {
-    tab: "Posts",
+    tab: "Upload",
     icon: "ios-camera",
     iconFocused: "ios-camera"
+  },
+  {
+    tab: "Profile",
+    icon: "ios-person",
+    iconFocused: "ios-person"
   },
 ]
 
@@ -50,8 +50,8 @@ export default function Navigation({ disconnectAccount }) {
         }}
       >
         <Tab.Screen name="Home" component={Search} />
-        <Tab.Screen name="Posts" component={UploadWrapper} />
-        <Tab.Screen name="Profil">
+        <Tab.Screen name="Upload" component={UploadWrapper} />
+        <Tab.Screen name="Profile">
           {() => <Profile disconnectAccount={disconnectAccount} />}
         </Tab.Screen>
       </Tab.Navigator>

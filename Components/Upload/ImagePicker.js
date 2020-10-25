@@ -15,7 +15,6 @@ function ImagePicker() {
   const [image, setImage] = useState(null)
   const [video, setVideo] = useState(null)
   const [accountParams, setAccountParams] = useState(null)
-  const [errOccured, setErrOccured] = useState(false)
   const [isUploading, setIsUploading] = useState(false)
   const [formData, setFormData] = useState({ title: "", description: "" })
 
@@ -23,7 +22,7 @@ function ImagePicker() {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      !setImage(null) && !setVideo(null) && !setIsUploading(false) && !setErrOccured(false) && !setFormData({ title: "", description: "" })
+      !setImage(null) && !setVideo(null) && !setIsUploading(false) && !setFormData({ title: "", description: "" })
     })
     return unsubscribe
   }, [navigation])
@@ -50,30 +49,31 @@ function ImagePicker() {
 
   const uploadImage = async () => {
     setIsUploading(true)
-    const { title, description } = formData
+    const { title, description, isAlbum } = formData
     const img = await ImageManipulator.manipulateAsync(
       image.uri, [],
       { compress: 1, format: ImageManipulator.SaveFormat.PNG, base64: true }
     )
 
-    console.log(title, description)
+    console.log(title, description, isAlbum)
     const body = {
       image: img.base64,
       type: 'base64',
       title,
       description
     }
-    const res = await API.uploadImage(accountParams.access_token, body)
-
-    if (!res || !res.success)
-      setErrOccured(true)
+    if (isAlbum) {
+      const res = await API.uploadImage(accountParams.access_token, { image: img.base64, type: 'base64' })
+      console.log("RES: ", res)
+      await API.uploadAlbum(accountParams.access_token, { image: res.data.id, title, description }).then(res => console.log(res))
+    } else
+      await API.uploadImage(accountParams.access_token, body)
     setIsUploading(false)
   }
 
   const uploadVideo = async () => {
     // setIsUploading(true)
     // const file = new Blob([video.uri], { type: "video\/mp4" })
-
   }
 
   return (

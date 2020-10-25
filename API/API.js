@@ -57,7 +57,7 @@ export function uploadImage(token, param) {
   };
 
   return fetch("https://api.imgur.com/3/upload", requestOptions)
-    .then(res => res.text())
+    .then(res => res.json())
 }
 
 export function uploadVideo(token, param) {
@@ -255,7 +255,7 @@ export function changeAccountSetting(token, username, bio) {
   )
 }
 
-export function getAvatarList(token, username) {
+export function getAvatarList(token) {
 
   const requestOptions = {
     method: 'GET',
@@ -267,4 +267,23 @@ export function getAvatarList(token, username) {
     fetch(`https://api.imgur.com/3/account/me/available_avatars`, requestOptions)
       .then(response => response.json())
   )
+}
+
+export function uploadAlbum(token, param) {
+  const formdata = new FormData()
+  formdata.append("ids[]", param.image)
+  formdata.append("title", param.title)
+  formdata.append("description", param.description)
+  // formdata.append("privacy", "public")
+  formdata.append("cover", param.image)
+
+  const requestOptions = {
+    method: 'POST',
+    headers: buildHeader(token),
+    body: formdata,
+    redirect: 'follow'
+  };
+
+  return fetch("https://api.imgur.com/3/album", requestOptions)
+    .then(res => res.json())
 }
