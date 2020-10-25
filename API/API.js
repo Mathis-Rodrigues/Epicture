@@ -129,19 +129,6 @@ export function getMyAccountParams(token) {
   )
 }
 
-export function getMySettings(token) {
-  const requestOptions = {
-    method: 'GET',
-    headers: buildHeader(token),
-    redirect: 'follow'
-  }
-
-  return (
-    fetch(`https://api.imgur.com/3/account/me/settings`, requestOptions)
-      .then(response => response.json())
-  )
-}
-
 export function getComment(token, id) {
   const requestOptions = {
     method: 'GET',

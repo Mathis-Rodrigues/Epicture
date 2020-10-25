@@ -77,7 +77,6 @@ const ProfileWrapper = ({ data, selectedCategory, setCategory, token }) => {
 function Profile({ disconnectAccount }) {
   const [accountParams, setAccountParams] = useState(null)
   const [myData, setMyData] = useState(null)
-  const [mySettings, setMySettings] = useState(null)
   const [category, setCategory] = useState(Categories[0].name)
   const Drawer = createDrawerNavigator();
 
@@ -85,12 +84,12 @@ function Profile({ disconnectAccount }) {
     (async () => {
       const acc = JSON.parse(await AsyncStorage.getItem("account_params"))
       setAccountParams(acc)
-      setMyData(await getMyAccountParams(acc.access_token))
-      setMySettings(await getMySettings(acc.access_token))
+      const res = await getMyAccountParams(acc.access_token)
+      setMyData(res.data)
     })()
   }, [])
 
-  return (accountParams && myData && mySettings &&
+  return (accountParams && myData && !console.log(myData) &&
     <Drawer.Navigator
       screenOptions={({ route }) => ({
         drawerIcon: ({ color, size }) => <Ionicons name={route.name === "Profile" ? "ios-person" : "md-settings"} size={size} color={color} />
@@ -98,7 +97,7 @@ function Profile({ disconnectAccount }) {
       initialRouteName="Profile"
       drawerPosition="right"
       drawerStyle={styles.drawerStyle}
-      drawerContent={(props) => <CustomDrawerContent {...props} data={myData.data} disconnectAccount={disconnectAccount} />}
+      drawerContent={(props) => <CustomDrawerContent {...props} data={myData} disconnectAccount={disconnectAccount} />}
       drawerContentOptions={{
         inactiveTintColor: drawerTextColor,
         activeTintColor: globalBlueColor,
@@ -106,7 +105,7 @@ function Profile({ disconnectAccount }) {
     >
       <Drawer.Screen name="Profile">
         {() => <ProfileWrapper
-          data={myData.data}
+          data={myData}
           selectedCategory={category}
           setCategory={setCategory}
           token={accountParams.access_token}
@@ -114,9 +113,9 @@ function Profile({ disconnectAccount }) {
       </Drawer.Screen>
       <Drawer.Screen name="Settings">
         {() => <Settings
-          data={myData.data}
-          settings={mySettings.data}
+          data={myData}
           token={accountParams.access_token}
+          setData={setMyData}
         />}
       </Drawer.Screen>
     </Drawer.Navigator>
