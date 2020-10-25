@@ -4,7 +4,15 @@ import { Input, Card, CardItem, Left, Body } from 'native-base'
 
 import { addComment } from '../../API/API'
 
-function CommentInfo({ token, commentData, id, addMyComment }) {
+/**
+ * @function
+ * @description Displays all the comment posted about the current post
+ * @param {String} token Token to authorize user to call the Imgur API
+ * @param {Object} commentData An object containing informations about comments, setted in a higher level component
+ * @param {Function} addMyComment add a comment to the commentData in a higher level component
+ * @param {String} id id of the actual post whether it is a Album or a Image
+ */
+function CommentInfo({ token, commentData, addMyComment, id }) {
   const [commentText, setCommentText] = useState("")
 
   const postComment = () => {

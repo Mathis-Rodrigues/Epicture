@@ -6,6 +6,16 @@ import { Icon } from 'native-base'
 import CustomImage from './CustomImage'
 import { globalBlueColor } from '../../config/theme'
 
+/**
+ * @function
+ * @description An Item rendered by the Carousel. Display Image and Description of current item from the upper array
+ * @param {Object} item  Current item from the upper array
+ * @param {Number} index  Index of the current item from the upper array
+ * @param {Number} activeSlide  Index of the item active on screen
+ * @param {Bool} displayDesc  True if there is more than 1 item in the upper array, define if the description has to be displayed
+ * @param {Bool} fullDisplay True if the comment should be displayed entirely
+ * @param {Function} setFullDisplay Set the fullDisplay value in a higher level component
+ */
 const CarouselItem = ({ item, index, activeSlide, displayDesc, fullDisplay, setFullDisplay }) => {
   return (
     <Fragment>
@@ -25,6 +35,11 @@ const CarouselItem = ({ item, index, activeSlide, displayDesc, fullDisplay, setF
   )
 }
 
+/**
+ * @function
+ * @description A Carousel which permit to slide between images in a post if there is more than 1
+ * @param {Array} itemArray An array of items 'image' to display
+ */
 function ImageCarousel({ itemArray }) {
   const [activeSlide, setAcitveSlide] = useState(0)
   const [fullDisplay, setFullDisplay] = useState(false)

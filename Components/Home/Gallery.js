@@ -2,10 +2,16 @@ import React, { Fragment, useState } from 'react';
 import { Image, StyleSheet, Modal, TouchableOpacity } from 'react-native';
 import { Card, CardItem, Text, Button, Icon, Left, Right } from 'native-base'
 import { Video } from 'expo-av'
+
 import InfoModal from './InfoModal'
 
 import { globalBlueColor, titleTextColor, homeBackgroundColor } from '../../config/theme'
 
+/**
+ * @function
+ * @description Displays an Image or a Video depending on its type
+ * @param {Object} info An object containing current item's informations
+ */
 function CustomImage({ info }) {
   const uri = !info.images ? info.link : info.images[0].link
   const type = !info.images ? info.type : info.images[0].type
@@ -15,14 +21,20 @@ function CustomImage({ info }) {
   return <Image source={{ uri }} style={styles.image} />
 }
 
-
-export default function Gallery({ info, setFavoriteById, setVoteById}) {
+/**
+ * @function
+ * @description Displays a card with basic current item's informations. Open a modal on click
+ * @param {Object} info An object containing current item's informations
+ * @param {Function} setFavoriteById A function to set favorite values depending on the id in a higher level component
+ * @param {Function} setVoteById A function to set vote values depending on the id in a higher level component
+ */
+function Gallery({ info, setFavoriteById, setVoteById }) {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   return (
     <Fragment>
       <Modal transparent visible={isModalOpen} animationType={"slide"}>
-        <InfoModal setModalState={setIsModalOpen} item={info} setFavoriteById={setFavoriteById} setVoteById={setVoteById}/>
+        <InfoModal setModalState={setIsModalOpen} item={info} setFavoriteById={setFavoriteById} setVoteById={setVoteById} />
       </Modal>
       <TouchableOpacity style={styles.item} onPress={() => setIsModalOpen(true)}>
         <Card>
@@ -76,3 +88,5 @@ const styles = StyleSheet.create({
     flex: 1
   }
 })
+
+export default Gallery

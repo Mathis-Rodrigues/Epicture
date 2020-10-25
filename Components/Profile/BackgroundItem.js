@@ -15,7 +15,7 @@ export const BackgroundImage = ({ children, uri }) => (
 export const BackgroundVideo = ({ children, uri }) => (
   <Fragment>
     <Video
-      source={{ uri: 'https://i.imgur.com/zSYXGSh.mp4' }}
+      source={{ uri }}
       shouldPlay
       isLooping
       isMuted

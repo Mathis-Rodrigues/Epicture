@@ -28,13 +28,23 @@ const iconList = [
   },
 ]
 
+/**
+ * @function
+ * @description Wrapper of the Upload & Permission Component
+ * @param {Object} navigation Control object of the TabNavigation
+ */
 const UploadWrapper = ({ navigation }) => (
   <PermissionManager navigation={navigation}>
     <Upload />
   </PermissionManager>
 )
 
-export default function Navigation({ disconnectAccount }) {
+/**
+ * @function
+ * @description Navigation component to sswitch between pages
+ * @param {Function} disconnectAccount Function to trigger the disonnection of the user
+ */
+function Navigation({ disconnectAccount }) {
   return (
     <NavigationContainer>
       <Tab.Navigator
@@ -58,3 +68,5 @@ export default function Navigation({ disconnectAccount }) {
     </NavigationContainer>
   );
 }
+
+export default Navigation

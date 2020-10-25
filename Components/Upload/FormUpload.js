@@ -4,6 +4,11 @@ import CheckBox from '@react-native-community/checkbox'
 
 import { inputBorderColor, uploadFormTextColor, uploadFormPlaceholderColor } from '../../config/theme'
 
+/**
+ * @description Form of informations for the upload. User can modify Title, Description, isAlbum and isPublic
+ * @param {Bool} isUploading True if an image is being uploaded, setted in a higher level component
+ * @param {Function} setFormData Function to set formData in a higher level component
+ */
 function FormUpload({ isUploading, setFormData }) {
   const [titleInputValue, setTitleInputValue] = useState("")
   const [descInputValue, setDescInputValue] = useState("")

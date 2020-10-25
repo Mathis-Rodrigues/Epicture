@@ -4,8 +4,10 @@ import { View, StyleSheet } from 'react-native'
 import ImagePicker from './ImagePicker'
 import { postsBackgroundColor } from '../../config/theme'
 
+/**
+ * @description Container of the Upload Page
+ */
 function Upload() {
-
   return (
     <View style={styles.main}>
       <ImagePicker />

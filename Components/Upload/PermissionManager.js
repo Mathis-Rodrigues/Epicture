@@ -5,6 +5,11 @@ import { View, StyleSheet, Text, TouchableOpacity, Image } from 'react-native'
 import { postsBackgroundColor } from '../../config/theme'
 import CannotRead from '../../assets/icr-logo.png'
 
+/**
+ * @description Displays a placeholder if permissions are not given properly
+ * @param {Object} children children native props
+ * @param {Object} navigation Control object of the TabNavigation
+ */
 function PermissionManager({ children, navigation }) {
   const [permission, askForPermission] = usePermissions([CAMERA, CAMERA_ROLL], { ask: false });
 

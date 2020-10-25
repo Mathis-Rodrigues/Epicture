@@ -4,6 +4,13 @@ import { useNavigation } from '@react-navigation/native'
 
 import { Icon, Subtitle, Title, Button } from 'native-base'
 
+/**
+ * @description Displays header of profile information page
+ * @param {Object} data An object containing informations about the user currently logs in
+ * @param {Array} categories An array of available categories to displays as profile informations
+ * @param {String} selectedCategory Name of the current selected category
+ * @param {Function} setCategory Function to set selectedCategory in a higher level component
+ */
 function InfoProfile({ data, categories, selectedCategory, setCategory }) {
   const navigation = useNavigation()
 

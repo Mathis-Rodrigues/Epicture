@@ -1,10 +1,15 @@
 import React, { Fragment, useEffect, useState } from 'react'
 import { View, StyleSheet, Text, Image, TouchableOpacity, Modal, ScrollView } from 'react-native'
 import { Icon, Button, Input } from 'native-base'
-
-import { changeAccountSetting, getAvatarList } from '../../API/API'
 import { useNavigation } from '@react-navigation/native'
 
+import { changeAccountSetting, getAvatarList } from '../../API/API'
+
+/**
+ * @description A Page to edit personnal informations and settings of the user
+ * @param {Object} data An object containing informations about the user currently logs in
+ * @param {Function} setData Function which set data in a higher level component
+ */
 function Settings({ data, setData, token }) {
   const [avatarList, setAvatarList] = useState("")
   const [isOpen, setIsOpen] = useState(false)

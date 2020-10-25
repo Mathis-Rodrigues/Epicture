@@ -1,4 +1,4 @@
-import React, { Component, Fragment, useEffect, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import { Image, StyleSheet, View, TouchableOpacity, ScrollView } from 'react-native'
 import { Text, Icon } from 'native-base'
 import AsyncStorage from '@react-native-community/async-storage'
@@ -21,12 +21,22 @@ import {
   titleTextColor
 } from '../../config/theme'
 
-const PublicContent = ({ item, accountParams, isFavorite, isLike, addComment, commentData, voteAlbum }) => (
+/**
+ * @function
+ * @description Displays all informations about current public post. If the post is not public this component should not be displayed
+ * @param {Object} item An object containing current item's informations
+ * @param {Object} accountParams An object containing infomations about the user logged in
+ * @param {Bool} isLike True if the post is liked by the user, false if not, setted in a higher level component
+ * @param {Function} setFavorite set isLike value in a higher level component
+ * @param {Object} commentData An object containing informations about comments, setted in a higher level component
+ * @param {Function} addComment add a comment to the commentData in a higher level component
+ */
+const PublicContent = ({ item, accountParams, isLike, setFavorite, commentData, addComment, voteAlbum }) => (
   <Fragment>
     <Text style={{ color: lightTitleTextColor, padding: 10 }}>{item.views} views</Text>
     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginLeft: 10, marginRight: 10 }}>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <TouchableOpacity onPress={isFavorite}>
+        <TouchableOpacity onPress={setFavorite}>
           <Icon name={isLike ? "md-heart" : "md-heart-empty"} style={{ color: '#e33', fontSize: 30 }} />
         </TouchableOpacity>
         <Text style={{ color: titleTextColor, fontWeight: 'bold', marginLeft: 10 }}>{item.favorite_count}</Text>
@@ -52,7 +62,15 @@ const PublicContent = ({ item, accountParams, isFavorite, isLike, addComment, co
   </Fragment>
 )
 
-export default function InfoModal({ item, setFavoriteById, setModalState, setVoteById }) {
+/**
+ * @function
+ * @description Content of the modal, displays all the informations about the current item
+ * @param {Object} item An object containing current item's informations
+ * @param {Function} setFavoriteById A function to set favorite values depending on the id in a higher level component
+ * @param {Function} setVoteById A function to set vote values depending on the id in a higher level component
+ * @param {Function} setModalState A function to set modal open value in a higher level component
+ */
+function InfoModal({ item, setFavoriteById, setVoteById, setModalState }) {
   const [isLike, setIsLike] = useState(item.favorite)
   const [accountParams, setAccountParams] = useState(null)
   const [userData, setUserData] = useState(null)
@@ -71,7 +89,7 @@ export default function InfoModal({ item, setFavoriteById, setModalState, setVot
     })()
   }, [])
 
-  const isFavorite = () => {
+  const setFavorite = () => {
     if (item.is_album)
       addAlbumToFavorite(accountParams.access_token, item.id)
     else
@@ -117,7 +135,7 @@ export default function InfoModal({ item, setFavoriteById, setModalState, setVot
       <ScrollView>
         <ImageCarousel itemArray={item.is_album ? item.images : [item]} />
         {item.in_gallery &&
-          <PublicContent item={item} accountParams={accountParams} isFavorite={isFavorite} isLike={isLike} commentData={commentData} addComment={addComment} voteAlbum={voteAlbum} />
+          <PublicContent item={item} accountParams={accountParams} setFavorite={setFavorite} isLike={isLike} commentData={commentData} addComment={addComment} voteAlbum={voteAlbum} />
         }
       </ScrollView>
     </View>
@@ -154,3 +172,5 @@ const styles = StyleSheet.create({
     fontSize: 30
   }
 })
+
+export default InfoModal

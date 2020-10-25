@@ -2,6 +2,13 @@ import React from 'react'
 import { Image, useWindowDimensions } from 'react-native'
 import { Video } from 'expo-av'
 
+/**
+ * @function
+ * @description Displays whether an Image or a Video depending on its type
+ * @param {Object} item  Current item from the upper array
+ * @param {Number} index  Index of the current item from the upper array
+ * @param {Number} activeSlide  Index of the item active on screen
+ */
 function CustomImage({ item, index, activeItem }) {
   const width = useWindowDimensions().width
   const ratio = item.height / item.width

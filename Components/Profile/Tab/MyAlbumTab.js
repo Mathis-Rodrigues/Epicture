@@ -8,6 +8,12 @@ import InfoModal from '../../Home/InfoModal'
 import { getMyAlbums, getGalleryAlbumById, getMyAlbumById } from '../../../API/API'
 import { drawerBackgroundColor } from '../../../config/theme'
 
+/**
+ * @description An Item rendered by upper FlatList
+ * @param {String} token Access token to permit the user to call Imgur API
+ * @param {Object} item Current item of the upper array
+ * @param {Bool} last True if current item is the last item of the upper array
+ */
 const AlbumItem = ({ token, item, last }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [gallery, setGallery] = useState(null)
@@ -97,6 +103,10 @@ const AlbumItem = ({ token, item, last }) => {
   )
 }
 
+/**
+ * @description Tab which displays all albums (private or public) posted by the user
+ * @param {String} token Access token to permit the user to call Imgur API
+ */
 function MyAlbumTab({ token }) {
   const [albums, setAlbums] = useState(null)
 

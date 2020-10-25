@@ -8,7 +8,11 @@ import Gallery from './Gallery'
 import { start, searchGallery, sortGallery } from '../../API/API'
 import { headerBackgroundColor, androidHeaderColor, spinnerColor } from '../../config/theme'
 
-export default function Search() {
+/**
+ * @function
+ * @description Start by requesting the most Popular posts to Imgur. Enable the user to search posts by keyword. He can also filter items by Popularity or more... This component displays the array returned by Imgur and open a Modal when an Item is pressed
+ */
+function Search() {
   const [searchedText, setSearchedText] = useState("")
   const [section, setSection] = useState("top")
   const [sort, setSort] = useState("viral")
@@ -134,3 +138,5 @@ export default function Search() {
     </View>
   );
 }
+
+export default Search

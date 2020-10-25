@@ -8,6 +8,13 @@ import { BackgroundImage, BackgroundVideo } from '../BackgroundItem'
 import { getFavorites, getGalleryAlbumById, getGalleryImageById } from '../../../API/API'
 import { drawerBackgroundColor } from '../../../config/theme'
 
+/**
+ * @description An Item rendered by upper FlatList if it is a public post
+ * @param {String} token Access token to permit the user to call Imgur API
+ * @param {Object} item Current item of the upper array
+ * @param {Bool} isModalOpen True if the modal should be open, define in an higher level component
+ * @param {Function} setIsModalOpen set isModalOpen in an higher level component
+ */
 const FavoriteGalleryItem = ({ token, item, isModalOpen, setIsModalOpen }) => {
   const [gallery, setGallery] = useState(null)
   const type = gallery && (item.is_album ? gallery.images.find(e => e.id === gallery.cover).type : gallery.type)
@@ -81,6 +88,14 @@ const FavoriteGalleryItem = ({ token, item, isModalOpen, setIsModalOpen }) => {
   )
 }
 
+/**
+ * @description An Item rendered by upper FlatList
+ * @param {String} token Access token to permit the user to call Imgur API
+ * @param {Object} item Current item of the upper array
+ * @param {Bool} last True if current item is the last item of the upper array
+ * @param {Function} setVoteById set vote values of an higher level component
+ * @param {Function} setFavoriteById set favorite values of an higher level component
+ */
 const FavoriteItem = ({ token, item, last, setVoteById, setFavoriteById }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
@@ -119,6 +134,10 @@ const FavoriteItem = ({ token, item, last, setVoteById, setFavoriteById }) => {
   )
 }
 
+/**
+ * @description Tab which displays all liked posts (private or public) of the user
+ * @param {String} token Access token to permit the user to call Imgur API
+ */
 function MyFavoritesTab({ token }) {
   const [favorites, setFavorites] = useState(null)
 

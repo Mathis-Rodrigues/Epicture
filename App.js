@@ -6,6 +6,10 @@ import * as Font from 'expo-font'
 import Navigation from './Components/Navigation'
 import AuthPage from './Components/Oauth/AuthPage'
 
+/**
+ * @class
+ * @description Root of the App
+ */
 class App extends Component {
   state = {
     accountParams: null,

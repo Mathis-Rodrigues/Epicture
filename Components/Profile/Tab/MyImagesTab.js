@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { TouchableOpacity, StyleSheet, FlatList, View, Text, Modal } from 'react-native'
-import { Icon } from 'native-base'
+import { TouchableOpacity, StyleSheet, FlatList, View, Modal } from 'react-native'
 
 import SortArray from '../SortArray'
 import { BackgroundImage, BackgroundVideo } from '../BackgroundItem'
 import InfoModal from '../../Home/InfoModal'
 
-import { getMyImages, getMyImageById } from '../../../API/API'
+import { getMyImages } from '../../../API/API'
 import { drawerBackgroundColor } from '../../../config/theme'
 
 const Sort = [
@@ -20,7 +19,12 @@ const Sort = [
   }
 ]
 
-const ImageItem = ({ token, item, last }) => {
+/**
+ * @description An Item rendered by upper FlatList
+ * @param {Object} item Current item of the upper array
+ * @param {Bool} last True if current item is the last item of the upper array
+ */
+const ImageItem = ({ item, last }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   return (
@@ -42,6 +46,10 @@ const ImageItem = ({ token, item, last }) => {
   )
 }
 
+/**
+ * @description Tab which displays all images (private or public) posted by the user
+ * @param {String} token Access token to permit the user to call Imgur API
+ */
 function MyImagesTab({ token }) {
   const [images, setImages] = useState(null)
   const [sortAscending, setSortAscending] = useState(true)
@@ -64,8 +72,8 @@ function MyImagesTab({ token }) {
       { images &&
         <FlatList
           data={images.slice(1)}
-          renderItem={({ item, index }) => <ImageItem token={token} item={item} last={index === images.length - 2 && !(images.length % 2)} />}
-          ListHeaderComponent={() => <ImageItem token={token} item={images[0]} last />}
+          renderItem={({ item, index }) => <ImageItem item={item} last={index === images.length - 2 && !(images.length % 2)} />}
+          ListHeaderComponent={() => <ImageItem item={images[0]} last />}
           keyExtractor={image => image.id}
           numColumns={2}
           style={{ marginTop: 10 }}

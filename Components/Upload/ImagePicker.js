@@ -11,6 +11,9 @@ import FormUpload from './FormUpload'
 import * as API from '../../API/API'
 import { globalBlueColor } from '../../config/theme'
 
+/**
+ * @description User can choose images from his gallery and upload them
+ */
 function ImagePicker() {
   const [image, setImage] = useState(null)
   const [video, setVideo] = useState(null)

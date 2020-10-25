@@ -6,6 +6,11 @@ import { Container, Header, Left, Body, Right, Title } from 'native-base';
 import Config from '../../config/config'
 import { androidHeaderColor, headerBackgroundColor } from '../../config/theme'
 
+/**
+ * @function
+ * @description A Page where the user can login
+ * @param {Function} setAccountParams Function to set account parameters when connection is completed
+ */
 function AuthPage({ setAccountParams }) {
   const onNavigationStateChange = (navigationState) => {
     const paramString = navigationState.url.split("#");

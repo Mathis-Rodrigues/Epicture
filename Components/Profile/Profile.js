@@ -80,6 +80,10 @@ const ProfileWrapper = ({ data, selectedCategory, setCategory, token }) => {
   )
 }
 
+/**
+ * @description Displays all informations about the user currently logs in, his images, albums, favorites and settings
+ * @param {Function} disconnectAccount Function to trigger the disonnection of the user
+ */
 function Profile({ disconnectAccount }) {
   const [accountParams, setAccountParams] = useState(null)
   const [myData, setMyData] = useState(null)
