@@ -12,7 +12,7 @@ export function start(token) {
   };
 
   return (
-    fetch("https://api.imgur.com/3/gallery/hot/top", requestOptions)
+    fetch("https://api.imgur.com/3/gallery/top/viral", requestOptions)
       .then((res) => res.json())
   )
 }
@@ -340,4 +340,16 @@ export function getMyAlbumById(token, id) {
 
   return fetch(`https://api.imgur.com/3/account/me/album/${id}`, requestOptions)
     .then(res => res.json())
+}
+
+export function albumVote(token, id, vote) {
+  const requestOptions = {
+    method: 'POST',
+    headers: buildHeader(token),
+    redirect: 'follow'
+  }
+  return (
+    fetch(`https://api.imgur.com/3/gallery/${id}/vote/${vote}`, requestOptions)
+      .then(response => response.json())
+  )
 }

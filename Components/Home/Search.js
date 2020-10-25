@@ -25,16 +25,26 @@ export default function Search() {
   }, [])
 
   const onSectionChange = (value) => {
-    loadSearch()
+    setIsLoading(true)
+    if (searchedText.length > 0) {
+      searchGallery(accountParams.access_token, searchedText, sort).then(rep => { setData(rep.data); setIsLoading(false) })
+    } else {
+      sortGallery(accountParams.access_token, value, sort).then(rep => { setData(rep.data); setIsLoading(false) })
+    }
     setSection(value)
   }
 
   const onSortChange = (value) => {
-    loadSearch()
+    setIsLoading(true)
+    if (searchedText.length > 0) {
+      searchGallery(accountParams.access_token, searchedText, value).then(rep => { setData(rep.data); setIsLoading(false) })
+    } else {
+      sortGallery(accountParams.access_token, section, value).then(rep => { setData(rep.data); setIsLoading(false) })
+    }
     setSort(value)
   }
 
-  const loadSearch = async () => {
+  const loadSearch = () => {
     setIsLoading(true)
     if (searchedText.length > 0) {
       searchGallery(accountParams.access_token, searchedText, sort).then(rep => { setData(rep.data); setIsLoading(false) })
@@ -48,6 +58,14 @@ export default function Search() {
     _data.find(e => e.id === id).favorite = value
     _data.find(e => e.id === id).favorite_count += value ? 1 : -1
     setData(_data)
+  }
+
+  const setVoteById = (id, value) => {
+    const _data = [...data]
+    _data.find(e => e.id === id).vote = value
+    _data.find(e => e.id === id).ups += 1
+    setData(_data)
+
   }
 
   return (
@@ -75,7 +93,7 @@ export default function Search() {
           selectedValue={section}
           onValueChange={onSectionChange}
         >
-          <Picker.Item label="Most viral" value="hot" />
+          <Picker.Item label="Most viral" value="top" />
           <Picker.Item label="User submitted" value="user" />
         </Picker>
         <Picker
@@ -93,7 +111,7 @@ export default function Search() {
       <FlatList
         data={data}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => <Gallery info={item} setFavoriteById={setFavoriteById} />}
+        renderItem={({ item }) => <Gallery info={item} setFavoriteById={setFavoriteById} setVoteById={setVoteById} />}
       />
     </View>
   );

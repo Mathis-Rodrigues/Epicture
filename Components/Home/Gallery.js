@@ -16,13 +16,13 @@ function CustomImage({ info }) {
 }
 
 
-export default function Gallery({ info, setFavoriteById }) {
+export default function Gallery({ info, setFavoriteById, setVoteById}) {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   return (
     <Fragment>
       <Modal transparent visible={isModalOpen} animationType={"slide"}>
-        <InfoModal setModalState={setIsModalOpen} item={info} setFavoriteById={setFavoriteById} />
+        <InfoModal setModalState={setIsModalOpen} item={info} setFavoriteById={setFavoriteById} setVoteById={setVoteById}/>
       </Modal>
       <TouchableOpacity style={styles.item} onPress={() => setIsModalOpen(true)}>
         <Card>
