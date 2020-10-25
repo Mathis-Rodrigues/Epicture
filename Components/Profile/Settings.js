@@ -26,7 +26,7 @@ function Settings({ data, setData, token }) {
   }
 
   const updateSettings = () => {
-    changeAccountSetting(token, changedData.url, changedData.bio, changedData.avatar_name).then(rep => console.log(rep))
+    changeAccountSetting(token, changedData.url, changedData.bio, changedData.avatar_name)
     setData(changedData)
     navigation.navigate('Profile')
   }

@@ -7,9 +7,10 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 
 import InfoProfile from './InfoProfile'
 import Settings from './Settings'
-import MyImagesTab from './MyImagesTab'
-import MyAlbumTab from './MyAlbumTab'
-import MyFavoritesTab from './MyFavoritesTab'
+import MyImagesTab from './Tab/MyImagesTab'
+import MyAlbumTab from './Tab/MyAlbumTab'
+import MyFavoritesTab from './Tab/MyFavoritesTab'
+import AboutTab from './Tab/AboutTab'
 
 import {
   drawerBackgroundColor,
@@ -17,7 +18,7 @@ import {
   drawerReverseTextColor,
   drawerTextColor
 } from '../../config/theme'
-import { getMyAccountParams, getMySettings } from '../../API/API'
+import { getMyAccountParams } from '../../API/API'
 
 const Categories = [
   {
@@ -34,6 +35,11 @@ const Categories = [
     name: 'Favorites',
     label: 'FAVORITES',
     component: MyFavoritesTab
+  },
+  {
+    name: 'About',
+    label: 'ABOUT',
+    component: AboutTab
   }
 ]
 
@@ -69,7 +75,7 @@ const ProfileWrapper = ({ data, selectedCategory, setCategory, token }) => {
         selectedCategory={selectedCategory}
         setCategory={setCategory}
       />
-      <Component token={token} />
+      <Component token={token} bio={data.bio} />
     </View>
   )
 }
@@ -89,7 +95,7 @@ function Profile({ disconnectAccount }) {
     })()
   }, [])
 
-  return (accountParams && myData && !console.log(myData) &&
+  return (accountParams && myData &&
     <Drawer.Navigator
       screenOptions={({ route }) => ({
         drawerIcon: ({ color, size }) => <Ionicons name={route.name === "Profile" ? "ios-person" : "md-settings"} size={size} color={color} />

@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import { ImageBackground, View, Image, StyleSheet, Text } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 
@@ -29,7 +29,7 @@ function InfoProfile({ data, categories, selectedCategory, setCategory }) {
         <View style={styles.categoryContainer}>
           {categories.map((e, i) =>
             <Button transparent key={i} style={{ flexDirection: 'column' }} onPress={() => setCategory(e.name)}>
-              <Text style={{ color: 'white', fontWeight: e.name === selectedCategory ? '700' : '500' }}>{e.label}</Text>
+              <Text style={{ fontSize: 14, color: 'white', fontWeight: e.name === selectedCategory ? '700' : '500' }}>{e.label}</Text>
               {e.name === selectedCategory &&
                 <View style={styles.selectedCategory} />
               }

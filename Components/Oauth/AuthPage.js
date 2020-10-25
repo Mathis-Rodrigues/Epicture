@@ -4,7 +4,7 @@ import { WebView } from 'react-native-webview';
 import { Container, Header, Left, Body, Right, Title } from 'native-base';
 
 import Config from '../../config/config'
-import { headerBackgroundColor } from '../../config/theme'
+import { androidHeaderColor, headerBackgroundColor } from '../../config/theme'
 
 function AuthPage({ setAccountParams }) {
   const onNavigationStateChange = (navigationState) => {
@@ -24,10 +24,10 @@ function AuthPage({ setAccountParams }) {
 
   return (
     <Container>
-      <Header rounded style={{ backgroundColor: headerBackgroundColor}} androidStatusBarColor={headerBackgroundColor}>
+      <Header rounded style={{ backgroundColor: headerBackgroundColor}} androidStatusBarColor={androidHeaderColor}>
         <Left />
         <Body>
-          <Title>Signin to Imgur</Title>
+          <Title style={{ color: 'black' }}>Signin to Imgur</Title>
         </Body>
         <Right />
       </Header>

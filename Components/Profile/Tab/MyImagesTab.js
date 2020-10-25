@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { TouchableOpacity, StyleSheet, FlatList, View, Text, Modal } from 'react-native'
 import { Icon } from 'native-base'
 
-import SortArray from './SortArray'
-import { BackgroundImage, BackgroundVideo } from './BackgroundItem'
-import InfoModal from '../Home/InfoModal'
+import SortArray from '../SortArray'
+import { BackgroundImage, BackgroundVideo } from '../BackgroundItem'
+import InfoModal from '../../Home/InfoModal'
 
-import { getMyImages, getMyImageById } from '../../API/API'
-import { drawerBackgroundColor } from '../../config/theme'
+import { getMyImages, getMyImageById } from '../../../API/API'
+import { drawerBackgroundColor } from '../../../config/theme'
 
 const Sort = [
   {
@@ -21,15 +21,7 @@ const Sort = [
 ]
 
 const ImageItem = ({ token, item, last }) => {
-  const [img, setImg] = useState(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
-
-  useEffect(() => {
-    (async () => {
-      const rep = await getMyImageById(token, item.id)
-      setImg(rep.data)
-    })()
-  }, [])
 
   return (
     <View style={{ ...styles.itemContainer, height: last ? 200 : 120 }}>
@@ -44,7 +36,7 @@ const ImageItem = ({ token, item, last }) => {
         </ BackgroundVideo>
       }
       <Modal transparent visible={isModalOpen} animationType={"slide"}>
-        <InfoModal setModalState={setIsModalOpen} item={item} setFavoriteById={() => { console.log("Fav") }} />
+        <InfoModal setModalState={setIsModalOpen} item={item} setFavoriteById={() => null} />
       </Modal>
     </View>
   )

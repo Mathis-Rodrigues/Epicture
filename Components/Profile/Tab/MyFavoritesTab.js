@@ -2,11 +2,11 @@ import React, { Fragment, useEffect, useState } from 'react'
 import { Modal, TouchableOpacity, StyleSheet, FlatList, View, Text, ImageBackground } from 'react-native'
 import { Icon } from 'native-base'
 
-import InfoModal from '../Home/InfoModal'
-import { BackgroundImage, BackgroundVideo } from './BackgroundItem'
+import InfoModal from '../../Home/InfoModal'
+import { BackgroundImage, BackgroundVideo } from '../BackgroundItem'
 
-import { getFavorites, getGalleryAlbumById, getGalleryImageById } from '../../API/API'
-import { drawerBackgroundColor } from '../../config/theme'
+import { getFavorites, getGalleryAlbumById, getGalleryImageById } from '../../../API/API'
+import { drawerBackgroundColor } from '../../../config/theme'
 
 const FavoriteGalleryItem = ({ token, item, isModalOpen, setIsModalOpen }) => {
   const [gallery, setGallery] = useState(null)
@@ -36,13 +36,13 @@ const FavoriteGalleryItem = ({ token, item, isModalOpen, setIsModalOpen }) => {
           <TouchableOpacity transparent style={{ width: '100%', height: '100%' }} onPress={() => setIsModalOpen(prev => !prev)} />
         </BackgroundImage>
       }
-      {type === 'video/mp4' && !console.log(mp4) &&
+      {type === 'video/mp4' &&
         < BackgroundVideo uri={mp4}>
           <TouchableOpacity transparent style={{ width: '100%', height: '100%' }} onPress={() => setIsModalOpen(prev => !prev)} />
         </ BackgroundVideo>
       }
       <Modal transparent visible={isModalOpen} animationType={"slide"}>
-        <InfoModal setModalState={setIsModalOpen} item={gallery} setFavoriteById={() => { console.log("Fav") }} />
+        <InfoModal setModalState={setIsModalOpen} item={gallery} setFavoriteById={() => null} />
       </Modal>
     </Fragment >
   )
@@ -79,7 +79,7 @@ const FavoriteItem = ({ token, item, last }) => {
       </View>
       { !item.in_gallery &&
         <Modal transparent visible={isModalOpen} animationType={"slide"}>
-          <InfoModal setModalState={setIsModalOpen} item={item} setFavoriteById={() => { console.log("Fav") }} />
+          <InfoModal setModalState={setIsModalOpen} item={item} setFavoriteById={() => null} />
         </Modal>
       }
     </View >

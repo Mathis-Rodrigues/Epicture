@@ -8,9 +8,8 @@ function CommentInfo({ token, commentData, id, addMyComment }) {
   const [commentText, setCommentText] = useState("")
 
   const postComment = () => {
-    console.log(commentText)
     if (commentText.length > 0) {
-      addComment(token, commentText, id).then(res => console.log("lol: ", res))
+      addComment(token, commentText, id)
       addMyComment(commentText)
       setCommentText("")
     }
