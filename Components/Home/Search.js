@@ -84,7 +84,7 @@ export default function Search() {
           selectedValue={section}
           onValueChange={onSectionChange}
         >
-          <Picker.Item label="Most viral" value="hot" />
+          <Picker.Item label="Most viral" value="top" />
           <Picker.Item label="User submitted" value="user" />
         </Picker>
         <Picker

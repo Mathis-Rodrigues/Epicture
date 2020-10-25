@@ -12,7 +12,7 @@ export function start(token) {
   };
 
   return (
-    fetch("https://api.imgur.com/3/gallery/hot/top", requestOptions)
+    fetch("https://api.imgur.com/3/gallery/top/viral", requestOptions)
       .then((res) => res.json())
   )
 }

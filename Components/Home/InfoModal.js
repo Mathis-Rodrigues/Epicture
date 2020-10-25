@@ -22,7 +22,7 @@ import {
   titleTextColor
 } from '../../config/theme'
 
-const PublicContent = ({ item, accountParams, isFavorite, isLike, addComment, commentData, voteAlbum}) => (
+const PublicContent = ({ item, accountParams, isFavorite, isLike, addComment, commentData, voteAlbum }) => (
   <Fragment>
     <Text style={{ color: lightTitleTextColor, padding: 10 }}>{item.views} views</Text>
     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginLeft: 10, marginRight: 10 }}>
@@ -53,12 +53,12 @@ const PublicContent = ({ item, accountParams, isFavorite, isLike, addComment, co
   </Fragment>
 )
 
-export default function InfoModal({ item, setFavoriteById, setModalState, setVoteById}) {
+export default function InfoModal({ item, setFavoriteById, setModalState, setVoteById }) {
   const [isLike, setIsLike] = useState(item.favorite)
   const [accountParams, setAccountParams] = useState(null)
   const [userData, setUserData] = useState(null)
   const [commentData, setCommentData] = useState(null)
-  const [isVote, setIsVote] = useState(item.vote)
+  const [previousVote, setPreviousVote] = useState(item.vote)
 
   useEffect(() => {
     console.log(item);
@@ -83,8 +83,16 @@ export default function InfoModal({ item, setFavoriteById, setModalState, setVot
   }
 
   const voteAlbum = (value) => {
-    albumVote(accountParams.access_token, item.id, value).then(rep => console.log(rep))
-    setVoteById(item.id, value)
+    if (previousVote === value) {
+      albumVote(accountParams.access_token, item.id, "veto").then(rep => console.log(rep))
+      setVoteById(item.id, "veto")
+      setPreviousVote("veto")
+    }
+    else {
+      albumVote(accountParams.access_token, item.id, value).then(rep => console.log(rep))
+      setVoteById(item.id, value)
+      setPreviousVote(value)
+    }
   }
 
   const addComment = (msg) => {
@@ -110,7 +118,7 @@ export default function InfoModal({ item, setFavoriteById, setModalState, setVot
       <Text style={styles.subtitle}>from: {item.account_url}</Text>
       <ScrollView>
         <ImageCarousel itemArray={item.is_album ? item.images : [item]} />
-        { item.in_gallery &&
+        {item.in_gallery &&
           <PublicContent item={item} accountParams={accountParams} isFavorite={isFavorite} isLike={isLike} commentData={commentData} addComment={addComment} voteAlbum={voteAlbum} />
         }
       </ScrollView>
