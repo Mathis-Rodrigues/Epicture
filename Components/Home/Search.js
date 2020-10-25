@@ -50,6 +50,15 @@ export default function Search() {
     setData(_data)
   }
 
+  const setVoteById = (id, value) => {
+    const _data = [...data]
+    _data.find(e => e.id === id).vote = value
+    _data.find(e => e.id === id).ups += 1
+    setData(_data)
+
+  }
+  console.log(data)
+
   return (
     <View>
       <Header searchBar iosBarStyle="light-content" style={{ backgroundColor: headerBackgroundColor }} androidStatusBarColor={androidHeaderColor}>
@@ -93,7 +102,7 @@ export default function Search() {
       <FlatList
         data={data}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => <Gallery info={item} setFavoriteById={setFavoriteById} />}
+        renderItem={({ item }) => <Gallery info={item} setFavoriteById={setFavoriteById} setVoteById={setVoteById} />}
       />
     </View>
   );

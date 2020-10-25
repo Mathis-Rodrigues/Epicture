@@ -11,7 +11,8 @@ import {
   addAlbumToFavorite,
   addImageToFavorite,
   getAvatar,
-  getComment
+  getComment,
+  albumVote
 } from '../../API/API'
 import {
   globalBlueColor,
@@ -21,7 +22,7 @@ import {
   titleTextColor
 } from '../../config/theme'
 
-const PublicContent = ({ item, accountParams, isFavorite, isLike, addComment, commentData }) => (
+const PublicContent = ({ item, accountParams, isFavorite, isLike, addComment, commentData, voteAlbum}) => (
   <Fragment>
     <Text style={{ color: lightTitleTextColor, padding: 10 }}>{item.views} views</Text>
     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginLeft: 10, marginRight: 10 }}>
@@ -32,12 +33,12 @@ const PublicContent = ({ item, accountParams, isFavorite, isLike, addComment, co
         <Text style={{ color: titleTextColor, fontWeight: 'bold', marginLeft: 10 }}>{item.favorite_count}</Text>
       </View>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <TouchableOpacity style={{ marginLeft: 20 }} onPress={() => console.log("xd")}>
-          <Icon name="ios-arrow-dropup" style={{ color: globalBlueColor, fontSize: 30 }} />
+        <TouchableOpacity style={{ marginLeft: 20 }} onPress={() => voteAlbum("up")}>
+          <Icon name="ios-arrow-dropup" style={item.vote === "up" ? styles.upvote : styles.vote} />
         </TouchableOpacity>
         <Text style={{ color: titleTextColor, fontWeight: 'bold', marginLeft: 10, marginRight: 10 }}>{item.ups - item.downs}</Text>
-        <TouchableOpacity onPress={() => console.log("xd")}>
-          <Icon name="ios-arrow-dropdown" style={{ color: globalBlueColor, fontSize: 30 }} />
+        <TouchableOpacity onPress={() => voteAlbum("down")}>
+          <Icon name="ios-arrow-dropdown" style={item.vote === "down" ? styles.downvote : styles.vote} />
         </TouchableOpacity>
       </View>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -52,7 +53,7 @@ const PublicContent = ({ item, accountParams, isFavorite, isLike, addComment, co
   </Fragment>
 )
 
-export default function InfoModal({ item, setFavoriteById, setModalState }) {
+export default function InfoModal({ item, setFavoriteById, setModalState, setVoteById}) {
   const [isLike, setIsLike] = useState(item.favorite)
   const [accountParams, setAccountParams] = useState(null)
   const [userData, setUserData] = useState(null)
@@ -81,6 +82,11 @@ export default function InfoModal({ item, setFavoriteById, setModalState }) {
     setIsLike(!isLike)
   }
 
+  const voteAlbum = (value) => {
+    albumVote(accountParams.access_token, item.id, value).then(rep => console.log(rep))
+    setVoteById(item.id, value)
+  }
+
   const addComment = (msg) => {
     const _commentData = [...commentData]
     _commentData.push({
@@ -99,13 +105,13 @@ export default function InfoModal({ item, setFavoriteById, setModalState }) {
         {userData &&
           <Image style={{ height: 40, width: 40, resizeMode: "contain", borderRadius: 40, marginLeft: 20 }} source={{ uri: userData.avatar + `&nocache=${userData.avatar_name}` }} />
         }
-        <Text style={styles.title} numberOfLines={2}>{!item.title ? item.title : ""}</Text>
+        <Text style={styles.title} numberOfLines={2}>{!item.title ? "No title" : item.title}</Text>
       </View>
       <Text style={styles.subtitle}>from: {item.account_url}</Text>
       <ScrollView>
         <ImageCarousel itemArray={item.is_album ? item.images : [item]} />
         { item.in_gallery &&
-          <PublicContent item={item} accountParams={accountParams} isFavorite={isFavorite} isLike={isLike} commentData={commentData} addComment={addComment} />
+          <PublicContent item={item} accountParams={accountParams} isFavorite={isFavorite} isLike={isLike} commentData={commentData} addComment={addComment} voteAlbum={voteAlbum} />
         }
       </ScrollView>
     </View>

@@ -319,3 +319,16 @@ export function shareAlbum(token, id, title) {
   return fetch(`https://api.imgur.com/3/gallery/album/${id}`, requestOptions)
     .then(res => res.json())
 }
+
+export function albumVote(token, id, vote) {
+  const requestOptions = {
+    method: 'POST',
+    headers: buildHeader(token),
+    redirect: 'follow'
+  }
+
+  return (
+    fetch(`https://api.imgur.com/3/gallery/${id}/vote/${vote}`, requestOptions)
+      .then(response => response.json())
+  )
+}
