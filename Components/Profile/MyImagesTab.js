@@ -50,17 +50,6 @@ const ImageItem = ({ token, item, last }) => {
           <TouchableOpacity transparent style={{ width: '100%', height: '100%' }} onPress={() => setIsModalOpen(prev => !prev)} />
         </ BackgroundVideo>
       }
-      <View style={{ ...styles.itemInfo, height: last ? 40 : 30 }}>
-        <View style={styles.infoCat}>
-          <TouchableOpacity style={{ height: '100%', width: 25 }} onPress={() => setFavorite(!img.favorite)}>
-            <Icon name={img && img.favorite ? "heart" : "heart-empty"} style={{ fontSize: 17, color: img && img.favorite ? '#d11' : 'white' }} />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.infoCat}>
-          <Icon name="eye" style={styles.icon} />
-          <Text style={styles.text}>{item.views.toString()}</Text>
-        </View>
-      </View>
       <Modal transparent visible={isModalOpen} animationType={"slide"}>
         <InfoModal setModalState={setIsModalOpen} item={item} setFavoriteById={() => { console.log("Fav") }} />
       </Modal>
