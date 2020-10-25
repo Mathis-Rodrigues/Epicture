@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, StyleSheet, Text, Image, TextInput, TouchableOpacity, Modal} from 'react-native'
-import AsyncStorage from '@react-native-community/async-storage'
-import { createDrawerNavigator, DrawerItem } from '@react-navigation/drawer'
-import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
-import Ionicons from 'react-native-vector-icons/Ionicons'
+import { View, StyleSheet, Text, Image, TextInput, TouchableOpacity, Modal, ScrollView } from 'react-native'
 import { Icon, Subtitle, Title, Button } from 'native-base'
 
 import { changeAccountSetting, getAvatar, getAvatarList } from '../../API/API'
@@ -25,36 +21,57 @@ function Settings({ data, settings, token }) {
   const [userAvatar, setUserAvatar] = useState("https://i.imgur.com/WM6zUJu_d.png?maxwidth=290&fidelity=grand")
   const [avatarList, setAvatarList] = useState("")
   const [isOpen, setIsOpen] = useState(false)
+  const [focusedAvatar, setFocusedAvatar] = useState(0)
+  const [avatarName, setAvatarName] = useState(data.avatar_name)
   const navigation = useNavigation()
 
   useEffect(() => {
     (async () => {
-      // getAvatar(token, data.url).then(rep => setUserAvatar(rep.data.avatar))
-      // console.log(data.avatar)
       const rep = await getAvatarList(token, data.url)
       setAvatarList(rep.data.available_avatars)
-      setUserAvatar(rep.data.available_avatars.find(e =>  e.name === data.avatar_name).location)
-      console.log(rep.data.available_avatars.find(e =>  e.name === data.avatar_name).location)
+      setUserAvatar(rep.data.available_avatars.find(e => e.name === data.avatar_name).location)
+      console.log(rep.data.available_avatars.find(e => e.name === data.avatar_name).location)
     })()
 
   }, [])
 
+  const updateAvatar = (i, e) => {
+    setFocusedAvatar(i)
+    setUserAvatar(e.location)
+    setAvatarName(e.name)
+  }
+
   const updateSettings = () => {
-    console.log(userAvatar)
-    // console.log(data)
-    changeAccountSetting(token, usernameText, bioText).then(rep => console.log(rep))
+    changeAccountSetting(token, usernameText, bioText, avatarName).then(rep => console.log(rep))
   }
   return (
-    <View style={{ flex: 1}}>
-        {/* <Modal transparent visible={isOpen} animationType={"slide"}>
-          <View style={}
-        </Modal> */}
+    <View style={{ flex: 1 }}>
+      <Modal transparent visible={isOpen} animationType={"slide"}>
+        <View style={{ flex: 1, backgroundColor: 'grey' }}>
+          <View style={{ flexDirection: 'row', justifyContent: "space-between" }}>
+            <TouchableOpacity onPress={() => setIsOpen(false)} >
+              <Icon active name="ios-close" style={{ fontSize: 80, marginLeft: 20 }} />
+            </TouchableOpacity>
+            <Text style={{ alignSelf: "center", marginRight: 40, fontSize: 18, fontWeight: "700", color: "white" }}>CHOOSE A PICTURE</Text>
+            <Text style={{ alignSelf: "center" }}></Text>
+          </View>
+          <ScrollView style={{ flex: 1, backgroundColor: 'grey', }}>
+            <View style={{ flexDirection: 'row', flex: 1, flexWrap: 'wrap' }} >
+              {avatarList && avatarList.map((e, i) => (
+                <TouchableOpacity onPress={() => updateAvatar(i, e)} key={i}>
+                  <Image style={i === focusedAvatar ? styles.avatarFocus : styles.avatar} source={{ uri: e.location }} />
+                </TouchableOpacity>
+              ))}
+            </View>
+          </ScrollView>
+        </View>
+      </Modal>
       <Button transparent onPress={navigation.openDrawer} style={styles.drawerButton}>
         <Icon name='menu' style={{ fontSize: 33, color: 'black' }} />
       </Button>
       <Text style={{ alignSelf: "center", fontSize: 20, marginTop: 20, fontWeight: "700" }}>EDIT PROFILE</Text>
       <TouchableOpacity onPress={() => setIsOpen(true)} style={{ flexDirection: "row", justifyContent: "center" }}>
-        <Image source={{ uri: userAvatar}} style={{ height: 100, width: 100, borderRadius: 1000, marginTop: 50 }} />
+        <Image source={{ uri: userAvatar }} style={{ height: 100, width: 100, borderRadius: 1000, marginTop: 50 }} />
       </TouchableOpacity>
       <Text style={{ marginTop: 70, marginLeft: 25, color: 'grey' }}>Username</Text>
       <View style={{ flexDirection: "row", marginTop: 5, borderBottomWidth: 1, borderBottomColor: 'grey', marginLeft: 30, marginRight: 30 }}>
@@ -88,6 +105,18 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 10,
     right: 10
+  },
+  avatarFocus: {
+    borderColor: 'black',
+    borderWidth: 4,
+    height: 100,
+    width: 100,
+    borderRadius: 100
+  },
+  avatar: {
+    height: 100,
+    width: 100,
+    borderRadius: 100
   }
 })
 

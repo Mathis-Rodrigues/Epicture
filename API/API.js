@@ -236,11 +236,11 @@ export function getGalleryImageById(token, id) {
   )
 }
 
-export function changeAccountSetting(token, username, bio) {
+export function changeAccountSetting(token, username, bio, avatar) {
   const formdata = new FormData();
   formdata.append("bio", bio);
   formdata.append("username", username);
-  formdata.append("avatar", "flavor/fox")
+  formdata.append("avatar", avatar)
 
   const requestOptions = {
     method: 'POST',
