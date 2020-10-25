@@ -20,7 +20,6 @@ import {
   spinnerColor,
   titleTextColor
 } from '../../config/theme'
-import Carousel from 'react-native-snap-carousel'
 
 class GetDescription extends Component {
   render() {
@@ -48,8 +47,8 @@ export default function InfoModal({ item, setFavoriteById, setModalState }) {
   const [commentData, setCommentData] = useState(null)
 
   useEffect(() => {
-    console.log('------------------------------------------------------------------------------------------------------------------------------');
-    console.log(item);
+    // console.log('------------------------------------------------------------------------------------------------------------------------------');
+    // console.log(item);
     (async () => {
       const acc = JSON.parse(await AsyncStorage.getItem("account_params"))
       const rep = await getAvatar(acc.access_token, item.account_url)
@@ -82,12 +81,7 @@ export default function InfoModal({ item, setFavoriteById, setModalState }) {
       </View>
       <Text style={styles.subtitle}>from: {item.account_url}</Text>
       <ScrollView>
-        {item.is_album &&
-          <ImageCarousel itemArray={item.images} />
-        }
-        {!item.is_album &&
-          <CustomImage item={item} />
-        }
+        <ImageCarousel itemArray={item.is_album ? item.images : [item]} />
         <Text style={{ color: lightTitleTextColor, padding: 10 }}>{item.views} views</Text>
         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginLeft: 10, marginRight: 10 }}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
