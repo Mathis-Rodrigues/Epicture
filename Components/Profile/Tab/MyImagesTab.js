@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { TouchableOpacity, StyleSheet, FlatList, View, Text, Modal } from 'react-native'
 import { Icon } from 'native-base'
 
-import SortArray from './SortArray'
-import { BackgroundImage, BackgroundVideo } from './BackgroundItem'
-import InfoModal from '../Home/InfoModal'
+import SortArray from '../SortArray'
+import { BackgroundImage, BackgroundVideo } from '../BackgroundItem'
+import InfoModal from '../../Home/InfoModal'
 
-import { getMyImages, getMyImageById } from '../../API/API'
-import { drawerBackgroundColor } from '../../config/theme'
+import { getMyImages, getMyImageById } from '../../../API/API'
+import { drawerBackgroundColor } from '../../../config/theme'
 
 const Sort = [
   {

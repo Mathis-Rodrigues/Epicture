@@ -2,11 +2,11 @@ import React, { Fragment, useEffect, useState } from 'react'
 import { Modal, TouchableOpacity, StyleSheet, FlatList, View, Text, ImageBackground } from 'react-native'
 import { Icon } from 'native-base'
 
-import InfoModal from '../Home/InfoModal'
-import { BackgroundImage, BackgroundVideo } from './BackgroundItem'
+import InfoModal from '../../Home/InfoModal'
+import { BackgroundImage, BackgroundVideo } from '../BackgroundItem'
 
-import { getFavorites, getGalleryAlbumById, getGalleryImageById } from '../../API/API'
-import { drawerBackgroundColor } from '../../config/theme'
+import { getFavorites, getGalleryAlbumById, getGalleryImageById } from '../../../API/API'
+import { drawerBackgroundColor } from '../../../config/theme'
 
 const FavoriteGalleryItem = ({ token, item, isModalOpen, setIsModalOpen }) => {
   const [gallery, setGallery] = useState(null)

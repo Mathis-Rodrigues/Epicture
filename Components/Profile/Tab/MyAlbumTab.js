@@ -2,11 +2,11 @@ import React, { Fragment, useEffect, useState } from 'react'
 import { TouchableOpacity, StyleSheet, FlatList, View, Text, Modal } from 'react-native'
 import { Icon } from 'native-base'
 
-import { BackgroundImage, BackgroundVideo } from './BackgroundItem'
-import InfoModal from '../Home/InfoModal'
+import { BackgroundImage, BackgroundVideo } from '../BackgroundItem'
+import InfoModal from '../../Home/InfoModal'
 
-import { getMyAlbums, getGalleryAlbumById, getMyAlbumById } from '../../API/API'
-import { drawerBackgroundColor } from '../../config/theme'
+import { getMyAlbums, getGalleryAlbumById, getMyAlbumById } from '../../../API/API'
+import { drawerBackgroundColor } from '../../../config/theme'
 
 const AlbumItem = ({ token, item, last }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
