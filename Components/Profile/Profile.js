@@ -6,8 +6,9 @@ import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawe
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
 import InfoProfile from './InfoProfile'
-import MyImagesTab from './MyImagesTab'
 import Settings from './Settings'
+import MyImagesTab from './MyImagesTab'
+import MyAlbumTab from './MyAlbumTab'
 import MyFavoritesTab from './MyFavoritesTab'
 
 import {
@@ -24,11 +25,11 @@ const Categories = [
     label: 'IMAGES',
     component: MyImagesTab
   },
-  // {
-  //   name: 'Albums',
-  //   label: 'ALBUMS',
-  //   component: () => <Text>LOLOL</Text>
-  // },
+  {
+    name: 'Albums',
+    label: 'ALBUMS',
+    component: MyAlbumTab
+  },
   {
     name: 'Favorites',
     label: 'FAVORITES',

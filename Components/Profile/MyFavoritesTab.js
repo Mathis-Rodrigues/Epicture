@@ -12,6 +12,7 @@ const FavoriteGalleryItem = ({ token, item, isModalOpen, setIsModalOpen }) => {
   const [gallery, setGallery] = useState(null)
   const type = gallery && (item.is_album ? gallery.images.find(e => e.id === gallery.cover).type : gallery.type)
   const uri = gallery && (item.is_album ? gallery.images.find(e => e.id === gallery.cover).link : gallery.link)
+  const mp4 = gallery && (item.is_album ? gallery.images.find(e => e.id === gallery.cover).mp4 : gallery.mp4)
 
   useEffect(() => {
     (async () => {
@@ -35,8 +36,8 @@ const FavoriteGalleryItem = ({ token, item, isModalOpen, setIsModalOpen }) => {
           <TouchableOpacity transparent style={{ width: '100%', height: '100%' }} onPress={() => setIsModalOpen(prev => !prev)} />
         </BackgroundImage>
       }
-      {type === 'video/mp4' &&
-        < BackgroundVideo uri={uri}>
+      {type === 'video/mp4' && !console.log(mp4) &&
+        < BackgroundVideo uri={mp4}>
           <TouchableOpacity transparent style={{ width: '100%', height: '100%' }} onPress={() => setIsModalOpen(prev => !prev)} />
         </ BackgroundVideo>
       }

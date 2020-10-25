@@ -6,7 +6,7 @@ import SortArray from './SortArray'
 import { BackgroundImage, BackgroundVideo } from './BackgroundItem'
 import InfoModal from '../Home/InfoModal'
 
-import { getMyImages, getMyImageById, addImageToFavorite } from '../../API/API'
+import { getMyImages, getMyImageById } from '../../API/API'
 import { drawerBackgroundColor } from '../../config/theme'
 
 const Sort = [
@@ -30,13 +30,6 @@ const ImageItem = ({ token, item, last }) => {
       setImg(rep.data)
     })()
   }, [])
-
-  const setFavorite = (value) => {
-    const _img = { ...img }
-    _img.favorite = value
-    setImg(_img)
-    addImageToFavorite(token, item.id);
-  }
 
   return (
     <View style={{ ...styles.itemContainer, height: last ? 200 : 120 }}>

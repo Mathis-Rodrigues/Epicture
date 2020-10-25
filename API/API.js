@@ -319,3 +319,25 @@ export function shareAlbum(token, id, title) {
   return fetch(`https://api.imgur.com/3/gallery/album/${id}`, requestOptions)
     .then(res => res.json())
 }
+
+export function getMyAlbums(token) {
+  const requestOptions = {
+    method: 'GET',
+    headers: buildHeader(token),
+    redirect: 'follow'
+  };
+
+  return fetch(`https://api.imgur.com/3/account/me/albums`, requestOptions)
+    .then(res => res.json())
+}
+
+export function getMyAlbumById(token, id) {
+  const requestOptions = {
+    method: 'GET',
+    headers: buildHeader(token),
+    redirect: 'follow'
+  }
+
+  return fetch(`https://api.imgur.com/3/account/me/album/${id}`, requestOptions)
+    .then(res => res.json())
+}

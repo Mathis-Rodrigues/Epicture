@@ -69,7 +69,7 @@ function FormUpload({ isUploading, setFormData }) {
       </View>
       <View style={{ width: '80%', justifyContent: 'flex-start', flexDirection: 'row', alignItems: 'center' }}>
         <CheckBox
-          disabled={isUploading}
+          disabled={isUploading || !toggleIsAlbum}
           value={toggleIsPublic}
           onValueChange={(newValue) => setIsPublic(newValue)}
         />

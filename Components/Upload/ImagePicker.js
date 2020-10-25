@@ -64,14 +64,10 @@ function ImagePicker() {
     if (isAlbum) {
       const res = await API.uploadImage(accountParams.access_token, { image: img.base64, type: 'base64' })
       const albumRes = await API.uploadAlbum(accountParams.access_token, { image: res.data.id, title, description })
-      console.log(albumRes)
       if (isPublic)
         await API.shareAlbum(accountParams.access_token, albumRes.data.id, title)
     } else {
-      const res = await API.uploadImage(accountParams.access_token, body)
-      console.log(res)
-      if (isPublic)
-        await API.shareImage(accountParams.access_token, res.data.id, title)
+      await API.uploadImage(accountParams.access_token, body)
     }
     setIsUploading(false)
   }

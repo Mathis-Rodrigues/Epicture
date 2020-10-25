@@ -5,7 +5,6 @@ import AsyncStorage from '@react-native-community/async-storage'
 
 import CommentInfo from './CommentInfo'
 import ImageCarousel from './ImageCarousel'
-import CustomImage from './CustomImage'
 
 import {
   addAlbumToFavorite,
@@ -60,7 +59,6 @@ export default function InfoModal({ item, setFavoriteById, setModalState }) {
   const [isVote, setIsVote] = useState(item.vote)
 
   useEffect(() => {
-    console.log(item);
     (async () => {
       const acc = JSON.parse(await AsyncStorage.getItem("account_params"))
       setAccountParams(acc)
@@ -69,7 +67,6 @@ export default function InfoModal({ item, setFavoriteById, setModalState }) {
       const rep2 = await getComment(acc.access_token, item.id)
       setCommentData(rep2.status === 400 ? [] : rep2.data)
     })()
-    console.log(item)
   }, [])
 
   const isFavorite = () => {
