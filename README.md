@@ -26,6 +26,10 @@ jsdoc -d doc/technical App.js -r Components/ -R ./README.md
 
 ## Author
 
+👤 **Mathis**
+
+* Github: [@Mathis-Rodrigues](https://github.com/Mathis-Rodrigues)
+
 👤 **Sena**
 
 * Github: [@SenaYora](https://github.com/SenaYora)
